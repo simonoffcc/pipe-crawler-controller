@@ -1,9 +1,14 @@
 import QtQuick 2.15
-import QtQuick.Controls 2.15
 import QtQuick.Shapes 2.15
 
 Item {
     id: root
+
+    property int linesWidth: 2
+
+    clip: true
+    width: 250
+    height: 200
 
     Shape {
         anchors.fill: root
@@ -11,13 +16,15 @@ Item {
         ShapePath {
             id: path
 
-            strokeWidth: 2
+            capStyle: ShapePath.FlatCap
+            strokeWidth: linesWidth
             strokeColor: "black"
+            fillColor: "transparent"
 
-            startX: width / 2; startY: path.strokeWidth
+            startX: width / 2 - path.strokeWidth / 2; startY: path.strokeWidth
 
             PathLine { x: width / 4; y: path.strokeWidth }
-            PathLine { x: width / 4 ; y: 2 * height / 3 }
+            PathLine { x: width / 4; y: 2 * height / 3 }
             PathLine { x: 0; y: 2 * height / 3 }
             PathLine { x: width; y: 2 * height / 3 }
             PathLine { x: width / 2; y: 2 * height / 3 }
