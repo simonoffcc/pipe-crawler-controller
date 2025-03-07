@@ -40,17 +40,20 @@ Rectangle {
 
         TextField {
             id: speedInput
+            visible: wheelEnabled
 
-            width: root.width * 0.7
-            height: 25
+            validator: DoubleValidator.StandardNotation
 
             color: "black"
             placeholderText: qsTr("dq: 1°/sec")
             placeholderTextColor: "gray"
             font.pixelSize: 12
+
             horizontalAlignment: TextInput.AlignHCenter
             verticalAlignment: TextInput.AlignVCenter
-            visible: wheelEnabled
+
+            width: root.width * 0.7
+            height: 25
 
             background: Rectangle {
                 color: "white"
