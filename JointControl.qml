@@ -5,16 +5,17 @@ import QtQuick.Controls.Basic
 Rectangle {
     id: root
 
-    radius: width / 2
-    border.color: wheelEnabled ? "black" : "green"
-    color: "transparent"
-
     property alias telemetrySpeed: telemetryText.text
     property alias jointSpeed: speedInput.text
     property bool wheelEnabled: false
 
+    radius: width / 2
+    border.color: wheelEnabled ? "black" : "green"
+    color: "transparent"
+
     MouseArea {
         id: clickArea
+
         anchors.fill: parent
 
         onClicked: {
@@ -25,7 +26,6 @@ Rectangle {
     Column {
         anchors.centerIn: parent
         spacing: 5
-
 
         Text {
             id: telemetryText
@@ -57,9 +57,13 @@ Rectangle {
                 border.color: "black"
                 border.width: 1
                 height: 1
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
+
+                anchors {
+                    bottom: parent.bottom
+                    left: parent.left
+                    right: parent.right
+                }
+
             }
         }
     }

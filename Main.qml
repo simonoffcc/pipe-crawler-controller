@@ -9,11 +9,12 @@ Window {
 
     WheelPair {
         id: front_left_wheels_controller
-        visible: true
 
-        anchors.horizontalCenter: schemeLinesFront.left
-        anchors.verticalCenter: schemeLinesFront.verticalCenter
-        anchors.verticalCenterOffset: schemeLinesFront.height / 6
+        anchors {
+            horizontalCenter: schemeLinesFront.left
+            verticalCenter: schemeLinesFront.verticalCenter
+            verticalCenterOffset: schemeLinesFront.height / 6
+        }
 
         width: 100
         height: 100
@@ -22,10 +23,11 @@ Window {
 
     WheelPair {
         id: front_up_wheels_controller
-        visible: true
 
-        anchors.horizontalCenter: schemeLinesFront.horizontalCenter
-        anchors.verticalCenter: schemeLinesFront.top
+        anchors {
+            horizontalCenter: schemeLinesFront.horizontalCenter
+            verticalCenter: schemeLinesFront.top
+        }
 
         width: 100
         height: 100
@@ -34,71 +36,32 @@ Window {
 
     WheelPair {
         id: front_right_wheels_controller
-        visible: true
 
-        anchors.horizontalCenter: schemeLinesFront.right
-        anchors.verticalCenter: schemeLinesFront.verticalCenter
-        anchors.verticalCenterOffset: schemeLinesFront.height / 6
-
-        width: 100
-        height: 100
-        elementStrokeWidth: 4
-    }
-
-
-    WheelPair {
-        id: back_left_wheels_controller
-        visible: true
-
-        anchors.horizontalCenter: schemeLinesBack.left
-        anchors.verticalCenter: schemeLinesBack.verticalCenter
-        anchors.verticalCenterOffset:  schemeLinesBack.height / -6
+        anchors {
+            horizontalCenter: schemeLinesFront.right
+            verticalCenter: schemeLinesFront.verticalCenter
+            verticalCenterOffset: schemeLinesFront.height / 6
+        }
 
         width: 100
         height: 100
         elementStrokeWidth: 4
     }
-
-    WheelPair {
-        id: back_up_wheels_controller
-        visible: true
-
-        anchors.horizontalCenter: schemeLinesBack.horizontalCenter
-        anchors.verticalCenter: schemeLinesBack.bottom
-
-        width: 100
-        height: 100
-        elementStrokeWidth: 4
-    }
-
-    WheelPair {
-        id: back_right_wheels_controller
-        visible: true
-
-        anchors.horizontalCenter: schemeLinesBack.right
-        anchors.verticalCenter: schemeLinesBack.verticalCenter
-        anchors.verticalCenterOffset:  schemeLinesBack.height / -6
-
-        width: 100
-        height: 100
-        elementStrokeWidth: 4
-    }
-
 
     SchemeLines {
         id: schemeLinesFront
-        visible: true
 
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom: robotBody.top
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            bottom: schemeBody.top
+        }
 
-        width: robotBody.width * 2.5
-        height: robotBody.height * 2
+        width: schemeBody.width * 2.5
+        height: schemeBody.height * 2
     }
 
-    RobotBody {
-        id: robotBody
-        visible: true
+    SchemeBody {
+        id: schemeBody
 
         anchors.centerIn: parent
 
@@ -108,13 +71,55 @@ Window {
 
     SchemeLines {
         id: schemeLinesBack
-        visible: true
 
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: robotBody.bottom
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            top: schemeBody.bottom
+        }
 
         rotation: 180
-        width: robotBody.width * 2.5
-        height: robotBody.height * 2
+        width: schemeBody.width * 2.5
+        height: schemeBody.height * 2
+    }
+
+    WheelPair {
+        id: back_left_wheels_controller
+
+        anchors {
+            horizontalCenter: schemeLinesBack.left
+            verticalCenter: schemeLinesBack.verticalCenter
+            verticalCenterOffset:  schemeLinesBack.height / -6
+        }
+
+        width: 100
+        height: 100
+        elementStrokeWidth: 4
+    }
+
+    WheelPair {
+        id: back_up_wheels_controller
+
+        anchors {
+            horizontalCenter: schemeLinesBack.horizontalCenter
+            verticalCenter: schemeLinesBack.bottom
+        }
+
+        width: 100
+        height: 100
+        elementStrokeWidth: 4
+    }
+
+    WheelPair {
+        id: back_right_wheels_controller
+
+        anchors {
+            horizontalCenter: schemeLinesBack.right
+            verticalCenter: schemeLinesBack.verticalCenter
+            verticalCenterOffset: schemeLinesBack.height / -6
+        }
+
+        width: 100
+        height: 100
+        elementStrokeWidth: 4
     }
 }

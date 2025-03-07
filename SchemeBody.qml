@@ -6,12 +6,14 @@ Rectangle {
     id: root
 
     color: "#EEEEEE"
-    radius: 15
     border.color: "gray"
+
     border.width: 1
+    radius: 15
 
     Column {
         anchors.centerIn: parent
+
         width: parent.width * 0.8
         spacing: 10
 
@@ -30,9 +32,11 @@ Rectangle {
                 border.color: "black"
                 border.width: 1
                 height: 1
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
+                anchors {
+                    bottom: parent.bottom
+                    left: parent.left
+                    right: parent.right
+                }
             }
         }
 

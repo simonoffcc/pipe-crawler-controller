@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
         &app,
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
-    engine.loadFromModule("pipe-crawler", "Main");
+    engine.loadFromModule("pipe-crawler-controller", "Main");
 
     return app.exec();
 }

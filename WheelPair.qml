@@ -3,17 +3,20 @@ import QtQuick.Controls 2.15
 
 Item {
     id: root
-    width: 100
-    height: 250
 
     property int elementStrokeWidth: 4
+
+    width: 100
+    height: 250
 
     JointControl {
         id: outerJoint
         visible: true
 
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom: connectionLine.top
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            bottom: connectionLine.top
+        }
 
         width: root.width
         height: root.width
@@ -34,8 +37,10 @@ Item {
         id: innerJoint
         visible: true
 
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: connectionLine.bottom
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            top: connectionLine.bottom
+        }
 
         width: root.width
         height: root.width

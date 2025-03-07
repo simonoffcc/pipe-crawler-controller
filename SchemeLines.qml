@@ -13,6 +13,7 @@ Item {
     Shape {
         anchors.fill: root
 
+
         ShapePath {
             id: path
 

@@ -18,7 +18,7 @@ qt_add_qml_module(apppipe-crawler-controller
     QML_FILES
         Main.qml
         QML_FILES SchemeLines.qml
-        QML_FILES RobotBody.qml
+        QML_FILES SchemeBody.qml
         QML_FILES JointControl.qml
         QML_FILES PairConnection.qml
         QML_FILES WheelPair.qml
@@ -28,7 +28,7 @@ qt_add_qml_module(apppipe-crawler-controller
 # If you are developing for iOS or macOS you should consider setting an
 # explicit, fixed bundle identifier manually though.
 set_target_properties(apppipe-crawler-controller PROPERTIES
-#    MACOSX_BUNDLE_GUI_IDENTIFIER com.example.apppipe-crawler
+#    MACOSX_BUNDLE_GUI_IDENTIFIER com.example.apppipe-crawler-controller
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
     MACOSX_BUNDLE TRUE
