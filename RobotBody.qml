@@ -38,12 +38,23 @@ Rectangle {
 
         Button {
             id: publishButton
+
             width: parent.width
-            text: "Publish"
+            hoverEnabled: true
+
+            text: qsTr("Publish")
+
             background: Rectangle {
-                color: "green"
+                property color normalColor: "green"
+                property color hoveredColor: "lightgreen"
+                property color pressedColor: "darkgreen"
+
                 radius: 5
+                color: publishButton.pressed ? pressedColor :
+                       publishButton.hovered ? hoveredColor :
+                                            normalColor
             }
+
             contentItem: Text {
                 text: publishButton.text
                 font.pixelSize: 16
