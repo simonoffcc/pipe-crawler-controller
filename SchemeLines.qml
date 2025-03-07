@@ -6,9 +6,7 @@ Item {
     id: root
 
     Shape {
-        id: layout
-
-        anchors.fill: parent
+        anchors.fill: root
 
         ShapePath {
             id: path
