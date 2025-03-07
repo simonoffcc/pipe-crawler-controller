@@ -1,32 +1,29 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Shapes 2.15
 
 Item {
     id: root
 
-    Canvas {
-        id: canvas
+    Shape {
+        id: layout
+
         anchors.fill: parent
-        onPaint: {
-            var ctx = getContext("2d");
-            ctx.strokeStyle = "black";
-            ctx.lineWidth = 2;
 
-            ctx.beginPath();
+        ShapePath {
+            id: path
 
-            ctx.moveTo(width / 4, height / 4);
-            ctx.lineTo(width / 2, height / 4);
+            strokeWidth: 2
+            strokeColor: "black"
 
-            ctx.moveTo(width / 4, height / 4);
-            ctx.lineTo(width / 4, 3 * height / 4);
+            startX: width / 2; startY: path.strokeWidth
 
-            ctx.moveTo(0, 3 * height / 4);
-            ctx.lineTo(width, 3 * height / 4);
-
-            ctx.moveTo(width / 2, 3 * height / 4);
-            ctx.lineTo(width / 2, 3 * height);
-
-            ctx.stroke();
+            PathLine { x: width / 4; y: path.strokeWidth }
+            PathLine { x: width / 4 ; y: 2 * height / 3 }
+            PathLine { x: 0; y: 2 * height / 3 }
+            PathLine { x: width; y: 2 * height / 3 }
+            PathLine { x: width / 2; y: 2 * height / 3 }
+            PathLine { x: width / 2; y: height}
         }
     }
 }
