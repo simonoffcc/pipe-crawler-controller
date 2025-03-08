@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 Item {
     id: root
 
+    property bool isFront: true
     property int elementStrokeWidth: 4
 
     width: 100
@@ -15,7 +16,8 @@ Item {
 
         anchors {
             horizontalCenter: parent.horizontalCenter
-            bottom: connectionLine.top
+            top: { if (!isFront) connectionLine.bottom; }
+            bottom: { if (isFront) connectionLine.top; }
         }
 
         width: root.width
@@ -39,7 +41,8 @@ Item {
 
         anchors {
             horizontalCenter: parent.horizontalCenter
-            top: connectionLine.bottom
+            top: { if (isFront) connectionLine.bottom; }
+            bottom: { if (!isFront) connectionLine.top; }
         }
 
         width: root.width

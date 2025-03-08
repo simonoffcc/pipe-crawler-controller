@@ -7,10 +7,10 @@ Rectangle {
 
     property alias telemetrySpeed: telemetryText.text
     property alias jointSpeed: speedInput.text
-    property bool wheelEnabled: false
+    property bool wheelEnabled: true
 
     radius: width / 2
-    border.color: wheelEnabled ? "black" : "green"
+    border.color: wheelEnabled ? "green" : "black"
     color: "transparent"
 
     MouseArea {
@@ -40,7 +40,7 @@ Rectangle {
 
         TextField {
             id: speedInput
-            visible: wheelEnabled
+            visible: !wheelEnabled
 
             color: "black"
             placeholderText: qsTr("dq: 1°/sec")

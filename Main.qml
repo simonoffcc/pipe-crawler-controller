@@ -10,6 +10,8 @@ Window {
     WheelPair {
         id: front_left_wheels_controller
 
+        isFront: true
+
         anchors {
             horizontalCenter: schemeLinesFront.left
             verticalCenter: schemeLinesFront.verticalCenter
@@ -24,6 +26,8 @@ Window {
     WheelPair {
         id: front_up_wheels_controller
 
+        isFront: true
+
         anchors {
             horizontalCenter: schemeLinesFront.horizontalCenter
             verticalCenter: schemeLinesFront.top
@@ -36,6 +40,8 @@ Window {
 
     WheelPair {
         id: front_right_wheels_controller
+
+        isFront: true
 
         anchors {
             horizontalCenter: schemeLinesFront.right
@@ -85,6 +91,8 @@ Window {
     WheelPair {
         id: back_left_wheels_controller
 
+        isFront: false
+
         anchors {
             horizontalCenter: schemeLinesBack.left
             verticalCenter: schemeLinesBack.verticalCenter
@@ -99,6 +107,8 @@ Window {
     WheelPair {
         id: back_up_wheels_controller
 
+        isFront: false
+
         anchors {
             horizontalCenter: schemeLinesBack.horizontalCenter
             verticalCenter: schemeLinesBack.bottom
@@ -111,6 +121,8 @@ Window {
 
     WheelPair {
         id: back_right_wheels_controller
+
+        isFront: false
 
         anchors {
             horizontalCenter: schemeLinesBack.right
