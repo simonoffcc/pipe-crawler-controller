@@ -42,8 +42,6 @@ Rectangle {
             id: speedInput
             visible: wheelEnabled
 
-            validator: DoubleValidator.StandardNotation
-
             color: "black"
             placeholderText: qsTr("dq: 1°/sec")
             placeholderTextColor: "gray"
@@ -51,6 +49,10 @@ Rectangle {
 
             horizontalAlignment: TextInput.AlignHCenter
             verticalAlignment: TextInput.AlignVCenter
+
+            validator: DoubleValidator {
+                notation: DoubleValidator.StandardNotation
+            }
 
             width: root.width * 0.7
             height: 25

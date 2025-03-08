@@ -26,6 +26,10 @@ Rectangle {
             horizontalAlignment: TextInput.AlignHCenter
             font.pixelSize: 16
             bottomPadding: 5
+            validator: DoubleValidator {
+                notation: DoubleValidator.StandardNotation
+                locale: "en"
+            }
 
             background: Rectangle {
                 color: "transparent"
