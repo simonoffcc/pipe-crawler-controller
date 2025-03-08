@@ -72,7 +72,7 @@ Rectangle {
             } else {
                 root.state = "connected"
             }
-            dashedLine.requestPaint(); // Перерисовываем Canvas при изменении состояния
+            dashedLine.requestPaint();
         }
     }
 }
