@@ -62,6 +62,7 @@ Window {
             bottom: schemeBody.top
         }
 
+        isStraightUp: true
         width: schemeBody.width * 2.5
         height: schemeBody.height * 2
     }
@@ -83,7 +84,7 @@ Window {
             top: schemeBody.bottom
         }
 
-        rotation: 180
+        isStraightUp: false
         width: schemeBody.width * 2.5
         height: schemeBody.height * 2
     }

@@ -4,15 +4,16 @@ import QtQuick.Shapes 2.15
 Item {
     id: root
 
+    property bool isStraightUp: true
     property int linesWidth: 2
 
+    rotation: { if (!isStraightUp) 180 }
     clip: true
     width: 250
     height: 200
 
     Shape {
         anchors.fill: root
-
 
         ShapePath {
             id: path
