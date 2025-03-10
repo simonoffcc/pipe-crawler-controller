@@ -11,7 +11,11 @@ Rectangle {
 
     radius: width / 2
     border.color: wheelEnabled ? "green" : "black"
+    border.width: 4
     color: "transparent"
+
+    width: 100
+    height: 100
 
     MouseArea {
         id: clickArea

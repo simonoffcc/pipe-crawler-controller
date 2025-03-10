@@ -4,6 +4,16 @@ project(pipe-crawler-controller VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(QML
+    Main.qml
+    qml/Components/SchemeBody.qml
+    qml/Components/SchemeLines.qml
+    qml/Components/PairConnection.qml
+    qml/Components/JointControl.qml
+    qml/Components/WheelPair.qml
+    qml/Components/RobotDiagram.qml
+)
+
 find_package(Qt6 REQUIRED COMPONENTS Quick)
 
 qt_standard_project_setup(REQUIRES 6.5)
@@ -15,14 +25,9 @@ qt_add_executable(pipe-crawler-controller
 qt_add_qml_module(pipe-crawler-controller
     URI pipe-crawler-controller
     VERSION 1.0
-    QML_FILES
-        Main.qml
-        SchemeBody.qml
-        SchemeLines.qml
-        PairConnection.qml
-        JointControl.qml
-        WheelPair.qml
+    QML_FILES ${QML}
 )
+
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an

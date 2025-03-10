@@ -5,11 +5,13 @@ import QtQuick.Controls.Basic
 Rectangle {
     id: root
 
-    color: "#EEEEEE"
-    border.color: "gray"
-
-    border.width: 1
     radius: 15
+    border.color: "gray"
+    border.width: 1
+    color: "#EEEEEE"
+
+    width: 130
+    height: 130
 
     Column {
         anchors.centerIn: parent

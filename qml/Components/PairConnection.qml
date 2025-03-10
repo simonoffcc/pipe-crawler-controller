@@ -9,6 +9,9 @@ Rectangle {
     color: isConnected ? "black" : "green"
     border.color: "transparent"
 
+    width: 5
+    height: 50
+
     states: [
         State {
             name: "connected"

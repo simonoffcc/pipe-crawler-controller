@@ -9,6 +9,7 @@ Item {
 
     rotation: isStraightUp ? 0 : 180
     clip: true
+
     width: 250
     height: 200
 
