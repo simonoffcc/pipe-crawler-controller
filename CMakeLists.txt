@@ -17,11 +17,11 @@ qt_add_qml_module(apppipe-crawler-controller
     VERSION 1.0
     QML_FILES
         Main.qml
-        QML_FILES SchemeLines.qml
-        QML_FILES SchemeBody.qml
-        QML_FILES JointControl.qml
-        QML_FILES PairConnection.qml
-        QML_FILES WheelPair.qml
+        SchemeBody.qml
+        SchemeLines.qml
+        PairConnection.qml
+        JointControl.qml
+        WheelPair.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
