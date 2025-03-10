@@ -5,6 +5,7 @@ Window {
     id: window
     width: 500
     height: 1000
+    visible: true
     title: qsTr("Pipe Crawler Wheels Control")
 
     WheelPair {

@@ -1,5 +1,3 @@
-// #pragma comment(linker, "/SUBSYSTEM:linux /ENTRY:mainCRTStartup")
-
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
