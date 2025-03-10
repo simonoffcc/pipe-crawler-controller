@@ -14,15 +14,14 @@ Item {
         id: outerJoint
         visible: true
 
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-            top: { if (!isFront) connectionLine.bottom; }
-            bottom: { if (isFront) connectionLine.top; }
-        }
-
         width: root.width
         height: root.width
         border.width: elementStrokeWidth
+
+        Component.onCompleted: {
+            anchors.horizontalCenter = parent.horizontalCenter
+            isFront ? anchors.bottom = connectionLine.top : anchors.top = connectionLine.bottom
+        }
     }
 
     PairConnection {
@@ -39,14 +38,13 @@ Item {
         id: innerJoint
         visible: true
 
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-            top: { if (isFront) connectionLine.bottom; }
-            bottom: { if (!isFront) connectionLine.top; }
-        }
-
         width: root.width
         height: root.width
         border.width: elementStrokeWidth
+
+        Component.onCompleted: {
+            anchors.horizontalCenter = parent.horizontalCenter
+            !isFront ? anchors.bottom = connectionLine.top : anchors.top = connectionLine.bottom
+        }
     }
 }

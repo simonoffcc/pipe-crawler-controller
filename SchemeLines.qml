@@ -7,7 +7,7 @@ Item {
     property bool isStraightUp: true
     property int linesWidth: 2
 
-    rotation: { if (!isStraightUp) 180 }
+    rotation: isStraightUp ? 0 : 180
     clip: true
     width: 250
     height: 200
