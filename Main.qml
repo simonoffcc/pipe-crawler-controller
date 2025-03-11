@@ -12,6 +12,8 @@ ApplicationWindow {
     title: qsTr("Pipe Crawler Wheels Control")
 
     Row {
+        id: mainLayout
+
         anchors.horizontalCenter: parent.horizontalCenter
 
         spacing: 2
@@ -43,6 +45,8 @@ ApplicationWindow {
             anchors.right: root.right
 
             Column {
+                id: controlsLayout
+
                 spacing: 20
                 leftPadding: 10
                 topPadding: 10
