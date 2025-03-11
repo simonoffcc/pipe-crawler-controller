@@ -9,25 +9,29 @@ ApplicationWindow {
     visible: true
     width: 900
     height: 1000
+    minimumWidth: 800
+    minimumHeight: 1000
     title: qsTr("Pipe Crawler Wheels Control")
 
-    Row {
+    RowLayout {
         id: mainLayout
 
-        anchors.horizontalCenter: parent.horizontalCenter
-
-        spacing: 2
+        anchors.fill: parent
+        spacing: 1
 
         Rectangle {
             id: diagramBackground
 
             color: "lightgray"
-
-            width: childrenRect.width
-            height: childrenRect.height
+            Layout.fillWidth: true
+            Layout.fillHeight: true
 
             RobotDiagram {
                 id: robotDiagram
+
+                anchors {
+                    centerIn: parent
+                }
 
                 width: 600
                 height: 950
@@ -35,14 +39,13 @@ ApplicationWindow {
         }
 
         Rectangle {
-            id: selectorsBackgroud
+            id: selectorsBackground
 
-            color: "gray"
+            color: "lightgray"
+            Layout.minimumWidth: childrenRect.width
+            Layout.preferredWidth: childrenRect.width * 1.5
+            Layout.fillHeight: true
 
-            width: childrenRect.width
-            height: root.height
-
-            anchors.right: root.right
 
             Column {
                 id: controlsLayout
@@ -52,9 +55,14 @@ ApplicationWindow {
                 topPadding: 10
                 rightPadding: 10
 
+                anchors {
+                    left: parent.left
+                }
+
                 Text {
-                    font.pixelSize: 15
-                    font.bold: true
+                    id: controlsTitle
+
+                    font.pixelSize: 16
                     color: "black"
                     text: qsTr("Presets/Drive modes")
                 }
@@ -66,14 +74,11 @@ ApplicationWindow {
                     textRole: "title"
                     valueRole: "presetId"
                     model: [
-                        {
-                            presetId: 1,
-                            title: qsTr("Left-Right wheel pairs")
-                        }, {
-                            presetId: 2,
-                            title: qsTr("All cross pairs")
-                        }]
-                    onActivated:{ output.text = list.model[list.currentIndex] }
+                        { presetId: 0, title: qsTr("Custom") },
+                        { presetId: 1, title: qsTr("Left-Right wheel pairs") },
+                        { presetId: 2, title: qsTr("All cross pairs") }
+                    ]
+                    onActivated: lockPresetOutput.text = lockPresets.model[lockPresets.currentIndex].title
                 }
 
                 ComboBox {
@@ -83,18 +88,36 @@ ApplicationWindow {
                     textRole: "title"
                     valueRole: "modeId"
                     model: [
-                        {
-                            modeId: 1,
-                            title: qsTr("Full-drive")
-                        }, {
-                            modeId: 2,
-                            title: qsTr("Front-drive")
-                        }, {
-                            modeId: 3,
-                            title: qsTr("Rear-drive")
-                        }]
+                        { modeId: 0, title: qsTr("Custom") },
+                        { modeId: 1, title: qsTr("Full-drive") },
+                        { modeId: 2, title: qsTr("Front-drive") },
+                        { modeId: 3, title: qsTr("Rear-drive") }
+                    ]
+                    onActivated: driveModeOutput.text = driveModes.model[driveModes.currentIndex].title
+                }
 
-                    onActivated:{ output.text = list.model[list.currentIndex] }
+                Text {
+                    id: chosenSettingsTitle
+
+                    font.pixelSize: 16
+                    color: "black"
+                    text: qsTr("Current Settings")
+                }
+
+                Text {
+                    id: lockPresetOutput
+
+                    font.pixelSize: 15
+                    color: "black"
+                    text: qsTr("All cross pairs")
+                }
+
+                Text {
+                    id: driveModeOutput
+
+                    font.pixelSize: 15
+                    color: "black"
+                    text: qsTr("Full-drive")
                 }
             }
         }

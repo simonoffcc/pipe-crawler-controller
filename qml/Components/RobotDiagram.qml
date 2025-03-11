@@ -4,8 +4,8 @@ import QtQuick.Controls 2.15
 Item {
     id: root
 
-    width: 500
-    height: 1000
+    width: 430
+    height: 910
 
     SchemeBody {
         id: schemeBody
