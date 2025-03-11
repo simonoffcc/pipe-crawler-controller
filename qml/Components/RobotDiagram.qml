@@ -4,6 +4,46 @@ import QtQuick.Controls 2.15
 Item {
     id: root
 
+    width: 500
+    height: 1000
+
+    SchemeBody {
+        id: schemeBody
+
+        anchors.centerIn: parent
+
+        width: 130
+        height: 130
+    }
+
+    SchemeLines {
+        id: schemeLinesFront
+
+        isStraightUp: true
+
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            bottom: schemeBody.top
+        }
+
+        width: schemeBody.width * 2.5
+        height: schemeBody.height * 2
+    }
+
+    SchemeLines {
+        id: schemeLinesBack
+
+        isStraightUp: false
+
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            top: schemeBody.bottom
+        }
+
+        width: schemeBody.width * 2.5
+        height: schemeBody.height * 2
+    }
+
     WheelPair {
         id: front_left_wheels_controller
 
@@ -49,43 +89,6 @@ Item {
 
         width: 100
         height: 100
-    }
-
-    SchemeLines {
-        id: schemeLinesFront
-
-        isStraightUp: true
-
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-            bottom: schemeBody.top
-        }
-
-        width: schemeBody.width * 2.5
-        height: schemeBody.height * 2
-    }
-
-    SchemeBody {
-        id: schemeBody
-
-        anchors.centerIn: parent
-
-        width: 130
-        height: 130
-    }
-
-    SchemeLines {
-        id: schemeLinesBack
-
-        isStraightUp: false
-
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-            top: schemeBody.bottom
-        }
-
-        width: schemeBody.width * 2.5
-        height: schemeBody.height * 2
     }
 
     WheelPair {

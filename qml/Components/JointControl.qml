@@ -12,7 +12,7 @@ Rectangle {
     radius: width / 2
     border.color: wheelEnabled ? "green" : "black"
     border.width: 4
-    color: "transparent"
+    color: "white"
 
     width: 100
     height: 100
