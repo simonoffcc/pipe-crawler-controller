@@ -6,8 +6,7 @@ Rectangle {
 
     property bool isConnected: false
 
-    color: isConnected ? "black" : "green"
-    border.color: "transparent"
+    state: "connected"
 
     width: 5
     height: 50

@@ -29,9 +29,7 @@ ApplicationWindow {
             RobotDiagram {
                 id: robotDiagram
 
-                anchors {
-                    centerIn: parent
-                }
+                anchors.centerIn: parent
 
                 width: 600
                 height: 950
@@ -42,8 +40,9 @@ ApplicationWindow {
             id: selectorsBackground
 
             color: "lightgray"
-            Layout.minimumWidth: childrenRect.width
-            Layout.preferredWidth: childrenRect.width * 1.5
+            Layout.preferredWidth: 300
+            Layout.minimumWidth: 300
+            Layout.maximumWidth: 300
             Layout.fillHeight: true
 
 
@@ -55,9 +54,7 @@ ApplicationWindow {
                 topPadding: 10
                 rightPadding: 10
 
-                anchors {
-                    left: parent.left
-                }
+                anchors.left: parent.left
 
                 Text {
                     id: controlsTitle
@@ -71,12 +68,14 @@ ApplicationWindow {
                     id: lockPresets
 
                     implicitContentWidthPolicy: ComboBox.WidestText
+                    currentIndex: 1
+                    displayText: "Preset: " + currentText
                     textRole: "title"
                     valueRole: "presetId"
                     model: [
                         { presetId: 0, title: qsTr("Custom") },
-                        { presetId: 1, title: qsTr("Left-Right wheel pairs") },
-                        { presetId: 2, title: qsTr("All cross pairs") }
+                        { presetId: 1, title: qsTr("All cross pairs") },
+                        { presetId: 2, title: qsTr("Left-Right wheel pairs") }
                     ]
                     onActivated: lockPresetOutput.text = lockPresets.model[lockPresets.currentIndex].title
                 }
@@ -85,6 +84,8 @@ ApplicationWindow {
                     id: driveModes
 
                     implicitContentWidthPolicy: ComboBox.WidestText
+                    currentIndex: 1
+                    displayText: "Drive mode: " + currentText
                     textRole: "title"
                     valueRole: "modeId"
                     model: [
@@ -109,7 +110,7 @@ ApplicationWindow {
 
                     font.pixelSize: 15
                     color: "black"
-                    text: qsTr("All cross pairs")
+                    text: qsTr(lockPresets.model[lockPresets.currentIndex].title)
                 }
 
                 Text {
@@ -117,7 +118,7 @@ ApplicationWindow {
 
                     font.pixelSize: 15
                     color: "black"
-                    text: qsTr("Full-drive")
+                    text: qsTr(driveModes.model[driveModes.currentIndex].title)
                 }
             }
         }

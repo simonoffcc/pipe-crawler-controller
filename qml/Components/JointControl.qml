@@ -14,8 +14,8 @@ Rectangle {
     border.width: 4
     color: "white"
 
-    width: 100
-    height: 100
+    width: 150
+    height: width
 
     MouseArea {
         id: clickArea
