@@ -14,7 +14,7 @@ Rectangle {
     border.width: 4
     color: "white"
 
-    width: 150
+    width: 100
     height: width
 
     MouseArea {

@@ -47,94 +47,82 @@ Item {
     WheelPair {
         id: front_left_wheels_controller
 
-        isFront: true
+        jointControlWidth: 100
         elementStrokeWidth: 4
+        isFront: true
 
         anchors {
             horizontalCenter: schemeLinesFront.left
             verticalCenter: schemeLinesFront.verticalCenter
             verticalCenterOffset: schemeLinesFront.height / 6
         }
-
-        width: 100
-        height: 100
     }
 
     WheelPair {
         id: front_up_wheels_controller
 
-        isFront: true
+        jointControlWidth: 100
         elementStrokeWidth: 4
+        isFront: true
 
         anchors {
             horizontalCenter: schemeLinesFront.horizontalCenter
             verticalCenter: schemeLinesFront.top
         }
-
-        width: 100
-        height: 100
     }
 
     WheelPair {
         id: front_right_wheels_controller
 
-        isFront: true
+        jointControlWidth: 100
         elementStrokeWidth: 4
+        isFront: true
 
         anchors {
             horizontalCenter: schemeLinesFront.right
             verticalCenter: schemeLinesFront.verticalCenter
             verticalCenterOffset: schemeLinesFront.height / 6
         }
-
-        width: 100
-        height: 100
     }
 
     WheelPair {
         id: back_left_wheels_controller
 
-        isFront: false
+        jointControlWidth: 100
         elementStrokeWidth: 4
+        isFront: false
 
         anchors {
             horizontalCenter: schemeLinesBack.left
             verticalCenter: schemeLinesBack.verticalCenter
             verticalCenterOffset:  schemeLinesBack.height / -6
         }
-
-        width: 100
-        height: 100
     }
 
     WheelPair {
         id: back_up_wheels_controller
 
-        isFront: false
+        jointControlWidth: 100
         elementStrokeWidth: 4
+        isFront: false
 
         anchors {
             horizontalCenter: schemeLinesBack.horizontalCenter
             verticalCenter: schemeLinesBack.bottom
         }
-
-        width: 100
-        height: 100
     }
 
     WheelPair {
         id: back_right_wheels_controller
 
-        isFront: false
+        jointControlWidth: 100
         elementStrokeWidth: 4
+        isFront: false
 
         anchors {
             horizontalCenter: schemeLinesBack.right
             verticalCenter: schemeLinesBack.verticalCenter
             verticalCenterOffset: schemeLinesBack.height / -6
         }
-
-        width: 100
-        height: 100
     }
 }

@@ -4,18 +4,19 @@ import QtQuick.Controls 2.15
 Item {
     id: root
 
-    property bool isFront: true
+    property int jointControlWidth: 100
     property int elementStrokeWidth: 4
+    property bool isFront: true
 
-    width: 100
-    height: 250
+    width: jointControlWidth
+    height: jointControlWidth * 2.5
 
     JointControl {
         id: outerJoint
         visible: true
 
-        width: root.width
-        height: root.width
+        width: jointControlWidth
+        height: jointControlWidth
         border.width: elementStrokeWidth
 
         Component.onCompleted: {
@@ -30,7 +31,7 @@ Item {
 
         anchors.centerIn: parent
 
-        height: root.width / 2
+        height: jointControlWidth / 2
         width: elementStrokeWidth
     }
 
@@ -38,8 +39,8 @@ Item {
         id: innerJoint
         visible: true
 
-        width: root.width
-        height: root.width
+        width: jointControlWidth
+        height: jointControlWidth
         border.width: elementStrokeWidth
 
         Component.onCompleted: {
