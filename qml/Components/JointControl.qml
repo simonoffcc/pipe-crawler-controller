@@ -8,7 +8,7 @@ Rectangle {
     property alias telemetrySpeed: telemetryText.text
     property alias jointSpeed: speedInput.text
 
-    state: "globalSpeedControl"
+    state: "globalControl"
 
     radius: width / 2
     border.width: 4
@@ -22,7 +22,7 @@ Rectangle {
 
         anchors.fill: parent
 
-        onClicked: root.state === "globalSpeedControl" ? root.state = "localSpeedControl" : root.state = "globalSpeedControl"
+        onClicked: root.state === "globalControl" ? root.state = "localControl" : root.state = "globalControl"
     }
 
     Column {
@@ -75,14 +75,14 @@ Rectangle {
 
     states: [
         State {
-            name: "globalSpeedControl"
+            name: "globalControl"
             PropertyChanges {
                 root.border.color: "green"
                 speedInput.visible: false
             }
         },
         State {
-            name: "localSpeedControl"
+            name: "localControl"
             PropertyChanges {
                 root.border.color: "black"
                 speedInput.visible: true

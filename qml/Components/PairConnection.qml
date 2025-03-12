@@ -22,7 +22,6 @@ Rectangle {
             } else {
                 root.state = "globalConnection"
             }
-            dashedLine.requestPaint();
         }
     }
 

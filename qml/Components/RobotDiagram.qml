@@ -47,9 +47,9 @@ Item {
     WheelPair {
         id: front_left_wheels_controller
 
+        isFront: true
         jointControlWidth: 100
         elementStrokeWidth: 4
-        isFront: true
 
         anchors {
             horizontalCenter: schemeLinesFront.left
@@ -61,9 +61,9 @@ Item {
     WheelPair {
         id: front_up_wheels_controller
 
+        isFront: true
         jointControlWidth: 100
         elementStrokeWidth: 4
-        isFront: true
 
         anchors {
             horizontalCenter: schemeLinesFront.horizontalCenter
@@ -74,9 +74,9 @@ Item {
     WheelPair {
         id: front_right_wheels_controller
 
+        isFront: true
         jointControlWidth: 100
         elementStrokeWidth: 4
-        isFront: true
 
         anchors {
             horizontalCenter: schemeLinesFront.right
@@ -88,9 +88,9 @@ Item {
     WheelPair {
         id: back_left_wheels_controller
 
+        isFront: false
         jointControlWidth: 100
         elementStrokeWidth: 4
-        isFront: false
 
         anchors {
             horizontalCenter: schemeLinesBack.left
@@ -102,9 +102,9 @@ Item {
     WheelPair {
         id: back_up_wheels_controller
 
+        isFront: false
         jointControlWidth: 100
         elementStrokeWidth: 4
-        isFront: false
 
         anchors {
             horizontalCenter: schemeLinesBack.horizontalCenter
@@ -115,9 +115,9 @@ Item {
     WheelPair {
         id: back_right_wheels_controller
 
+        isFront: false
         jointControlWidth: 100
         elementStrokeWidth: 4
-        isFront: false
 
         anchors {
             horizontalCenter: schemeLinesBack.right

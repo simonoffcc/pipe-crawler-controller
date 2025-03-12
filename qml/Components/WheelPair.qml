@@ -4,16 +4,33 @@ import QtQuick.Controls 2.15
 Item {
     id: root
 
+    property bool isFront: true
     property int jointControlWidth: 100
     property int elementStrokeWidth: 4
-    property bool isFront: true
+
+    state: "globalSpeedControl"
 
     width: jointControlWidth
     height: jointControlWidth * 2.5
 
+    MouseArea {
+        id: clickArea
+
+        anchors.fill: parent
+
+        onClicked: {
+            if (root.state === "globalSpeedControl") {
+                root.state = "localSpeedControl"
+            } else if (root.state === "localSpeedControl") {
+                root.state = "independentSpeedControl"
+            } else {
+                root.state = "globalSpeedControl"
+            }
+        }
+    }
+
     JointControl {
         id: outerJoint
-        visible: true
 
         width: jointControlWidth
         height: jointControlWidth
@@ -27,7 +44,6 @@ Item {
 
     PairConnection {
         id: connectionLine
-        visible: true
 
         anchors.centerIn: parent
 
@@ -37,7 +53,6 @@ Item {
 
     JointControl {
         id: innerJoint
-        visible: true
 
         width: jointControlWidth
         height: jointControlWidth
@@ -48,4 +63,52 @@ Item {
             !isFront ? anchors.bottom = connectionLine.top : anchors.top = connectionLine.bottom
         }
     }
+
+    states: [
+        State {
+            name: "globalSpeedControl"
+            PropertyChanges {
+                target: outerJoint
+                state: "globalControl"
+            }
+            PropertyChanges {
+                target: connectionLine
+                state: "globalConnection"
+            }
+            PropertyChanges {
+                target: innerJoint
+                state: "globalControl"
+            }
+        },
+        State {
+            name: "localSpeedControl"
+            PropertyChanges {
+                target: outerJoint
+                state: "localControl"
+            }
+            PropertyChanges {
+                target: connectionLine
+                state: "localConnection"
+            }
+            PropertyChanges {
+                target: innerJoint
+                state: "localControl"
+            }
+        },
+        State {
+            name: "independentSpeedControl"
+            PropertyChanges {
+                target: outerJoint
+                state: "independentControl"
+            }
+            PropertyChanges {
+                target: connectionLine
+                state: "independentConnection"
+            }
+            PropertyChanges {
+                target: innerJoint
+                state: "independentControl"
+            }
+        }
+    ]
 }
