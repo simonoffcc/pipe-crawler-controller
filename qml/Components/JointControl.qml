@@ -7,10 +7,10 @@ Rectangle {
 
     property alias telemetrySpeed: telemetryText.text
     property alias jointSpeed: speedInput.text
-    property bool wheelEnabled: true
+
+    state: "globalSpeedControl"
 
     radius: width / 2
-    border.color: wheelEnabled ? "green" : "black"
     border.width: 4
     color: "white"
 
@@ -22,9 +22,7 @@ Rectangle {
 
         anchors.fill: parent
 
-        onClicked: {
-            wheelEnabled = !wheelEnabled;
-        }
+        onClicked: root.state === "globalSpeedControl" ? root.state = "localSpeedControl" : root.state = "globalSpeedControl"
     }
 
     Column {
@@ -44,12 +42,14 @@ Rectangle {
 
         TextField {
             id: speedInput
-            visible: !wheelEnabled
 
             color: "black"
             placeholderText: qsTr("dq: 1°/sec")
             placeholderTextColor: "gray"
             font.pixelSize: 12
+
+            width: root.width * 0.7
+            height: 25
 
             horizontalAlignment: TextInput.AlignHCenter
             verticalAlignment: TextInput.AlignVCenter
@@ -57,9 +57,6 @@ Rectangle {
             validator: DoubleValidator {
                 notation: DoubleValidator.StandardNotation
             }
-
-            width: root.width * 0.7
-            height: 25
 
             background: Rectangle {
                 color: "white"
@@ -75,4 +72,21 @@ Rectangle {
             }
         }
     }
+
+    states: [
+        State {
+            name: "globalSpeedControl"
+            PropertyChanges {
+                root.border.color: "green"
+                speedInput.visible: false
+            }
+        },
+        State {
+            name: "localSpeedControl"
+            PropertyChanges {
+                root.border.color: "black"
+                speedInput.visible: true
+            }
+        }
+    ]
 }

@@ -8,8 +8,6 @@ Item {
     property int linesWidth: 2
 
     rotation: isStraightUp ? 0 : 180
-    clip: true
-
     width: 250
     height: 200
 
@@ -25,7 +23,6 @@ Item {
             fillColor: "transparent"
 
             startX: width / 2 - path.strokeWidth / 2; startY: path.strokeWidth
-
             PathLine { x: width / 4; y: path.strokeWidth }
             PathLine { x: width / 4; y: 2 * height / 3 }
             PathLine { x: 0; y: 2 * height / 3 }

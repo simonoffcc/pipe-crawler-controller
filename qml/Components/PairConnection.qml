@@ -4,49 +4,31 @@ import QtQuick.Controls 2.15
 Rectangle {
     id: root
 
-    property bool isConnected: false
-
-    state: "connected"
+    state: "globalConnection"
 
     width: 5
     height: 50
 
-    states: [
-        State {
-            name: "connected"
-            when: isConnected
-            PropertyChanges {
-                target: root
-                color: "black"
-                border.color: "transparent"
+    MouseArea {
+        id: clickArea
+
+        anchors.fill: parent
+
+        onClicked: {
+            if (root.state === "globalConnection") {
+                root.state = "localConnection"
+            } else if (root.state === "localConnection") {
+                root.state = "independentConnection"
+            } else {
+                root.state = "globalConnection"
             }
-        },
-        State {
-            name: "disconnected"
-            when: !isConnected
-            PropertyChanges {
-                target: root
-                color: "green"
-                border.color: "transparent"
-            }
-        },
-        State {
-            name: "dashed"
-            when: false
-            PropertyChanges {
-                target: root
-                color: "transparent"
-                border.color: "transparent"
-            }
-            PropertyChanges {
-                target: dashedLine
-                visible: true
-            }
+            dashedLine.requestPaint();
         }
-    ]
+    }
 
     Canvas {
         id: dashedLine
+
         anchors.fill: parent
         visible: false
 
@@ -63,18 +45,42 @@ Rectangle {
         }
     }
 
-    MouseArea {
-        anchors.fill: parent
-
-        onClicked: {
-            if (root.state === "connected") {
-                root.state = "disconnected"
-            } else if (root.state === "disconnected") {
-                root.state = "dashed"
-            } else {
-                root.state = "connected"
+    states: [
+        State {
+            name: "globalConnection"
+            PropertyChanges {
+                target: root
+                color: "green"
+                border.color: "transparent"
             }
-            dashedLine.requestPaint();
+            PropertyChanges {
+                target: dashedLine
+                visible: false
+            }
+        },
+        State {
+            name: "localConnection"
+            PropertyChanges {
+                target: root
+                color: "black"
+                border.color: "transparent"
+            }
+            PropertyChanges {
+                target: dashedLine
+                visible: false
+            }
+        },
+        State {
+            name: "independentConnection"
+            PropertyChanges {
+                target: root
+                color: "transparent"
+                border.color: "transparent"
+            }
+            PropertyChanges {
+                target: dashedLine
+                visible: true
+            }
         }
-    }
+    ]
 }

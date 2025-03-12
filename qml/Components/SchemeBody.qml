@@ -21,6 +21,7 @@ Rectangle {
 
         TextField {
             id: inputField
+
             width: parent.width
             color: "black"
             placeholderText: "target_vel"
@@ -66,12 +67,13 @@ Rectangle {
             }
 
             contentItem: Text {
+                anchors.fill: parent
+
                 text: publishButton.text
                 font.pixelSize: 16
                 color: "white"
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
-                anchors.fill: parent
             }
         }
     }
