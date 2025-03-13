@@ -10,12 +10,12 @@ Rectangle {
 
     state: "globalControl"
 
+    width: 100
+    height: width
+
     radius: width / 2
     border.width: 4
     color: "white"
-
-    width: 100
-    height: width
 
     MouseArea {
         enabled: false
@@ -44,6 +44,7 @@ Rectangle {
 
         TextField {
             id: speedInput
+            visible: false
 
             color: "black"
             placeholderText: qsTr("dq: 1°/sec")

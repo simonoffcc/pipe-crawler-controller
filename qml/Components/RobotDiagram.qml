@@ -48,6 +48,7 @@ Item {
         id: front_left_wheels_controller
 
         isFront: true
+        isPublishButtonOnLeftSide: true
         jointControlWidth: 100
         elementStrokeWidth: 4
 
@@ -62,6 +63,7 @@ Item {
         id: front_up_wheels_controller
 
         isFront: true
+        isPublishButtonOnLeftSide: false
         jointControlWidth: 100
         elementStrokeWidth: 4
 
@@ -75,6 +77,7 @@ Item {
         id: front_right_wheels_controller
 
         isFront: true
+        isPublishButtonOnLeftSide: false
         jointControlWidth: 100
         elementStrokeWidth: 4
 
@@ -89,6 +92,7 @@ Item {
         id: back_left_wheels_controller
 
         isFront: false
+        isPublishButtonOnLeftSide: true
         jointControlWidth: 100
         elementStrokeWidth: 4
 
@@ -103,6 +107,7 @@ Item {
         id: back_up_wheels_controller
 
         isFront: false
+        isPublishButtonOnLeftSide: true
         jointControlWidth: 100
         elementStrokeWidth: 4
 
@@ -116,6 +121,7 @@ Item {
         id: back_right_wheels_controller
 
         isFront: false
+        isPublishButtonOnLeftSide: false
         jointControlWidth: 100
         elementStrokeWidth: 4
 

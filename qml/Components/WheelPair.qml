@@ -1,10 +1,12 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Controls.Basic
 
 Item {
     id: root
 
     property bool isFront: true
+    property bool isPublishButtonOnLeftSide: false
     property int jointControlWidth: 100
     property int elementStrokeWidth: 4
 
@@ -26,6 +28,45 @@ Item {
             } else {
                 root.state = "globalSpeedControl"
             }
+        }
+    }
+
+    Button {
+        id: publishButton
+        visible: false
+
+        width: jointControlWidth * 0.6
+        height: jointControlWidth * 0.3
+        hoverEnabled: true
+
+        text: qsTr("Publish")
+
+        background: Rectangle {
+
+            property color normalColor: "black"
+            property color hoveredColor: "lightgray"
+            property color pressedColor: "darkgray"
+
+            radius: 7
+            color: publishButton.pressed ? pressedColor :
+                   publishButton.hovered ? hoveredColor : normalColor
+        }
+
+        contentItem: Text {
+            anchors.fill: parent
+
+            text: publishButton.text
+            font.pixelSize: 14
+            color: "white"
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+        }
+
+        Component.onCompleted: {
+            anchors.leftMargin = jointControlWidth / 8
+            anchors.rightMargin = jointControlWidth / 8
+            anchors.verticalCenter = connectionLine.verticalCenter
+            isPublishButtonOnLeftSide ? anchors.right = connectionLine.left : anchors.left = connectionLine.right
         }
     }
 
@@ -94,6 +135,9 @@ Item {
                 target: innerJoint
                 state: "localControl"
             }
+            PropertyChanges {
+                publishButton.visible: true
+            }
         },
         State {
             name: "independentSpeedControl"
@@ -108,6 +152,9 @@ Item {
             PropertyChanges {
                 target: innerJoint
                 state: "independentControl"
+            }
+            PropertyChanges {
+                publishButton.visible: true
             }
         }
     ]

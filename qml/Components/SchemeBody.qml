@@ -62,8 +62,7 @@ Rectangle {
 
                 radius: 5
                 color: publishButton.pressed ? pressedColor :
-                       publishButton.hovered ? hoveredColor :
-                                            normalColor
+                       publishButton.hovered ? hoveredColor : normalColor
             }
 
             contentItem: Text {
