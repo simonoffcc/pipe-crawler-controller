@@ -18,9 +18,10 @@ Rectangle {
     height: width
 
     MouseArea {
-        id: clickArea
+        enabled: false
 
         anchors.fill: parent
+        propagateComposedEvents: true
 
         onClicked: root.state === "globalControl" ? root.state = "localControl" : root.state = "globalControl"
     }
@@ -31,6 +32,7 @@ Rectangle {
 
         Text {
             id: telemetryText
+
             text: qsTr("0°/sec")
             font.pixelSize: 14
 

@@ -9,22 +9,6 @@ Rectangle {
     width: 5
     height: 50
 
-    MouseArea {
-        id: clickArea
-
-        anchors.fill: parent
-
-        onClicked: {
-            if (root.state === "globalConnection") {
-                root.state = "localConnection"
-            } else if (root.state === "localConnection") {
-                root.state = "independentConnection"
-            } else {
-                root.state = "globalConnection"
-            }
-        }
-    }
-
     Canvas {
         id: dashedLine
 
@@ -41,6 +25,23 @@ Rectangle {
             ctx.moveTo(root.width / 2, 0);
             ctx.lineTo(root.width / 2, root.height);
             ctx.stroke();
+        }
+    }
+
+    MouseArea {
+        enabled: false
+
+        anchors.fill: parent
+        propagateComposedEvents: true
+
+        onClicked: {
+            if (root.state === "globalConnection") {
+                root.state = "localConnection"
+            } else if (root.state === "localConnection") {
+                root.state = "independentConnection"
+            } else {
+                root.state = "globalConnection"
+            }
         }
     }
 
