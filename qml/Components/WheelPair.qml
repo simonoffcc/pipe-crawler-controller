@@ -20,6 +20,8 @@ Item {
 
         anchors.fill: parent
 
+        cursorShape: Qt.PointingHandCursor
+
         onClicked: {
             if (root.state === "globalSpeedControl") {
                 root.state = "localSpeedControl"
