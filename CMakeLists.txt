@@ -13,6 +13,7 @@ set(QML
     qml/Components/JointControl.qml
     qml/Components/WheelPair.qml
     qml/Components/RobotDiagram.qml
+    qml/Controls/DrivingModesPanel.qml
 )
 
 find_package(Qt6 REQUIRED COMPONENTS Quick)
