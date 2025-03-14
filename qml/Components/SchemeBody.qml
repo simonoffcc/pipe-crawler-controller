@@ -56,9 +56,9 @@ Rectangle {
             text: qsTr("Publish")
 
             background: Rectangle {
-                property color normalColor: "green"
-                property color hoveredColor: "lightgreen"
-                property color pressedColor: "darkgreen"
+                property color normalColor: "#4CAF50"
+                property color hoveredColor: "#45A049"
+                property color pressedColor: "#3D8B40"
 
                 radius: 5
                 color: publishButton.pressed ? pressedColor :

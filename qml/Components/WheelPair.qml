@@ -42,10 +42,9 @@ Item {
         text: qsTr("Publish")
 
         background: Rectangle {
-
-            property color normalColor: "black"
-            property color hoveredColor: "lightgray"
-            property color pressedColor: "darkgray"
+            property color normalColor: "#000000"
+            property color hoveredColor: "#333333"
+            property color pressedColor: "#666666"
 
             radius: 7
             color: publishButton.pressed ? pressedColor :
