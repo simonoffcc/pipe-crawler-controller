@@ -35,7 +35,6 @@ ColumnLayout {
             { presetId: 1, title: qsTr("All cross pairs") },
             { presetId: 2, title: qsTr("Left-Right wheel pairs") }
         ]
-        onActivated: lockPresetOutput.text = lockPresets.model[lockPresets.currentIndex].title
     }
     
     ComboBox {
@@ -57,42 +56,5 @@ ColumnLayout {
             { modeId: 2, title: qsTr("Front-drive") },
             { modeId: 3, title: qsTr("Rear-drive") }
         ]
-        onActivated: driveModeOutput.text = driveModes.model[driveModes.currentIndex].title
-    }
-    
-    Text {
-        id: chosenSettingsTitle
-        
-        Layout.leftMargin: 10
-        Layout.topMargin: 15
-        Layout.rightMargin: 10
-        
-        font.pixelSize: 16
-        color: "black"
-        text: qsTr("Current Settings")
-    }
-    
-    Text {
-        id: lockPresetOutput
-        
-        Layout.leftMargin: 15
-        Layout.topMargin: 5
-        Layout.rightMargin: 10
-        
-        font.pixelSize: 15
-        color: "black"
-        text: qsTr(lockPresets.model[lockPresets.currentIndex].title)
-    }
-    
-    Text {
-        id: driveModeOutput
-        
-        Layout.leftMargin: 15
-        Layout.topMargin: 5
-        Layout.rightMargin: 10
-        
-        font.pixelSize: 15
-        color: "black"
-        text: qsTr(driveModes.model[driveModes.currentIndex].title)
     }
 }
