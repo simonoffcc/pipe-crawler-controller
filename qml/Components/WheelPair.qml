@@ -144,7 +144,7 @@ Item {
             name: "independentSpeedControl"
             PropertyChanges {
                 target: outerJoint
-                state: "independentControl"
+                state: "localControl"
             }
             PropertyChanges {
                 target: connectionLine
@@ -152,7 +152,7 @@ Item {
             }
             PropertyChanges {
                 target: innerJoint
-                state: "independentControl"
+                state: "localControl"
             }
             PropertyChanges {
                 publishButton.visible: true
