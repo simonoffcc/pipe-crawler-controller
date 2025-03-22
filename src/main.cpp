@@ -1,46 +1,53 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include <QQmlContext>
-#include <rclcpp/rclcpp.hpp>
-#include "velocity_controller/velocity_controller.h"
+
+#include "rclcpp/rclcpp.hpp"
+
+
+class Guard {
+    public:
+     explicit Guard(std::function<void()> fn) : fn_(std::move(fn)) {}
+     ~Guard() { fn_(); }
+   
+    private:
+     std::function<void()> fn_;
+   };
 
 int main(int argc, char *argv[])
 {
-    // Инициализация ROS2
-    rclcpp::init(argc, argv);
-    
-    // Создаем исполнитель для обработки колбэков ROS2
-    rclcpp::executors::MultiThreadedExecutor executor;
-    
-    // Инициализация Qt
     QGuiApplication app(argc, argv);
-    
-    // Регистрируем QML типы
-    qmlRegisterType<VelocityController>("RobotControl", 1, 0, "VelocityController");
-    
-    // Создаем движок QML
     QQmlApplicationEngine engine;
     
-    // Загружаем главное окно
-    engine.load(QUrl(QStringLiteral("qrc:/Main.qml")));
+    rclcpp::init(argc, argv);
+    auto pipe_crawler = std::make_shared<rclcpp::Node>("pipe_crawler_controller");
     
-    if (engine.rootObjects().isEmpty()) {
-        return -1;
-    }
-    
-    // Запускаем обработку событий ROS2 в отдельном потоке
-    std::thread ros_thread([&executor]() {
-        executor.spin();
+    // Установка обработчика сигнала для SIGINT
+    std::signal(SIGINT, [](int /*unused*/) {
+        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), 
+            "Завершение работы пультового ПО: сигнал SIGINT");
+        rclcpp::shutdown();
+        QCoreApplication::quit();
     });
     
-    // Запускаем главный цикл Qt
-    int result = app.exec();
-    
-    // Завершаем работу ROS2
-    rclcpp::shutdown();
-    if (ros_thread.joinable()) {
-        ros_thread.join();
-    }
-    
-    return result;
+    QObject::connect(
+        &engine,
+        &QQmlApplicationEngine::objectCreationFailed,
+        &app,
+        []() { QCoreApplication::exit(-1); },
+        Qt::QueuedConnection);
+    engine.loadFromModule("VelocityController", "Main");
+
+    rclcpp::executors::SingleThreadedExecutor executor;
+    executor.add_node(pipe_crawler);
+    auto spin_executor = [&executor]() { executor.spin(); };
+    std::thread execution_thread(spin_executor);
+
+    Guard g{[&]() {
+        executor.cancel();
+        if (execution_thread.joinable()) {
+        execution_thread.join();
+        }
+    }};
+
+    return app.exec();
 }
