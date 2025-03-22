@@ -1,8 +1,9 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 
 #include "rclcpp/rclcpp.hpp"
-
+#include "wheel_controller.h"
 
 class Guard {
     public:
@@ -11,15 +12,21 @@ class Guard {
    
     private:
      std::function<void()> fn_;
-   };
+};
 
-int main(int argc, char *argv[])
+int main(int argc, char *argv[]) 
 {
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
     
     rclcpp::init(argc, argv);
-    auto pipe_crawler = std::make_shared<rclcpp::Node>("pipe_crawler_controller");
+    auto node = std::make_shared<rclcpp::Node>("pipe_crawler_controller");
+    
+    // Создаем контроллер и регистрируем его в QML
+    auto wheel_controller = new WheelController(node);
+    qmlRegisterUncreatableType<WheelController>("PipeCrawler", 1, 0, "WheelController",
+        "WheelController cannot be created from QML");
+    engine.rootContext()->setContextProperty("wheelController", wheel_controller);
     
     // Установка обработчика сигнала для SIGINT
     std::signal(SIGINT, [](int /*unused*/) {
@@ -38,15 +45,16 @@ int main(int argc, char *argv[])
     engine.loadFromModule("VelocityController", "Main");
 
     rclcpp::executors::SingleThreadedExecutor executor;
-    executor.add_node(pipe_crawler);
+    executor.add_node(node);
     auto spin_executor = [&executor]() { executor.spin(); };
     std::thread execution_thread(spin_executor);
 
     Guard g{[&]() {
         executor.cancel();
         if (execution_thread.joinable()) {
-        execution_thread.join();
+            execution_thread.join();
         }
+        delete wheel_controller;
     }};
 
     return app.exec();

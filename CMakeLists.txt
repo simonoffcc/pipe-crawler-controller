@@ -13,6 +13,8 @@ endif()
 # ros2 dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
 
 # Qt6 dependencies
 find_package(
@@ -33,6 +35,7 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 qt_add_executable(${PROJECT_NAME}_node 
   src/main.cpp
+  src/wheel_controller.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}_node
@@ -47,6 +50,8 @@ target_link_libraries(${PROJECT_NAME}_node
 ament_target_dependencies(${PROJECT_NAME}_node 
   PUBLIC 
   rclcpp
+  std_msgs
+  sensor_msgs
 )
 
 include(GNUInstallDirs)
