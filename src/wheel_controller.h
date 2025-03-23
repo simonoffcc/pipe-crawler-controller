@@ -8,6 +8,8 @@
 #include <QVariant>
 #include <unordered_map>
 
+#include "helpers/controller_mode.h"
+
 class WheelController : public QObject {
     Q_OBJECT
     
@@ -18,11 +20,7 @@ class WheelController : public QObject {
     Q_PROPERTY(QVariantMap wheelSpeeds READ wheelSpeeds NOTIFY wheelSpeedsChanged)
 
 public:
-    enum class DriveMode {
-        FRONT_DRIVE = 0,
-        REAR_DRIVE = 1,
-        ALL_WHEEL_DRIVE = 2
-    };
+    using DriveMode = ControllerMode::Mode;
     Q_ENUM(DriveMode)
 
     explicit WheelController(std::shared_ptr<rclcpp::Node> node, QObject* parent = nullptr);
