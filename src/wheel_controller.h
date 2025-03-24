@@ -2,7 +2,6 @@
 #define WHEEL_CONTROLLER_H
 
 #include <QObject>
-#include <unordered_map>
 
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/float64_multi_array.hpp>
@@ -11,8 +10,6 @@
 #include "helpers/drive_mode.h"
 #include "helpers/pairs_grouping_mode.h"
 
-using DriveMode = DriveMode::Mode;
-using PairsGroupingMode = PairsGroupingMode::Mode;
 
 namespace {
     const std::vector<std::string> CONTROLLER_NAMES = {
@@ -58,7 +55,10 @@ public:
     
     explicit WheelController(std::shared_ptr<rclcpp::Node> node, QObject* parent = nullptr);
 
-    DriveMode getDriveMode() const { return drive_mode_; }
+    using DriveMode = DriveMode::Mode;
+    using PairsGroupingMode = PairsGroupingMode::Mode;
+
+    DriveMode getCurrentDriveMode() const { return current_drive_mode_; }
     void setDriveMode(DriveMode mode);
 
 public slots:
@@ -73,8 +73,8 @@ private:
     double precision = 5;  ///< точность сравнения скорости шарниров перед отображением в радианах
 
     std::shared_ptr<rclcpp::Node> node_;
-    DriveMode current_drive_mode_{DriveMode::Mode::ALL_WHEEL_DRIVE}; ///< Текущий пресет управления
-    PairsGroupingMode current_pairs_grouping_mode_{PairsGroupingMode::Mode::ALL_PAIRS} ///< Текущий режим привода робота
+    DriveMode current_drive_mode_{DriveMode::ALL_WHEEL_DRIVE}; ///< Текущий пресет управления
+    PairsGroupingMode current_pairs_grouping_mode_{PairsGroupingMode::ALL_PAIRS} ///< Текущий режим привода робота
 
     void jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg);
     void publishWheelCommands(const std::string& controller_name, double outer_speed, double inner_speed);

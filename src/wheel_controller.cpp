@@ -20,14 +20,14 @@ node_(node),
 }
 
 void WheelController::setDriveMode(DriveMode mode) {
-    if (drive_mode_ != mode) {
-        drive_mode_ = mode;
+    if (current_drive_mode_ != mode) {
+        current_drive_mode_ = mode;
         emit driveModeChanged();
     }
 }
 
 void WheelController::setLeftRightWheelsSpeeds(double left_speed, double right_speed) {
-    switch (drive_mode_) {
+    switch (current_drive_mode_) {
         case DriveMode::FRONT_DRIVE:
             publishWheelCommands("front_left_wheels_controller", left_speed, left_speed);
             publishWheelCommands("front_right_wheels_controller", right_speed, right_speed);
