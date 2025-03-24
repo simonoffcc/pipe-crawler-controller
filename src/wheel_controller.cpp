@@ -1,48 +1,19 @@
 #include "wheel_controller.h"
 
-namespace {
-    const std::vector<std::string> CONTROLLER_NAMES = {
-        "front_left_wheels_controller",
-        "front_right_wheels_controller",
-        "front_up_wheels_controller",
-        "back_left_wheels_controller",
-        "back_right_wheels_controller",
-        "back_up_wheels_controller"
-    };
-
-    const std::vector<std::string> WHEEL_JOINTS = {
-        "front_left_inner_wheel_joint",
-        "front_left_outer_wheel_joint",
-        "front_right_inner_wheel_joint",
-        "front_right_outer_wheel_joint",
-        "front_up_inner_wheel_joint",
-        "front_up_outer_wheel_joint",
-        "back_left_inner_wheel_joint",
-        "back_left_outer_wheel_joint",
-        "back_right_inner_wheel_joint",
-        "back_right_outer_wheel_joint",
-        "back_up_inner_wheel_joint",
-        "back_up_outer_wheel_joint"
-    };
-}
-
 WheelController::WheelController(std::shared_ptr<rclcpp::Node> node, QObject* parent)
-    : QObject(parent)
-    , node_(node)
+: QObject(parent),
+node_(node),
 {
-    // Инициализация publishers для каждого контроллера
     for (const auto& controller : CONTROLLER_NAMES) {
         wheel_publishers_[controller] = node_->create_publisher<std_msgs::msg::Float64MultiArray>(
             "/" + controller + "/commands", 10);
     }
 
-    // Подписка на телеметрию
     joint_state_sub_ = node_->create_subscription<sensor_msgs::msg::JointState>(
         "/joint_states", 10,
         std::bind(&WheelController::jointStateCallback, this, std::placeholders::_1));
 
-    // Инициализация начальных скоростей
-    for (const auto& joint : WHEEL_JOINTS) {
+    for (const auto& joint : JOINT_NAMES) {
         wheel_speeds_[QString::fromStdString(joint)] = 0.0;
     }
 }

@@ -1,6 +1,6 @@
-import QtQuick 2.15
-import QtQuick.Layouts 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls
 
 import Components
 import Controls
@@ -12,6 +12,7 @@ ApplicationWindow {
     height: 1000
     minimumWidth: 800
     minimumHeight: 1000
+    visibility: Window.Maximized
     title: qsTr("Pipe Crawler Wheels Control")
 
     RowLayout {
