@@ -16,42 +16,15 @@
 #include "enums/controller_names.h"
 #include "enums/joint_names.h"
 
-
 using DriveMode = DriveMode::Mode;
 using PairsGroupingMode = PairsGroupingMode::Mode;
 using ControllerName = ControllerNames::Name;
 using JointName = JointNames::Name;
 
-namespace {
-    const std::vector<std::string> CONTROLLER_NAMES = {
-        "front_left_wheels_controller",
-        "front_up_wheels_controller",
-        "front_right_wheels_controller",
-        "back_left_wheels_controller",
-        "back_up_wheels_controller"
-        "back_right_wheels_controller",
-    };
-        
-    const std::vector<std::string> JOINT_NAMES = {
-        "front_left_outer_wheel_joint",
-        "front_left_inner_wheel_joint",
-        "front_up_outer_wheel_joint",
-        "front_up_inner_wheel_joint",
-        "front_right_outer_wheel_joint",
-        "front_right_inner_wheel_joint",
-        "back_left_outer_wheel_joint",
-        "back_left_inner_wheel_joint",
-        "back_up_outer_wheel_joint"
-        "back_up_inner_wheel_joint",
-        "back_right_outer_wheel_joint",
-        "back_right_inner_wheel_joint",
-    };
-}
-
 class WheelController : public QObject {
     Q_OBJECT
     
-    // Режим управления по продольной оси
+    // Режим управления
     Q_PROPERTY(DriveMode driveMode READ driveMode WRITE setDriveMode NOTIFY driveModeChanged)
     // Режим группировки пар
     Q_PROPERTY(PairsGroupingMode pairsGroupingMode READ pairsGroupingMode WRITE setPairsGroupingMode NOTIFY pairsGroupingModeChanged)
@@ -94,7 +67,6 @@ private:
         JointName outer_joint;
         JointName inner_joint;
         bool is_active{false};
-        bool is_front{false};  // флаг для определения передней/задней пары
         double outer_speed{0.0};
         double inner_speed{0.0};
     };
