@@ -3,6 +3,7 @@
 WheelController::WheelController(std::shared_ptr<rclcpp::Node> node, QObject* parent)
 : QObject(parent),
 node_(node),
+
 {
     for (const auto& controller : CONTROLLER_NAMES) {
         wheel_publishers_[controller] = node_->create_publisher<std_msgs::msg::Float64MultiArray>(

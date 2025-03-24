@@ -20,13 +20,14 @@ find_package(sensor_msgs REQUIRED)
 find_package(
   Qt6 REQUIRED
   COMPONENTS 
-  Core
-  Gui
-  Qml
-  Quick
-  QuickControls2
+    Core
+    Gui
+    Qml
+    Quick
+    QuickControls2
 )
 qt_standard_project_setup(REQUIRES 6.5)
+
 add_subdirectory(qml)
 include_directories(${rclcpp_INCLUDE_DIRS})
 
