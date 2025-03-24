@@ -2,14 +2,25 @@
 #define WHEEL_CONTROLLER_H
 
 #include <QObject>
+#include <unordered_map>
+#include <vector>
+#include <string>
+#include <set>
 
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/float64_multi_array.hpp>
 #include <sensor_msgs/msg/joint_state.hpp>
 
-#include "helpers/drive_mode.h"
-#include "helpers/pairs_grouping_mode.h"
+#include "enums/drive_mode.h"
+#include "enums/pairs_grouping_mode.h"
+#include "enums/controller_names.h"
+#include "enums/joint_names.h"
 
+
+using DriveMode = DriveMode::Mode;
+using PairsGroupingMode = PairsGroupingMode::Mode;
+using ControllerName = ControllerNames::Name;
+using JointName = JointNames::Name;
 
 namespace {
     const std::vector<std::string> CONTROLLER_NAMES = {
@@ -42,7 +53,8 @@ class WheelController : public QObject {
     
     // Режим управления по продольной оси
     Q_PROPERTY(DriveMode driveMode READ driveMode WRITE setDriveMode NOTIFY driveModeChanged)
-
+    // Режим группировки пар
+    Q_PROPERTY(PairsGroupingMode pairsGroupingMode READ pairsGroupingMode WRITE setPairsGroupingMode NOTIFY pairsGroupingModeChanged)
     // Скорости колес для отображения в GUI
     Q_PROPERTY(QVariantMap wheelSpeeds READ wheelSpeeds NOTIFY wheelSpeedsChanged)
 
@@ -51,15 +63,20 @@ public:
     WheelController &operator=(const WheelController &) = delete;
     WheelController(WheelController &&) = delete;
     WheelController &operator=(WheelController &&) = delete;
-    ~WheelController() { /*delete something_ if needed;*/ }
+    ~WheelController() = default;
     
     explicit WheelController(std::shared_ptr<rclcpp::Node> node, QObject* parent = nullptr);
 
-    using DriveMode = DriveMode::Mode;
-    using PairsGroupingMode = PairsGroupingMode::Mode;
-
-    DriveMode getCurrentDriveMode() const { return current_drive_mode_; }
+    DriveMode driveMode() const { return current_drive_mode_; }
     void setDriveMode(DriveMode mode);
+
+    PairsGroupingMode pairsGroupingMode() const { return current_pairs_grouping_mode_; }
+    void setPairsGroupingMode(PairsGroupingMode mode);
+
+    // Методы для управления состоянием колёсных пар
+    Q_INVOKABLE void setWheelPairActive(const QString& pair_id, bool active);
+    Q_INVOKABLE bool isWheelPairActive(const QString& pair_id) const;
+    Q_INVOKABLE void setPresetMode(int preset_id);
 
 public slots:
     void setLeftRightWheelsSpeeds(double left_speed, double right_speed);
@@ -67,20 +84,48 @@ public slots:
 
 signals:
     void driveModeChanged();
+    void pairsGroupingModeChanged();
     void wheelSpeedsChanged();
+    void wheelPairStateChanged(const QString& pair_id, bool active);
 
 private:
+    struct WheelPair {
+        ControllerName controller;
+        JointName outer_joint;
+        JointName inner_joint;
+        bool is_active{false};
+        bool is_front{false};  // флаг для определения передней/задней пары
+        double outer_speed{0.0};
+        double inner_speed{0.0};
+    };
+
     double precision = 5;  ///< точность сравнения скорости шарниров перед отображением в радианах
 
     std::shared_ptr<rclcpp::Node> node_;
-    DriveMode current_drive_mode_{DriveMode::ALL_WHEEL_DRIVE}; ///< Текущий пресет управления
-    PairsGroupingMode current_pairs_grouping_mode_{PairsGroupingMode::ALL_PAIRS} ///< Текущий режим привода робота
+    DriveMode current_drive_mode_{DriveMode::ALL_WHEEL_DRIVE};
+    PairsGroupingMode current_pairs_grouping_mode_{PairsGroupingMode::ALL_PAIRS};
+    // Множество активных контроллеров (используем set для уникальности и быстрого поиска)
+    std::set<ControllerName> active_controllers_;
 
-    void jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg);
-    void publishWheelCommands(const std::string& controller_name, double outer_speed, double inner_speed);
-
-    std::unordered_map<std::string, rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr> wheel_publishers_;
+    // Хранение информации о колёсных парах
+    std::unordered_map<ControllerName, WheelPair> wheel_pairs_;
+    
+    // Публикаторы для каждой пары
+    std::unordered_map<ControllerName, rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr> wheel_publishers_;
     rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr joint_state_sub_;
+
+    // Методы для работы с топиками
+    void jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg);
+    void publishWheelCommands(ControllerName controller, double outer_speed, double inner_speed);
+    void updateWheelPairsState();
+    
+    // Вспомогательные методы для определения состояния пар
+    bool shouldPairBeActive(const WheelPair& pair) const;
+    void updatePairState(ControllerName controller);
+    
+    // Методы для работы с активными контроллерами
+    void updateActiveControllers();
+    bool isControllerActive(ControllerName controller) const;
 }; 
 
 #endif // WHEEL_CONTROLLER_H
