@@ -3,7 +3,6 @@
 
 #include "rclcpp/rclcpp.hpp"
 
-
 class Guard {
     public:
      explicit Guard(std::function<void()> fn) : fn_(std::move(fn)) {}

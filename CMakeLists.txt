@@ -16,7 +16,7 @@ find_package(rclcpp REQUIRED)
 
 # Qt6 dependencies
 find_package(
-  Qt6 REQUIRED
+  Qt6 6.8 REQUIRED
   COMPONENTS 
   Core
   Gui
