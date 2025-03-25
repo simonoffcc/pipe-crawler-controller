@@ -1,3 +1,11 @@
 {
-    "cmake.configureSettings": {"CMAKE_PREFIX_PATH" : "/home/simon/Qt/6.8.2/gcc_64"}
+    "cmake.configureSettings": {
+        "CMAKE_PREFIX_PATH": "/home/simon/Qt/6.8.2/gcc_64"
+    },
+    "python.autoComplete.extraPaths": [
+        "/opt/ros/jazzy/lib/python3.12/site-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/opt/ros/jazzy/lib/python3.12/site-packages"
+    ]
 }
