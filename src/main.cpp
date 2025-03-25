@@ -2,7 +2,6 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
-#include "rclcpp/rclcpp.hpp"
 #include "wheel_controller.h"
 
 class Guard {
