@@ -23,13 +23,9 @@ Item {
         cursorShape: Qt.PointingHandCursor
 
         onClicked: {
-            if (root.state === "globalSpeedControl") {
-                root.state = "localSpeedControl"
-            } else if (root.state === "localSpeedControl") {
-                root.state = "independentSpeedControl"
-            } else {
-                root.state = "globalSpeedControl"
-            }
+            if (root.state === "globalSpeedControl") { root.state = "localSpeedControl" } 
+            else if (root.state === "localSpeedControl") { root.state = "independentSpeedControl" } 
+            else { root.state = "globalSpeedControl" }
         }
     }
 

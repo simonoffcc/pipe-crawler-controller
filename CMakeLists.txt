@@ -55,7 +55,7 @@ target_link_libraries(${PROJECT_NAME}_node
   Qt6::Qml
   Qt6::Quick
   Qt6::QuickControls2
-  velocity_controllerplugin
+  main_moduleplugin
 )
 
 # Add ROS2 dependencies

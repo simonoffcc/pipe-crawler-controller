@@ -6,31 +6,32 @@
 
 class Guard {
     public:
-     explicit Guard(std::function<void()> fn) : fn_(std::move(fn)) {}
-     ~Guard() { fn_(); }
+        explicit Guard(std::function<void()> fn) : fn_(std::move(fn)) {}
+        ~Guard() { fn_(); }
    
     private:
-     std::function<void()> fn_;
+        std::function<void()> fn_;
 };
 
 int main(int argc, char *argv[]) 
 {
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
+    engine.addImportPath("qrc:/");
+    engine.addImportPath(":/qml");
     
     rclcpp::init(argc, argv);
     auto node = std::make_shared<rclcpp::Node>("pipe_crawler_controller");
     
     // Создаем контроллер и регистрируем его в QML
     auto wheel_controller = new WheelController(node);
-    qmlRegisterUncreatableType<WheelController>("PipeCrawler", 1, 0, "WheelController",
+    qmlRegisterUncreatableType<WheelController>("WheelController", 1, 0, "WheelController",
         "WheelController cannot be created from QML");
     engine.rootContext()->setContextProperty("wheelController", wheel_controller);
     
     // Установка обработчика сигнала для SIGINT
     std::signal(SIGINT, [](int /*unused*/) {
-        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), 
-            "Завершение работы пультового ПО: сигнал SIGINT");
+        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Завершение работы пультового ПО: сигнал SIGINT");
         rclcpp::shutdown();
         QCoreApplication::quit();
     });
@@ -41,7 +42,7 @@ int main(int argc, char *argv[])
         &app,
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
-    engine.loadFromModule("VelocityController", "Main");
+    engine.loadFromModule("MainModule", "Main");
 
     rclcpp::executors::SingleThreadedExecutor executor;
     executor.add_node(node);
@@ -53,7 +54,6 @@ int main(int argc, char *argv[])
         if (execution_thread.joinable()) {
             execution_thread.join();
         }
-        delete wheel_controller;
     }};
 
     return app.exec();

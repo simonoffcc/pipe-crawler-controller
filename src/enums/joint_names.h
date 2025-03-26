@@ -58,6 +58,7 @@ public:
         };
         return names;
     }
+    Q_ENUM(Name)
 };
 
 #endif // JOINT_NAMES_H 

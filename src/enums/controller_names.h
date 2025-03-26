@@ -40,6 +40,7 @@ public:
         };
         return names;
     }
+    Q_ENUM(Name)
 };
 
 #endif // CONTROLLER_NAMES_H 

@@ -62,42 +62,9 @@ signals:
     void wheelPairStateChanged(const QString& pair_id, bool active);
 
 private:
-    struct WheelPair {
-        ControllerName controller;
-        JointName outer_joint;
-        JointName inner_joint;
-        bool is_active{false};
-        double outer_speed{0.0};
-        double inner_speed{0.0};
-    };
-
-    double precision = 5;  ///< точность сравнения скорости шарниров перед отображением в радианах
-
-    std::shared_ptr<rclcpp::Node> node_;
-    DriveMode current_drive_mode_{DriveMode::ALL_WHEEL_DRIVE};
-    PairsGroupingMode current_pairs_grouping_mode_{PairsGroupingMode::ALL_PAIRS};
-    // Множество активных контроллеров (используем set для уникальности и быстрого поиска)
-    std::set<ControllerName> active_controllers_;
-
-    // Хранение информации о колёсных парах
-    std::unordered_map<ControllerName, WheelPair> wheel_pairs_;
     
-    // Публикаторы для каждой пары
-    std::unordered_map<ControllerName, rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr> wheel_publishers_;
-    rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr joint_state_sub_;
 
-    // Методы для работы с топиками
-    void jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg);
-    void publishWheelCommands(ControllerName controller, double outer_speed, double inner_speed);
-    void updateWheelPairsState();
     
-    // Вспомогательные методы для определения состояния пар
-    bool shouldPairBeActive(const WheelPair& pair) const;
-    void updatePairState(ControllerName controller);
-    
-    // Методы для работы с активными контроллерами
-    void updateActiveControllers();
-    bool isControllerActive(ControllerName controller) const;
 }; 
 
 #endif // WHEEL_CONTROLLER_H
