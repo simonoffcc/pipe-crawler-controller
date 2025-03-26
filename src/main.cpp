@@ -17,17 +17,16 @@ int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
-    engine.addImportPath("qrc:/");
-    engine.addImportPath(":/qml");
+    // engine.addImportPath("qrc:/");  // ?
+    // engine.addImportPath(":/qml");
     
     rclcpp::init(argc, argv);
     auto node = std::make_shared<rclcpp::Node>("pipe_crawler_controller");
     
     // Создаем контроллер и регистрируем его в QML
     auto wheel_controller = new WheelController(node);
-    qmlRegisterUncreatableType<WheelController>("WheelController", 1, 0, "WheelController",
-        "WheelController cannot be created from QML");
-    engine.rootContext()->setContextProperty("wheelController", wheel_controller);
+    // qmlRegisterUncreatableType<WheelController>("WheelController", 1, 0, "WheelController");
+    // engine.rootContext()->setContextProperty("wheelController", wheel_controller);
     
     // Установка обработчика сигнала для SIGINT
     std::signal(SIGINT, [](int /*unused*/) {

@@ -8,8 +8,8 @@
 #include <set>
 
 #include <rclcpp/rclcpp.hpp>
-#include <std_msgs/msg/float64_multi_array.hpp>
 #include <sensor_msgs/msg/joint_state.hpp>
+#include <std_msgs/msg/float64_multi_array.hpp>
 
 #include "enums/drive_mode.h"
 #include "enums/pairs_grouping_mode.h"
@@ -18,10 +18,12 @@
 
 using DriveMode = DriveMode::Mode;
 using PairsGroupingMode = PairsGroupingMode::Mode;
-using ControllerName = ControllerNames::Name;
 using JointName = JointNames::Name;
+using ControllerName = ControllerNames::Name;
 
-class WheelController : public QObject {
+/// \class Класс для управления скорстями групп колёсных пар робота из QML.
+class WheelController : public QObject 
+{
     Q_OBJECT
     
     // Режим управления
@@ -32,38 +34,42 @@ class WheelController : public QObject {
     Q_PROPERTY(QVariantMap wheelSpeeds READ wheelSpeeds NOTIFY wheelSpeedsChanged)
 
 public:
+    explicit WheelController(std::shared_ptr<rclcpp::Node> node, QObject* parent = nullptr);
+
     WheelController(const WheelController &) = delete;
     WheelController &operator=(const WheelController &) = delete;
     WheelController(WheelController &&) = delete;
     WheelController &operator=(WheelController &&) = delete;
     ~WheelController() = default;
+
+    /// @brief Note/question: как я понял, механизм реализации подключения к родительскому узлу, должно пригодиться в будущем
+    // static WheelController &instance(std::shared_ptr<rclcpp::Node> parent_ros_node = nullptr) 
+    // {
+    //     static std::shared_ptr<rclcpp::Node> static_node;
+    //     if (parent_ros_node) {
+    //         static_node = parent_ros_node;
+    //     }
+    //     static WheelController _instance(static_node);
+    //     return _instance;
+    // }
     
-    explicit WheelController(std::shared_ptr<rclcpp::Node> node, QObject* parent = nullptr);
+    void createROSInterfaces();
 
     DriveMode driveMode() const { return current_drive_mode_; }
-    void setDriveMode(DriveMode mode);
-
     PairsGroupingMode pairsGroupingMode() const { return current_pairs_grouping_mode_; }
+    
+    void setDriveMode(DriveMode mode);
     void setPairsGroupingMode(PairsGroupingMode mode);
 
-    // Методы для управления состоянием колёсных пар
-    Q_INVOKABLE void setWheelPairActive(const QString& pair_id, bool active);
-    Q_INVOKABLE bool isWheelPairActive(const QString& pair_id) const;
-    Q_INVOKABLE void setPresetMode(int preset_id);
-
 public slots:
-    void setLeftRightWheelsSpeeds(double left_speed, double right_speed);
-    void setAllWheelsSpeeds(double speed);
-
+    
 signals:
     void driveModeChanged();
     void pairsGroupingModeChanged();
-    void wheelSpeedsChanged();
     void wheelPairStateChanged(const QString& pair_id, bool active);
 
 private:
-    
-
+    ManipulatorController(std::shared_ptr<rclcpp::Node> parent_node);
     
 }; 
 

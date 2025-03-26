@@ -8,10 +8,9 @@
 WheelController::WheelController(std::shared_ptr<rclcpp::Node> node, QObject* parent)
 : QObject(parent),
 node_(node),
-
 {
-    qmlRegisterType<WheelController>("WheelController", 1, 0, "WheelController");
-    
+    // qmlRegisterType<WheelController>("WheelController", 1, 0, "WheelController");
+    qmlRegisterSingletonInstance<WheelController>("WheelController", 1, 0, "WheelController", this);
 }
 
 void WheelController::createROSInterfaces() {
