@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
+import WheelController 1.0
 
 ColumnLayout {
     id: root
@@ -14,11 +15,11 @@ ColumnLayout {
         
         font.pixelSize: 16
         color: "black"
-        text: qsTr("Presets/Drive modes")
+        text: qsTr("Pair Grouping/Drive modes")
     }
     
     ComboBox {
-        id: lockPresets
+        id: pairGroupingModes
         
         Layout.leftMargin: 15
         Layout.topMargin: 5
@@ -27,14 +28,18 @@ ColumnLayout {
         
         implicitContentWidthPolicy: ComboBox.WidestText
         currentIndex: 1
-        displayText: "Preset: " + currentText
+        displayText: "Grouping: " + currentText
         textRole: "title"
-        valueRole: "presetId"
+        valueRole: "modeId"
         model: [
-            { presetId: 0, title: qsTr("Custom") },
-            { presetId: 1, title: qsTr("All cross pairs") },
-            { presetId: 2, title: qsTr("Left-Right wheel pairs") }
+            { modeId: 0, title: qsTr("Custom") },
+            { modeId: 1, title: qsTr("Left-Right wheel pairs") },
+            { modeId: 2, title: qsTr("All cross pairs") }
         ]
+
+        onActivated: {
+            WheelController.setPairsGroupingMode(modeId)
+        }
     }
     
     ComboBox {
@@ -52,9 +57,9 @@ ColumnLayout {
         valueRole: "modeId"
         model: [
             { modeId: 0, title: qsTr("Custom") },
-            { modeId: 1, title: qsTr("Full-drive") },
-            { modeId: 2, title: qsTr("Front-drive") },
-            { modeId: 3, title: qsTr("Rear-drive") }
+            { modeId: 1, title: qsTr("Front-drive") },
+            { modeId: 2, title: qsTr("Rear-drive") },
+            { modeId: 3, title: qsTr("Full-drive") }
         ]
     }
 }

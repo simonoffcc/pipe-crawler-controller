@@ -8,9 +8,10 @@ class DriveMode : public QObject {
     Q_OBJECT
 public:
     enum Mode {
-        FRONT_DRIVE = 0,
-        REAR_DRIVE = 1,
-        ALL_WHEEL_DRIVE = 2
+        CUSTOM = 0,          ///< Кастомный пресет (все другие способы привода)
+        FRONT_DRIVE = 1,     ///< Передний привод
+        REAR_DRIVE = 2,      ///< Задний привод
+        ALL_WHEEL_DRIVE = 3  ///< Полный привод
     };
     Q_ENUM(Mode)
 };
