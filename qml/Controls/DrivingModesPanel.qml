@@ -2,6 +2,8 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import WheelController 1.0
+import DriveMode 1.0
+import PairsGroupingMode 1.0
 
 ColumnLayout {
     id: root
@@ -15,7 +17,7 @@ ColumnLayout {
         
         font.pixelSize: 16
         color: "black"
-        text: qsTr("Pair Grouping/Drive modes")
+        text: qsTr("Pair Grouping/Driving modes")
     }
     
     ComboBox {
@@ -29,16 +31,16 @@ ColumnLayout {
         implicitContentWidthPolicy: ComboBox.WidestText
         currentIndex: 1
         displayText: "Grouping: " + currentText
-        textRole: "title"
-        valueRole: "modeId"
+        textRole: "text"
+        valueRole: "value"
         model: [
-            { modeId: 0, title: qsTr("Custom") },
-            { modeId: 1, title: qsTr("Left-Right wheel pairs") },
-            { modeId: 2, title: qsTr("All cross pairs") }
+            { value: PairsGroupingMode.CUSTOM, text: qsTr("Custom") },
+            { value: PairsGroupingMode.LEFT_RIGHT, text: qsTr("Left-Right wheel pairs") },
+            { value: PairsGroupingMode.ALL_PAIRS, text: qsTr("All cross pairs") }
         ]
 
         onActivated: {
-            WheelController.setPairsGroupingMode(modeId)
+            WheelController.setPairsGroupingMode(currentValue)
         }
     }
     
@@ -53,13 +55,17 @@ ColumnLayout {
         implicitContentWidthPolicy: ComboBox.WidestText
         currentIndex: 1
         displayText: "Drive mode: " + currentText
-        textRole: "title"
-        valueRole: "modeId"
+        textRole: "text"
+        valueRole: "value"
         model: [
-            { modeId: 0, title: qsTr("Custom") },
-            { modeId: 1, title: qsTr("Front-drive") },
-            { modeId: 2, title: qsTr("Rear-drive") },
-            { modeId: 3, title: qsTr("Full-drive") }
+            { value: DriveMode.CUSTOM, text: qsTr("Custom") },
+            { value: DriveMode.FRONT_DRIVE, text: qsTr("Front-drive") },
+            { value: DriveMode.REAR_DRIVE, text: qsTr("Rear-drive") },
+            { value: DriveMode.ALL_WHEEL_DRIVE, text: qsTr("Full-drive") }
         ]
+
+        onActivated: {
+            WheelController.setDriveMode(currentValue)
+        }
     }
 }

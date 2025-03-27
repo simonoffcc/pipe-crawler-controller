@@ -2,6 +2,8 @@
 #define PAIRS_GROUPING_MODE_H
 
 #include <QObject>
+#include <QString>
+#include <QMap>
 
 /// \class Класс группировки колесных пар робота для публикации единой целевой скорости
 class PairsGroupingMode : public QObject {
@@ -13,6 +15,24 @@ public:
         ALL_PAIRS = 2     ///< Все пары (6 пар)
     };
     Q_ENUM(Mode)
+
+    static QString toString(Mode mode) {
+        static const QMap<Mode, QString> modeMap = {
+            {Mode::CUSTOM, "Custom"},
+            {Mode::LEFT_RIGHT, "Left-Right wheel pairs"},
+            {Mode::ALL_PAIRS, "All cross pairs"}
+        };
+        return modeMap.value(mode, "Unknown");
+    }
+
+    static Mode fromString(const QString& str) {
+        static const QMap<QString, Mode> reverseMap = {
+            {"Custom", Mode::CUSTOM},
+            {"Left-Right wheel pairs", Mode::LEFT_RIGHT},
+            {"All cross pairs", Mode::ALL_PAIRS}
+        };
+        return reverseMap.value(str, Mode::CUSTOM);
+    }
 };
 
 #endif // PAIRS_GROUPING_MODE_H 

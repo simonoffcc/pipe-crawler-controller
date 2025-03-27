@@ -84,6 +84,3 @@ CMakeLists.txt.user*
 /bin*/
 
 /.vscode/
-
-/pipe-crawler-src-examples-ros/
-/qml-examples-cmakelists/
