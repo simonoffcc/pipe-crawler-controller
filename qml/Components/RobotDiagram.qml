@@ -45,7 +45,7 @@ Item {
     }
 
     WheelPair {
-        id: front_left_wheels_controller
+        id: front_left
 
         isFront: true
         isPublishButtonOnLeftSide: true
@@ -60,7 +60,7 @@ Item {
     }
 
     WheelPair {
-        id: front_up_wheels_controller
+        id: front_up
 
         isFront: true
         isPublishButtonOnLeftSide: false
@@ -74,7 +74,7 @@ Item {
     }
 
     WheelPair {
-        id: front_right_wheels_controller
+        id: front_right
 
         isFront: true
         isPublishButtonOnLeftSide: false
@@ -89,7 +89,7 @@ Item {
     }
 
     WheelPair {
-        id: back_left_wheels_controller
+        id: back_left
 
         isFront: false
         isPublishButtonOnLeftSide: true
@@ -104,7 +104,7 @@ Item {
     }
 
     WheelPair {
-        id: back_up_wheels_controller
+        id: back_up
 
         isFront: false
         isPublishButtonOnLeftSide: true
@@ -118,7 +118,7 @@ Item {
     }
 
     WheelPair {
-        id: back_right_wheels_controller
+        id: back_right
 
         isFront: false
         isPublishButtonOnLeftSide: false

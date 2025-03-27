@@ -61,24 +61,6 @@ public:
         return reverseMap.value(str, Name::UNKNOWN);
     }
 
-    static const QVector<QString>& getAllNames() {
-        static const QVector<QString> names = {
-            toString(Name::FRONT_LEFT_OUTER),
-            toString(Name::FRONT_LEFT_INNER),
-            toString(Name::FRONT_UP_OUTER),
-            toString(Name::FRONT_UP_INNER),
-            toString(Name::FRONT_RIGHT_OUTER),
-            toString(Name::FRONT_RIGHT_INNER),
-            toString(Name::BACK_LEFT_OUTER),
-            toString(Name::BACK_LEFT_INNER),
-            toString(Name::BACK_UP_OUTER),
-            toString(Name::BACK_UP_INNER),
-            toString(Name::BACK_RIGHT_OUTER),
-            toString(Name::BACK_RIGHT_INNER)
-        };
-        return names;
-    }
-
     Q_ENUM(Name)
 };
 

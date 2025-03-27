@@ -25,8 +25,13 @@ int main(int argc, char *argv[])
     
     // Создаем контроллер и регистрируем его в QML
     auto wheel_controller = new WheelController(node);
-    // qmlRegisterUncreatableType<WheelController>("WheelController", 1, 0, "WheelController");
-    // engine.rootContext()->setContextProperty("wheelController", wheel_controller);
+    engine.rootContext()->setContextProperty("wheelController", wheel_controller);
+    
+    qmlRegisterType<PairsGroupingMode>("PairsGroupingMode", 1, 0, "PairsGroupingMode");
+    qmlRegisterType<DriveMode>("DriveMode", 1, 0, "DriveMode");
+    qmlRegisterType<JointNames>("JointNames", 1, 0, "JointNames");
+    qmlRegisterType<ControllerNames>("ControllerNames", 1, 0, "ControllerNames");
+    qmlRegisterType<WheelController>("WheelController", 1, 0, "WheelController");
     
     // Установка обработчика сигнала для SIGINT
     std::signal(SIGINT, [](int /*unused*/) {

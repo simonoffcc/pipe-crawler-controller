@@ -2,8 +2,8 @@
 #define CONTROLLER_NAMES_H
 
 #include <QObject>
+#include <QSet>
 #include <string>
-#include <vector>
 
 class ControllerNames : public QObject {
     Q_OBJECT
@@ -29,17 +29,6 @@ public:
         }
     }
 
-    static const std::vector<std::string>& getAllNames() {
-        static const std::vector<std::string> names = {
-            toString(Name::FRONT_LEFT),
-            toString(Name::FRONT_UP),
-            toString(Name::FRONT_RIGHT),
-            toString(Name::BACK_LEFT),
-            toString(Name::BACK_UP),
-            toString(Name::BACK_RIGHT)
-        };
-        return names;
-    }
     Q_ENUM(Name)
 };
 
