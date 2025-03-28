@@ -41,9 +41,6 @@ public:
     QSet<ControllerNames::Name> activeControllers() const;
     DriveMode::Mode currentDriveMode() const { return current_drive_mode_; }
     PairsGroupingMode::Mode currentPairsGroupingMode() const { return current_pairs_grouping_mode_; }
-    
-    void setDriveMode(DriveMode::Mode mode);
-    void setPairsGroupingMode(PairsGroupingMode::Mode mode);
 
     //******************************************************************************//
 
@@ -53,10 +50,13 @@ public:
     
     //******************************************************************************//
 
+    Q_INVOKABLE void setDriveMode(DriveMode::Mode mode);
+    Q_INVOKABLE void setPairsGroupingMode(PairsGroupingMode::Mode mode);
+
 // public slots:
-    
+
 signals:
-    // Note: сигналы нужно emit'ить, чтобы QML подтягивал изменение свойства в GUI
+    // Note: сигналы нужно emit'ить в методах, чтобы QML подтягивал изменение свойства в GUI
     void activeControllersChanged();
     void driveModeChanged();
     void pairsGroupingModeChanged();

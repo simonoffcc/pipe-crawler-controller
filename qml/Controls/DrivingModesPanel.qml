@@ -1,9 +1,10 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-import WheelController 1.0
-import DriveMode 1.0
-import PairsGroupingMode 1.0
+
+import WheelController
+import PairsGroupingMode
+import DriveMode
 
 ColumnLayout {
     id: root
