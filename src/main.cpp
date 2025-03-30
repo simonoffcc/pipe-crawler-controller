@@ -4,6 +4,7 @@
 
 #include "wheel_controller.h"
 
+
 class Guard {
     public:
         explicit Guard(std::function<void()> fn) : fn_(std::move(fn)) {}
@@ -15,23 +16,21 @@ class Guard {
 
 int main(int argc, char *argv[]) 
 {
+    rclcpp::init(argc, argv);
+    auto node = std::make_shared<rclcpp::Node>("pipe_crawler_controller");
+    
+    QScopedPointer<WheelController> wheel_controller(new WheelController(node));
+    
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
     // engine.addImportPath("qrc:/");
     // engine.addImportPath(":/qml");
     
-    rclcpp::init(argc, argv);
-    auto node = std::make_shared<rclcpp::Node>("pipe_crawler_controller");
-    
-    // Создаем экземпляр контроллера и регистрируем его в контексте QML
-    auto wheel_controller = new WheelController(node);
-    engine.rootContext()->setContextProperty("WheelController", wheel_controller);
-    
     qmlRegisterType<PairsGroupingMode>("PairsGroupingMode", 1, 0, "PairsGroupingMode");
     qmlRegisterType<DriveMode>("DriveMode", 1, 0, "DriveMode");
     qmlRegisterType<JointNames>("JointNames", 1, 0, "JointNames");
     qmlRegisterType<ControllerNames>("ControllerNames", 1, 0, "ControllerNames");
-    qmlRegisterUncreatableType<WheelController>("WheelController", 1, 0, "WheelController", "WheelController is an uncreatable type");
+    qmlRegisterSingletonInstance<WheelController>("WheelController", 1, 0, "WheelController", wheel_controller.get());
     
     // Установка обработчика сигнала для SIGINT
     std::signal(SIGINT, [](int /*unused*/) {

@@ -1,11 +1,5 @@
 #include "wheel_controller.h"
 
-#include "enums/pairs_grouping_mode.h"
-#include "enums/drive_mode.h"
-#include "enums/joint_names.h"
-#include "enums/controller_names.h"
-
-
 WheelController::WheelController(std::shared_ptr<rclcpp::Node> node, QObject* parent)
     : QObject(parent)
     , node_(node)

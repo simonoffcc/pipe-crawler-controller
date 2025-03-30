@@ -84,5 +84,3 @@ CMakeLists.txt.user*
 /bin*/
 
 /.vscode/
-
-/rtc-examples-legacy/

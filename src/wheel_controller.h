@@ -53,7 +53,7 @@ public:
     Q_INVOKABLE void setDriveMode(DriveMode::Mode mode);
     Q_INVOKABLE void setPairsGroupingMode(PairsGroupingMode::Mode mode);
 
-// public slots:
+public slots:
 
 signals:
     // Note: сигналы нужно emit'ить в методах, чтобы QML подтягивал изменение свойства в GUI
