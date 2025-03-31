@@ -76,11 +76,6 @@ Rectangle {
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
             }
-
-            onClicked: {
-                console.log("Pairs grouping mode set to:", WheelController.currentPairsGroupingMode())
-                console.log("Drive mode set to:", WheelController.currentDriveMode())
-            }
         }
     }
 }

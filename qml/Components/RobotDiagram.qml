@@ -1,6 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 
+import ControllerNames
+
 Item {
     id: root
 
@@ -47,6 +49,7 @@ Item {
     WheelPair {
         id: front_left
 
+        name: ControllerNames.Name.FrontLeft
         isFront: true
         isPublishButtonOnLeftSide: true
         jointControlWidth: 100
@@ -62,6 +65,7 @@ Item {
     WheelPair {
         id: front_up
 
+        name: ControllerNames.Name.FrontUp
         isFront: true
         isPublishButtonOnLeftSide: false
         jointControlWidth: 100
@@ -76,6 +80,7 @@ Item {
     WheelPair {
         id: front_right
 
+        name: ControllerNames.Name.FrontRight
         isFront: true
         isPublishButtonOnLeftSide: false
         jointControlWidth: 100
@@ -91,6 +96,7 @@ Item {
     WheelPair {
         id: back_left
 
+        name: ControllerNames.Name.BackLeft
         isFront: false
         isPublishButtonOnLeftSide: true
         jointControlWidth: 100
@@ -106,6 +112,7 @@ Item {
     WheelPair {
         id: back_up
 
+        name: ControllerNames.Name.BackUp
         isFront: false
         isPublishButtonOnLeftSide: true
         jointControlWidth: 100
@@ -120,6 +127,7 @@ Item {
     WheelPair {
         id: back_right
 
+        name: ControllerNames.Name.BackRight
         isFront: false
         isPublishButtonOnLeftSide: false
         jointControlWidth: 100

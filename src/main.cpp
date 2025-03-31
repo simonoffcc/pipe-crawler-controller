@@ -1,9 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include <QQmlContext>
 
 #include "wheel_controller.h"
-
 
 class Guard {
     public:
@@ -26,12 +24,12 @@ int main(int argc, char *argv[])
     // engine.addImportPath("qrc:/");
     // engine.addImportPath(":/qml");
     
-    qmlRegisterType<PairsGroupingMode>("PairsGroupingMode", 1, 0, "PairsGroupingMode");
-    qmlRegisterType<DriveMode>("DriveMode", 1, 0, "DriveMode");
-    qmlRegisterType<JointNames>("JointNames", 1, 0, "JointNames");
-    qmlRegisterType<ControllerNames>("ControllerNames", 1, 0, "ControllerNames");
+    qmlRegisterUncreatableType<PairsGroupingMode>("PairsGroupingMode", 1, 0, "PairsGroupingMode", "Enum only");
+    qmlRegisterUncreatableType<DriveMode>("DriveMode", 1, 0, "DriveMode", "Enum only");
+    qmlRegisterUncreatableType<JointNames>("JointNames", 1, 0, "JointNames", "Enum only");
+    qmlRegisterUncreatableType<ControllerNames>("ControllerNames", 1, 0, "ControllerNames", "Enum only");
     qmlRegisterSingletonInstance<WheelController>("WheelController", 1, 0, "WheelController", wheel_controller.get());
-    
+
     // Установка обработчика сигнала для SIGINT
     std::signal(SIGINT, [](int /*unused*/) {
         RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Завершение работы пультового ПО: сигнал SIGINT");

@@ -25,50 +25,50 @@ void WheelController::updateActiveControllers()
 {
     active_controllers_.clear();
 
-    if (current_pairs_grouping_mode_ == PairsGroupingMode::Mode::ALL_PAIRS) {
+    if (current_pairs_grouping_mode_ == PairsGroupingMode::Mode::AllPairs) {
         switch (current_drive_mode_) {
-            case DriveMode::Mode::ALL_WHEEL_DRIVE:
-                active_controllers_.insert(ControllerNames::Name::FRONT_LEFT);
-                active_controllers_.insert(ControllerNames::Name::FRONT_UP);
-                active_controllers_.insert(ControllerNames::Name::FRONT_RIGHT);
-                active_controllers_.insert(ControllerNames::Name::BACK_LEFT);
-                active_controllers_.insert(ControllerNames::Name::BACK_UP);
-                active_controllers_.insert(ControllerNames::Name::BACK_RIGHT);
+            case DriveMode::Mode::AllWheelDrive:
+                active_controllers_.push_back(ControllerNames::Name::FrontLeft);
+                active_controllers_.push_back(ControllerNames::Name::FrontUp);
+                active_controllers_.push_back(ControllerNames::Name::FrontRight);
+                active_controllers_.push_back(ControllerNames::Name::BackLeft);
+                active_controllers_.push_back(ControllerNames::Name::BackUp);
+                active_controllers_.push_back(ControllerNames::Name::BackRight);
                 break;
 
-            case DriveMode::Mode::FRONT_DRIVE:
-                active_controllers_.insert(ControllerNames::Name::FRONT_LEFT);
-                active_controllers_.insert(ControllerNames::Name::FRONT_UP);
-                active_controllers_.insert(ControllerNames::Name::FRONT_RIGHT);
+            case DriveMode::Mode::FrontDrive:
+                active_controllers_.push_back(ControllerNames::Name::FrontLeft);
+                active_controllers_.push_back(ControllerNames::Name::FrontUp);
+                active_controllers_.push_back(ControllerNames::Name::FrontRight);
                 break;
 
-            case DriveMode::Mode::REAR_DRIVE:
-                active_controllers_.insert(ControllerNames::Name::BACK_LEFT);
-                active_controllers_.insert(ControllerNames::Name::BACK_UP);
-                active_controllers_.insert(ControllerNames::Name::BACK_RIGHT);
+            case DriveMode::Mode::RearDrive:
+                active_controllers_.push_back(ControllerNames::Name::BackLeft);
+                active_controllers_.push_back(ControllerNames::Name::BackUp);
+                active_controllers_.push_back(ControllerNames::Name::BackRight);
                 break;
 
             default:
                 break;
         }
     }
-    else if (current_pairs_grouping_mode_ == PairsGroupingMode::Mode::LEFT_RIGHT) {
+    else if (current_pairs_grouping_mode_ == PairsGroupingMode::Mode::LeftRight) {
         switch (current_drive_mode_) {
-            case DriveMode::Mode::ALL_WHEEL_DRIVE:
-                active_controllers_.insert(ControllerNames::Name::FRONT_LEFT);
-                active_controllers_.insert(ControllerNames::Name::FRONT_RIGHT);
-                active_controllers_.insert(ControllerNames::Name::BACK_LEFT);
-                active_controllers_.insert(ControllerNames::Name::BACK_RIGHT);
+            case DriveMode::Mode::AllWheelDrive:
+                active_controllers_.push_back(ControllerNames::Name::FrontLeft);
+                active_controllers_.push_back(ControllerNames::Name::FrontRight);
+                active_controllers_.push_back(ControllerNames::Name::BackLeft);
+                active_controllers_.push_back(ControllerNames::Name::BackRight);
                 break;
 
-            case DriveMode::Mode::FRONT_DRIVE:
-                active_controllers_.insert(ControllerNames::Name::FRONT_LEFT);
-                active_controllers_.insert(ControllerNames::Name::FRONT_RIGHT);
+            case DriveMode::Mode::FrontDrive:
+                active_controllers_.push_back(ControllerNames::Name::FrontLeft);
+                active_controllers_.push_back(ControllerNames::Name::FrontRight);
                 break;
 
-            case DriveMode::Mode::REAR_DRIVE:
-                active_controllers_.insert(ControllerNames::Name::BACK_LEFT);
-                active_controllers_.insert(ControllerNames::Name::BACK_RIGHT);
+            case DriveMode::Mode::RearDrive:
+                active_controllers_.push_back(ControllerNames::Name::BackLeft);
+                active_controllers_.push_back(ControllerNames::Name::BackRight);
                 break;
 
             default:
@@ -77,10 +77,6 @@ void WheelController::updateActiveControllers()
     }
 
     emit activeControllersChanged();
-}
-
-QSet<ControllerNames::Name> WheelController::activeControllers() const {
-    return active_controllers_;
 }
 
 // void publishLocalSpeed(double speed, const ControllerNames::Name& controller_name) 

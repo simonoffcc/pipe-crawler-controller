@@ -35,9 +35,9 @@ ColumnLayout {
         textRole: "text"
         valueRole: "value"
         model: [
-            { value: PairsGroupingMode.CUSTOM, text: qsTr("Custom") },
-            { value: PairsGroupingMode.LEFT_RIGHT, text: qsTr("Left-Right wheel pairs") },
-            { value: PairsGroupingMode.ALL_PAIRS, text: qsTr("All cross pairs") }
+            { value: PairsGroupingMode.Mode.Custom, text: qsTr("Custom") },
+            { value: PairsGroupingMode.Mode.LeftRight, text: qsTr("Left-Right wheel pairs") },
+            { value: PairsGroupingMode.Mode.AllPairs, text: qsTr("All cross pairs") }
         ]
 
         onActivated: {
@@ -59,10 +59,10 @@ ColumnLayout {
         textRole: "text"
         valueRole: "value"
         model: [
-            { value: DriveMode.CUSTOM, text: qsTr("Custom") },
-            { value: DriveMode.FRONT_DRIVE, text: qsTr("Front-drive") },
-            { value: DriveMode.REAR_DRIVE, text: qsTr("Rear-drive") },
-            { value: DriveMode.ALL_WHEEL_DRIVE, text: qsTr("Full-drive") }
+            { value: DriveMode.Mode.Custom, text: qsTr("Custom") },
+            { value: DriveMode.Mode.FrontDrive, text: qsTr("Front-drive") },
+            { value: DriveMode.Mode.RearDrive, text: qsTr("Rear-drive") },
+            { value: DriveMode.Mode.AllWheelDrive, text: qsTr("Full-drive") }
         ]
 
         onActivated: {

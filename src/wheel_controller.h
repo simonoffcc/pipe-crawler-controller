@@ -2,7 +2,8 @@
 #define WHEEL_CONTROLLER_H
 
 #include <QObject>
-#include <QSet>
+
+#include <vector>
 
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/joint_state.hpp>
@@ -25,7 +26,8 @@ class WheelController : public QObject
     // Режим группировки пар, который необходим для отображения в комбо-боксах в GUI
     Q_PROPERTY(PairsGroupingMode::Mode currentPairsGroupingMode READ currentPairsGroupingMode WRITE setPairsGroupingMode NOTIFY pairsGroupingModeChanged)
     
-    Q_PROPERTY(QSet<ControllerNames::Name> activeControllers READ activeControllers NOTIFY activeControllersChanged)
+    //
+    Q_PROPERTY(std::vector<ControllerNames::Name> activeControllers READ activeControllers NOTIFY activeControllersChanged)
 
 public:
     WheelController(const WheelController &) = delete;
@@ -38,7 +40,7 @@ public:
 
     //******************************************************************************//
     
-    QSet<ControllerNames::Name> activeControllers() const;
+    const std::vector<ControllerNames::Name>& activeControllers() const { return active_controllers_; }
     DriveMode::Mode currentDriveMode() const { return current_drive_mode_; }
     PairsGroupingMode::Mode currentPairsGroupingMode() const { return current_pairs_grouping_mode_; }
 
@@ -56,7 +58,6 @@ public:
 public slots:
 
 signals:
-    // Note: сигналы нужно emit'ить в методах, чтобы QML подтягивал изменение свойства в GUI
     void activeControllersChanged();
     void driveModeChanged();
     void pairsGroupingModeChanged();
@@ -64,9 +65,9 @@ signals:
 private:
     std::shared_ptr<rclcpp::Node> node_;
 
-    QSet<ControllerNames::Name> active_controllers_;   ///< Множество контроллеров, получающих единую целевую скорость
-    DriveMode::Mode current_drive_mode_{DriveMode::Mode::ALL_WHEEL_DRIVE};
-    PairsGroupingMode::Mode current_pairs_grouping_mode_{PairsGroupingMode::Mode::ALL_PAIRS};
+    std::vector<ControllerNames::Name> active_controllers_;   ///< Множество контроллеров, получающих единую целевую скорость
+    DriveMode::Mode current_drive_mode_{DriveMode::Mode::AllWheelDrive};
+    PairsGroupingMode::Mode current_pairs_grouping_mode_{PairsGroupingMode::Mode::AllPairs};
 
     void updateActiveControllers();
 };

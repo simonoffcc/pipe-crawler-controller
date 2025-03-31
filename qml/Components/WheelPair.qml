@@ -2,9 +2,29 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Basic
 
+import WheelController
+import ControllerNames
+
 Item {
     id: root
 
+    Connections {
+        target: WheelController
+        function onActiveControllersChanged() {
+            var controllers = WheelController.activeControllers
+            console.log("Active controllers list: ", controllers)
+            var found = false
+            for (var i = 0; i < controllers.length; i++) {
+                if (controllers[i] === root.name) {
+                    found = true
+                    break
+                }
+            }
+            root.state = found ? "globalSpeedControl" : "localSpeedControl"
+        }
+    }
+    
+    property ControllerNames.Name name
     property bool isFront: true
     property bool isPublishButtonOnLeftSide: false
     property int jointControlWidth: 100
@@ -17,10 +37,11 @@ Item {
 
     MouseArea {
         id: clickArea
+        enabled: false
 
         anchors.fill: parent
 
-        cursorShape: Qt.PointingHandCursor
+        // cursorShape: Qt.PointingHandCursor
 
         onClicked: {
             if (root.state === "globalSpeedControl") { root.state = "localSpeedControl" } 
