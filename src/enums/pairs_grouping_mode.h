@@ -4,8 +4,8 @@
 #include <QObject>
 
 /// \class Класс группировки колесных пар робота для публикации единой целевой скорости
-class PairsGroupingMode : public QObject {
-    Q_OBJECT
+class PairsGroupingMode {
+    Q_GADGET
 public:
     enum Mode {
         Custom,       ///< Кастомный пресет (все другие способы группировки колёсных пар) 

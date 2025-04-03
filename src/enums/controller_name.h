@@ -1,10 +1,10 @@
-#ifndef CONTROLLER_NAMES_H
-#define CONTROLLER_NAMES_H
+#ifndef CONTROLLER_NAME_H
+#define CONTROLLER_NAME_H
 
 #include <QObject>
 
-class ControllerNames : public QObject {
-    Q_OBJECT // Q_GADDGET
+class ControllerName {
+    Q_GADGET
 public:
     enum Name {
         FrontLeft,
@@ -17,4 +17,4 @@ public:
     Q_ENUM(Name)
 };
 
-#endif // CONTROLLER_NAMES_H 
+#endif // CONTROLLER_NAME_H

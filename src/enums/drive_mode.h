@@ -4,8 +4,8 @@
 #include <QObject>
 
 /// \class Класс для простого доступа к режимам привода робота
-class DriveMode : public QObject {
-    Q_OBJECT
+class DriveMode {
+    Q_GADGET
 public:
     enum Mode {
         Custom,          ///< Кастомный пресет (все другие способы привода)

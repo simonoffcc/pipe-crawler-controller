@@ -3,28 +3,12 @@ import QtQuick.Controls
 import QtQuick.Controls.Basic
 
 import WheelController
-import ControllerNames
+import controllerName
 
 Item {
     id: root
 
-    Connections {
-        target: WheelController
-        function onActiveControllersChanged() {
-            var controllers = WheelController.activeControllers
-            console.log("Active controllers list: ", controllers)
-            var found = false
-            for (var i = 0; i < controllers.length; i++) {
-                if (controllers[i] === root.name) {
-                    found = true
-                    break
-                }
-            }
-            root.state = found ? "globalSpeedControl" : "localSpeedControl"
-        }
-    }
-    
-    property ControllerNames.Name name
+    property int controllerName
     property bool isFront: true
     property bool isPublishButtonOnLeftSide: false
     property int jointControlWidth: 100
@@ -35,17 +19,30 @@ Item {
     width: jointControlWidth
     height: jointControlWidth * 2.5
 
+    Connections {
+        target: WheelController
+        function onActiveControllersChanged() {
+            root.state = "localSpeedControl"
+            var controllers = WheelController.activeControllers
+            for (var i = 0; i < controllers.length; i++) {
+                if (controllers[i] === root.controllerName) {
+                    root.state = "globalSpeedControl"
+                }
+            }
+        }
+    }
+
     MouseArea {
         id: clickArea
         enabled: false
 
         anchors.fill: parent
 
-        // cursorShape: Qt.PointingHandCursor
+        cursorShape: Qt.PointingHandCursor
 
         onClicked: {
-            if (root.state === "globalSpeedControl") { root.state = "localSpeedControl" } 
-            else if (root.state === "localSpeedControl") { root.state = "independentSpeedControl" } 
+            if (root.state === "globalSpeedControl") { root.state = "localSpeedControl" }
+            else if (root.state === "localSpeedControl") { root.state = "independentSpeedControl" }
             else { root.state = "globalSpeedControl" }
         }
     }

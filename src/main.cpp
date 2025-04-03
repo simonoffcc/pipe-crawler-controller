@@ -13,22 +13,13 @@ class Guard {
 };
 
 int main(int argc, char *argv[]) 
-{
-    rclcpp::init(argc, argv);
-    auto node = std::make_shared<rclcpp::Node>("pipe_crawler_controller");
-    
-    QScopedPointer<WheelController> wheel_controller(new WheelController(node));
-    
+{       
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
-    // engine.addImportPath("qrc:/");
-    // engine.addImportPath(":/qml");
-    
-    qmlRegisterUncreatableType<PairsGroupingMode>("PairsGroupingMode", 1, 0, "PairsGroupingMode", "Enum only");
-    qmlRegisterUncreatableType<DriveMode>("DriveMode", 1, 0, "DriveMode", "Enum only");
-    qmlRegisterUncreatableType<JointNames>("JointNames", 1, 0, "JointNames", "Enum only");
-    qmlRegisterUncreatableType<ControllerNames>("ControllerNames", 1, 0, "ControllerNames", "Enum only");
-    qmlRegisterSingletonInstance<WheelController>("WheelController", 1, 0, "WheelController", wheel_controller.get());
+
+    rclcpp::init(argc, argv);
+    auto pipe_crawler = std::make_shared<rclcpp::Node>("pipe_crawler_controller");
+    WheelController::instance(pipe_crawler);
 
     // Установка обработчика сигнала для SIGINT
     std::signal(SIGINT, [](int /*unused*/) {
@@ -46,7 +37,7 @@ int main(int argc, char *argv[])
     engine.loadFromModule("MainModule", "Main");
 
     rclcpp::executors::SingleThreadedExecutor executor;
-    executor.add_node(node);
+    executor.add_node(pipe_crawler);
     auto spin_executor = [&executor]() { executor.spin(); };
     std::thread execution_thread(spin_executor);
 

@@ -3,8 +3,8 @@ import QtQuick.Layouts
 import QtQuick.Controls
 
 import WheelController
-import PairsGroupingMode
-import DriveMode
+import pairsGroupingMode
+import driveMode
 
 ColumnLayout {
     id: root
@@ -35,9 +35,9 @@ ColumnLayout {
         textRole: "text"
         valueRole: "value"
         model: [
-            { value: PairsGroupingMode.Mode.Custom, text: qsTr("Custom") },
-            { value: PairsGroupingMode.Mode.LeftRight, text: qsTr("Left-Right wheel pairs") },
-            { value: PairsGroupingMode.Mode.AllPairs, text: qsTr("All cross pairs") }
+            { value: PairsGroupingMode.Custom, text: qsTr("Custom") },
+            { value: PairsGroupingMode.AllPairs, text: qsTr("All cross pairs") },
+            { value: PairsGroupingMode.LeftRight, text: qsTr("Left-Right wheel pairs") }
         ]
 
         onActivated: {
@@ -59,10 +59,10 @@ ColumnLayout {
         textRole: "text"
         valueRole: "value"
         model: [
-            { value: DriveMode.Mode.Custom, text: qsTr("Custom") },
-            { value: DriveMode.Mode.FrontDrive, text: qsTr("Front-drive") },
-            { value: DriveMode.Mode.RearDrive, text: qsTr("Rear-drive") },
-            { value: DriveMode.Mode.AllWheelDrive, text: qsTr("Full-drive") }
+            { value: DriveMode.Custom, text: qsTr("Custom") },
+            { value: DriveMode.FrontDrive, text: qsTr("Front-drive") },
+            { value: DriveMode.RearDrive, text: qsTr("Rear-drive") },
+            { value: DriveMode.AllWheelDrive, text: qsTr("Full-drive") }
         ]
 
         onActivated: {

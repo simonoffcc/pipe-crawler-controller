@@ -1,10 +1,10 @@
-#ifndef JOINT_NAMES_H
-#define JOINT_NAMES_H
+#ifndef JOINT_NAME_H
+#define JOINT_NAME_H
 
 #include <QObject>
 
-class JointNames : public QObject {
-    Q_OBJECT
+class JointName {
+    Q_GADGET
 public:
     enum Name {
         FrontLeftOuter,
@@ -24,4 +24,4 @@ public:
     Q_ENUM(Name)
 };
 
-#endif // JOINT_NAMES_H
+#endif // JOINT_NAME_H
