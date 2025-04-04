@@ -1,10 +1,5 @@
 #include "wheel_controller.h"
 
-#include "enums/drive_mode.h"
-#include "enums/pairs_grouping_mode.h"
-#include "enums/joint_name.h"
-#include "enums/controller_name.h"
-
 WheelController::WheelController(std::shared_ptr<rclcpp::Node> node, QObject* parent)
     : QObject(parent)
     , node_(node)
@@ -13,7 +8,7 @@ WheelController::WheelController(std::shared_ptr<rclcpp::Node> node, QObject* pa
 {
     qmlRegisterUncreatableType<PairsGroupingMode>("pairsGroupingMode", 1, 0, "PairsGroupingMode", "Not creatable as it is an enum type.");
     qmlRegisterUncreatableType<DriveMode>("driveMode", 1, 0, "DriveMode", "Not creatable as it is an enum type.");
-    qmlRegisterUncreatableType<JointName>("JointName", 1, 0, "JointName", "Not creatable as it is an enum type.");
+    qmlRegisterUncreatableType<JointName>("jointName", 1, 0, "JointName", "Not creatable as it is an enum type.");
     qmlRegisterUncreatableType<ControllerName>("controllerName", 1, 0, "ControllerName", "Not creatable as it is an enum type.");
     qmlRegisterSingletonInstance<WheelController>("WheelController", 1, 0, "WheelController", this);
 }
@@ -90,6 +85,11 @@ void WheelController::updateActiveControllers()
 
     emit activeControllersChanged();
 }
+
+// void WheelController::createROSInterfaces() {
+//     joint_velocity_publisher_ = client_ros_node_->create_publisher<std_msgs::msg::Float64MultiArray>(
+//         "/forward_velocity_controller/commands", 100);
+// }
 
 // void publishGlobalSpeed(double speed)
 // {
