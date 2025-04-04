@@ -11,6 +11,8 @@ WheelController::WheelController(std::shared_ptr<rclcpp::Node> node, QObject* pa
     qmlRegisterUncreatableType<JointName>("jointName", 1, 0, "JointName", "Not creatable as it is an enum type.");
     qmlRegisterUncreatableType<ControllerName>("controllerName", 1, 0, "ControllerName", "Not creatable as it is an enum type.");
     qmlRegisterSingletonInstance<WheelController>("WheelController", 1, 0, "WheelController", this);
+
+    createROSInterfaces();
 }
 
 void WheelController::setDriveMode(int mode) {
@@ -86,10 +88,39 @@ void WheelController::updateActiveControllers()
     emit activeControllersChanged();
 }
 
-// void WheelController::createROSInterfaces() {
-//     joint_velocity_publisher_ = client_ros_node_->create_publisher<std_msgs::msg::Float64MultiArray>(
-//         "/forward_velocity_controller/commands", 100);
-// }
+void WheelController::createROSInterfaces() {
+    /*
+    // Создаем издателей для каждого контроллера
+    for (auto it = wheelPairs.begin(); it != wheelPairs.end(); ++it) {
+        const auto &pair = it.value();
+        auto publisher = rosNode->create_publisher<std_msgs::msg::Float64MultiArray>(
+            "/" + pair.controllerName + "/commands", 10);
+        controllers[it.key()] = publisher;
+    }
+
+    // Подписываемся на топик состояния шарниров
+    jointStatesSub = rosNode->create_subscription<sensor_msgs::msg::JointState>(
+        "/joint_states", 10,
+        std::bind(&VelocityController::jointStatesCallback, this, std::placeholders::_1));
+    */
+
+    // Publishers
+    pair_velocity_publisher_ = node_->create_publisher<std_msgs::msg::Float64MultiArray>(
+        "/forward_velocity_controller/commands", 10);
+
+    // Subscribers
+    joint_state_subscriber_ = node_->create_subscription<sensor_msgs::msg::JointState>(
+        "/joint_states", 100, std::bind(&WheelController::jointStateCallback, this, std::placeholders::_1));
+}
+
+void WheelController::jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg) {
+    current_joint_states_.at(0) = msg->velocity.at(static_cast<int>(JointPositionsInSequence::SHOULDER_PAN));
+    current_joint_states_.at(1) = msg->velocity.at(static_cast<int>(JointPositionsInSequence::SHOULDER_LIFT));
+    current_joint_states_.at(2) = msg->velocity.at(static_cast<int>(JointPositionsInSequence::ELBOW));
+    current_joint_states_.at(3) = msg->velocity.at(static_cast<int>(JointPositionsInSequence::WRIST_1));
+    current_joint_states_.at(4) = msg->velocity.at(static_cast<int>(JointPositionsInSequence::WRIST_2));
+    current_joint_states_.at(5) = msg->velocity.at(static_cast<int>(JointPositionsInSequence::WRIST_3));
+}
 
 // void publishGlobalSpeed(double speed)
 // {
