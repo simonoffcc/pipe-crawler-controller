@@ -73,23 +73,25 @@ private:
     explicit WheelController(std::shared_ptr<rclcpp::Node> parent_node, QObject* parent = nullptr);
     std::shared_ptr<rclcpp::Node> node_;
 
-    void createROSInterfaces();
+    rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr pair_velocity_publisher_;
+    rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr joint_state_subscriber_;
 
-    //******************************************************************************//
-    struct JointData {  // нужен, чтобы хранить скорость отдельного шарнира, чтобы задавать скорость только на него, а не на всю пару
+    void createROSInterfaces();
+    void jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg);
+
+    struct JointData {
         const JointName name;
         double velocity;
     };
-    std::vector<JointData> joints_data_;
-    //******************************************************************************//
+    std::vector<JointData> current_joint_states_;
 
-    int current_pairs_grouping_mode_;
+    int current_pairs_grouping_mode_;               ///< Текущий режим
     int current_drive_mode_;
     std::vector<int> active_controllers_;           ///< Множество контроллеров, получающих единую целевую скорость
     // std::vector<int> local_controllers_;         ///< Множество контроллеров, управляемых локально ?
     // std::vector<int> indepedent_controllers_;    ///< Множество контроллеров, шарниры которых управляются раздельно ?
 
-
+    double precision = 1;  ///< точность сравнения скорости шарниров в радианах
 
     void updateActiveControllers();
 };
