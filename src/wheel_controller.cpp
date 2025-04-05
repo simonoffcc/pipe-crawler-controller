@@ -13,6 +13,21 @@ WheelController::WheelController(std::shared_ptr<rclcpp::Node> node, QObject* pa
     qmlRegisterSingletonInstance<WheelController>("WheelController", 1, 0, "WheelController", this);
 
     createROSInterfaces();
+    
+    current_joint_states_ = {
+        JointData(JointName::FrontLeftOuter, 0.0),
+        JointData(JointName::FrontLeftInner, 0.0),
+        JointData(JointName::FrontUpOuter, 0.0),
+        JointData(JointName::FrontUpInner, 0.0),
+        JointData(JointName::FrontRightOuter, 0.0),
+        JointData(JointName::FrontRightInner, 0.0),
+        JointData(JointName::BackLeftOuter, 0.0),
+        JointData(JointName::BackLeftInner, 0.0),
+        JointData(JointName::BackUpOuter, 0.0),
+        JointData(JointName::BackUpInner, 0.0),
+        JointData(JointName::BackRightOuter, 0.0),
+        JointData(JointName::BackRightInner, 0.0)
+    };
 }
 
 void WheelController::setDriveMode(int mode) {
@@ -89,37 +104,40 @@ void WheelController::updateActiveControllers()
 }
 
 void WheelController::createROSInterfaces() {
-    /*
-    // Создаем издателей для каждого контроллера
-    for (auto it = wheelPairs.begin(); it != wheelPairs.end(); ++it) {
-        const auto &pair = it.value();
-        auto publisher = rosNode->create_publisher<std_msgs::msg::Float64MultiArray>(
-            "/" + pair.controllerName + "/commands", 10);
-        controllers[it.key()] = publisher;
+    // Создаем издателей для каждого контроллера колёсной пары
+    pair_velocity_publishers_.clear();
+    
+    // Создаем издателей для всех возможных контроллеров
+    for (int i = 0; i < 6; ++i) {  // 6 пар колес
+        auto controller_enum = static_cast<ControllerName::Name>(i);
+        std::string controller_name = ControllerName::toString(controller_enum);
+        
+        // Создаем издателя для текущего контроллера
+        auto publisher = node_->create_publisher<std_msgs::msg::Float64MultiArray>(
+            "/" + controller_name + "/commands",
+            100
+        );
+        pair_velocity_publishers_[controller_enum] = publisher;
     }
 
     // Подписываемся на топик состояния шарниров
-    jointStatesSub = rosNode->create_subscription<sensor_msgs::msg::JointState>(
-        "/joint_states", 10,
-        std::bind(&VelocityController::jointStatesCallback, this, std::placeholders::_1));
-    */
-
-    // Publishers
-    pair_velocity_publisher_ = node_->create_publisher<std_msgs::msg::Float64MultiArray>(
-        "/forward_velocity_controller/commands", 10);
-
-    // Subscribers
     joint_state_subscriber_ = node_->create_subscription<sensor_msgs::msg::JointState>(
-        "/joint_states", 100, std::bind(&WheelController::jointStateCallback, this, std::placeholders::_1));
+        "/joint_states", 
+        100, 
+        std::bind(&WheelController::jointStateCallback, this, std::placeholders::_1)
+    );
 }
 
 void WheelController::jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg) {
-    current_joint_states_.at(0) = msg->velocity.at(static_cast<int>(JointPositionsInSequence::SHOULDER_PAN));
-    current_joint_states_.at(1) = msg->velocity.at(static_cast<int>(JointPositionsInSequence::SHOULDER_LIFT));
-    current_joint_states_.at(2) = msg->velocity.at(static_cast<int>(JointPositionsInSequence::ELBOW));
-    current_joint_states_.at(3) = msg->velocity.at(static_cast<int>(JointPositionsInSequence::WRIST_1));
-    current_joint_states_.at(4) = msg->velocity.at(static_cast<int>(JointPositionsInSequence::WRIST_2));
-    current_joint_states_.at(5) = msg->velocity.at(static_cast<int>(JointPositionsInSequence::WRIST_3));
+    for (size_t i = 0; i < msg->name.size(); i++) {
+        const std::string& joint_name = msg->name[i];
+        const double velocity = msg->velocity[i];
+
+        auto joint_enum = JointName::fromString(joint_name);
+        if (joint_enum != JointName::Unknown) {
+            current_joint_states_[joint_enum].velocity = velocity;
+        }
+    }
 }
 
 // void publishGlobalSpeed(double speed)

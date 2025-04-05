@@ -2,17 +2,19 @@
 #define CONTROLLER_NAME_H
 
 #include <QObject>
+#include <string>
 
 class ControllerName {
     Q_GADGET
 public:
     enum Name {
-        FrontLeft,
-        FrontUp,
-        FrontRight,
-        BackLeft,
-        BackUp,
-        BackRight
+        FrontLeft = 0,
+        FrontUp = 1,
+        FrontRight = 2,
+        BackLeft = 3,
+        BackUp = 4,
+        BackRight = 5,
+        Unknown = 6
     };
     Q_ENUM(Name)
 
@@ -26,6 +28,16 @@ public:
         case Name::BackRight: return "back_right_wheels_controller";
         default: return "";
         }
+    }
+
+    static Name fromString(const std::string& name) {
+        if (name == "front_left_wheels_controller") return Name::FrontLeft;
+        if (name == "front_up_wheels_controller") return Name::FrontUp;
+        if (name == "front_right_wheels_controller") return Name::FrontRight;
+        if (name == "back_left_wheels_controller") return Name::BackLeft;
+        if (name == "back_up_wheels_controller") return Name::BackUp;
+        if (name == "back_right_wheels_controller") return Name::BackRight;
+        return Name::Unknown;
     }
 };
 

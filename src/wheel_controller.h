@@ -5,6 +5,7 @@
 #include <QQmlEngine>
 
 #include <vector>
+#include <map>
 
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/joint_state.hpp>
@@ -70,23 +71,28 @@ signals:
     void pairsGroupingModeChanged();
 
 private:
-    explicit WheelController(std::shared_ptr<rclcpp::Node> parent_node, QObject* parent = nullptr);
+    WheelController(std::shared_ptr<rclcpp::Node> parent_node, QObject* parent = nullptr);
     std::shared_ptr<rclcpp::Node> node_;
 
-    rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr pair_velocity_publisher_;
+    std::map<ControllerName::Name, rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr> pair_velocity_publishers_;
     rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr joint_state_subscriber_;
 
     void createROSInterfaces();
     void jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg);
 
     struct JointData {
-        const JointName name;
+        JointName::Name name;
         double velocity;
+
+        JointData(JointName::Name name, double velocity)
+            : name(name)
+            , velocity(velocity)
+        {}
     };
     std::vector<JointData> current_joint_states_;
 
-    int current_pairs_grouping_mode_;               ///< Текущий режим
-    int current_drive_mode_;
+    int current_pairs_grouping_mode_;               ///< Текущий режим группировки пар
+    int current_drive_mode_;                        ///< Текущий привод
     std::vector<int> active_controllers_;           ///< Множество контроллеров, получающих единую целевую скорость
     // std::vector<int> local_controllers_;         ///< Множество контроллеров, управляемых локально ?
     // std::vector<int> indepedent_controllers_;    ///< Множество контроллеров, шарниры которых управляются раздельно ?

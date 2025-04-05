@@ -2,24 +2,25 @@
 #define JOINT_NAME_H
 
 #include <QObject>
+#include <string>
 
 class JointName {
     Q_GADGET
 public:
     enum Name {
-        FrontLeftOuter,
-        FrontLeftInner,
-        FrontUpOuter,
-        FrontUpInner,
-        FrontRightOuter,
-        FrontRightInner,
-        BackLeftOuter,
-        BackLeftInner,
-        BackUpOuter,
-        BackUpInner,
-        BackRightOuter,
-        BackRightInner,
-        Unknown
+        FrontLeftOuter = 0,
+        FrontLeftInner = 1,
+        FrontUpOuter = 2,
+        FrontUpInner = 3,
+        FrontRightOuter = 4,
+        FrontRightInner = 5,
+        BackLeftOuter = 6,
+        BackLeftInner = 7,
+        BackUpOuter = 8,
+        BackUpInner = 9,
+        BackRightOuter = 10,
+        BackRightInner = 11,
+        Unknown = 12
     };
     Q_ENUM(Name)
 
@@ -39,6 +40,22 @@ public:
         case Name::BackRightInner: return "back_right_inner_wheel_joint";
         default: return "";
         }
+    }
+
+    static Name fromString(const std::string& name) {
+        if (name == "front_left_outer_wheel_joint") return Name::FrontLeftOuter;
+        if (name == "front_left_inner_wheel_joint") return Name::FrontLeftInner;
+        if (name == "front_up_outer_wheel_joint") return Name::FrontUpOuter;
+        if (name == "front_up_inner_wheel_joint") return Name::FrontUpInner;
+        if (name == "front_right_outer_wheel_joint") return Name::FrontRightOuter;
+        if (name == "front_right_inner_wheel_joint") return Name::FrontRightInner;
+        if (name == "back_left_outer_wheel_joint") return Name::BackLeftOuter;
+        if (name == "back_left_inner_wheel_joint") return Name::BackLeftInner;
+        if (name == "back_up_outer_wheel_joint") return Name::BackUpOuter;
+        if (name == "back_up_inner_wheel_joint") return Name::BackUpInner;
+        if (name == "back_right_outer_wheel_joint") return Name::BackRightOuter;
+        if (name == "back_right_inner_wheel_joint") return Name::BackRightInner;
+        return Name::Unknown;
     }
 };
 
