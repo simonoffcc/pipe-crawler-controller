@@ -138,8 +138,19 @@ void WheelController::jointStateCallback(const sensor_msgs::msg::JointState::Sha
         auto joint_enum = JointName::fromString(joint_name);
         if (joint_enum != JointName::Unknown) {
             current_joint_states_[joint_enum].velocity = velocity;
+            emit jointVelocityChanged(joint_enum, velocity);
         }
     }
+}
+
+double WheelController::getJointVelocity(int joint_name) {
+    auto enum_value = static_cast<JointName::Name>(joint_name);
+    for (const auto& joint : current_joint_states_) {
+        if (joint.name == enum_value) {
+            return joint.velocity;
+        }
+    }
+    return 0.0;
 }
 
 void WheelController::publishGlobalSpeed(double speed)

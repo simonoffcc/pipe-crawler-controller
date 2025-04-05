@@ -59,11 +59,13 @@ public slots:
     void publishGlobalSpeed(double speed);
     // void publishLocalSpeed(double speed, const ControllerNames::Name& controller_name);
     // void publishIndependentSpeed(double speed, const ControllerNames::Name& controller_name);
+    Q_INVOKABLE double getJointVelocity(int joint_name);
 
 signals:
     void activeControllersChanged();
     void driveModeChanged();
     void pairsGroupingModeChanged();
+    void jointVelocityChanged(int joint_name, double velocity);
 
 private:
     WheelController(std::shared_ptr<rclcpp::Node> parent_node, QObject* parent = nullptr);
