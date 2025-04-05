@@ -31,6 +31,7 @@ Rectangle {
             horizontalAlignment: TextInput.AlignHCenter
             font.pixelSize: 16
             bottomPadding: 5
+            
             validator: DoubleValidator {
                 notation: DoubleValidator.StandardNotation
                 locale: "en"
@@ -56,6 +57,12 @@ Rectangle {
             hoverEnabled: true
 
             text: qsTr("Publish")
+
+            onClicked: {
+                if (inputField.text !== "") {
+                    WheelController.publishGlobalSpeed(parseFloat(inputField.text))
+                }
+            }
 
             background: Rectangle {
                 property color normalColor: "#4CAF50"

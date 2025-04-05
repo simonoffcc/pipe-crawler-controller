@@ -53,17 +53,12 @@ public:
     int currentDriveMode() const { return current_drive_mode_; }
     int currentPairsGroupingMode() const { return current_pairs_grouping_mode_; }
 
-    //******************************************************************************//
-
-    // void publishLocalSpeed(double speed, const ControllerNames::Name& controller_name);
-    // void publishIndependentSpeed(double speed, const ControllerNames::Name& controller_name);
-    // void publishGlobalSpeed(double speed);
-    
-    //******************************************************************************//  
-
 public slots:
     void setDriveMode(int mode);
     void setPairsGroupingMode(int mode);
+    void publishGlobalSpeed(double speed);
+    // void publishLocalSpeed(double speed, const ControllerNames::Name& controller_name);
+    // void publishIndependentSpeed(double speed, const ControllerNames::Name& controller_name);
 
 signals:
     void activeControllersChanged();

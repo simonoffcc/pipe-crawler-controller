@@ -14,6 +14,8 @@ WheelController::WheelController(std::shared_ptr<rclcpp::Node> node, QObject* pa
 
     createROSInterfaces();
     
+    updateActiveControllers();
+
     current_joint_states_ = {
         JointData(JointName::FrontLeftOuter, 0.0),
         JointData(JointName::FrontLeftInner, 0.0),
@@ -140,10 +142,18 @@ void WheelController::jointStateCallback(const sensor_msgs::msg::JointState::Sha
     }
 }
 
-// void publishGlobalSpeed(double speed)
-// {
-//     // взаимодействие с ros топиками
-// }
+void WheelController::publishGlobalSpeed(double speed)
+{
+    std_msgs::msg::Float64MultiArray msg;
+    msg.data = {speed, speed};
+
+    for (const auto& controller_enum : active_controllers_) {
+        auto controller = static_cast<ControllerName::Name>(controller_enum);
+        if (pair_velocity_publishers_.find(controller) != pair_velocity_publishers_.end()) {
+            pair_velocity_publishers_[controller]->publish(msg);
+        }
+    }
+}
 
 // void publishLocalSpeed(double speed, const int& controller_name)
 // {
