@@ -106,15 +106,12 @@ void WheelController::updateActiveControllers()
 }
 
 void WheelController::createROSInterfaces() {
-    // Создаем издателей для каждого контроллера колёсной пары
     pair_velocity_publishers_.clear();
     
-    // Создаем издателей для всех возможных контроллеров
-    for (int i = 0; i < 6; ++i) {  // 6 пар колес
+    for (int i = 0; i < 6; ++i) {
         auto controller_enum = static_cast<ControllerName::Name>(i);
         std::string controller_name = ControllerName::toString(controller_enum);
         
-        // Создаем издателя для текущего контроллера
         auto publisher = node_->create_publisher<std_msgs::msg::Float64MultiArray>(
             "/" + controller_name + "/commands",
             100
@@ -122,7 +119,6 @@ void WheelController::createROSInterfaces() {
         pair_velocity_publishers_[controller_enum] = publisher;
     }
 
-    // Подписываемся на топик состояния шарниров
     joint_state_subscriber_ = node_->create_subscription<sensor_msgs::msg::JointState>(
         "/joint_states", 
         100, 
