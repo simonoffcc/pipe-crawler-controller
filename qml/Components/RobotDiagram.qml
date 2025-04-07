@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 
 import controllerName
+import jointName
 
 Item {
     id: root
@@ -54,6 +55,8 @@ Item {
         isPublishButtonOnLeftSide: true
         jointControlWidth: 100
         elementStrokeWidth: 4
+        outerJointName: JointName.FrontLeftOuter
+        innerJointName: JointName.FrontLeftInner
 
         anchors {
             horizontalCenter: schemeLinesFront.left
@@ -70,6 +73,8 @@ Item {
         isPublishButtonOnLeftSide: false
         jointControlWidth: 100
         elementStrokeWidth: 4
+        outerJointName: JointName.FrontUpOuter
+        innerJointName: JointName.FrontUpInner
 
         anchors {
             horizontalCenter: schemeLinesFront.horizontalCenter
@@ -85,6 +90,8 @@ Item {
         isPublishButtonOnLeftSide: false
         jointControlWidth: 100
         elementStrokeWidth: 4
+        outerJointName: JointName.FrontRightOuter
+        innerJointName: JointName.FrontRightInner
 
         anchors {
             horizontalCenter: schemeLinesFront.right
@@ -101,6 +108,8 @@ Item {
         isPublishButtonOnLeftSide: true
         jointControlWidth: 100
         elementStrokeWidth: 4
+        outerJointName: JointName.BackLeftOuter
+        innerJointName: JointName.BackLeftInner
 
         anchors {
             horizontalCenter: schemeLinesBack.left
@@ -117,6 +126,8 @@ Item {
         isPublishButtonOnLeftSide: true
         jointControlWidth: 100
         elementStrokeWidth: 4
+        outerJointName: JointName.BackUpOuter
+        innerJointName: JointName.BackUpInner
 
         anchors {
             horizontalCenter: schemeLinesBack.horizontalCenter
@@ -132,6 +143,8 @@ Item {
         isPublishButtonOnLeftSide: false
         jointControlWidth: 100
         elementStrokeWidth: 4
+        outerJointName: JointName.BackRightOuter
+        innerJointName: JointName.BackRightInner
 
         anchors {
             horizontalCenter: schemeLinesBack.right

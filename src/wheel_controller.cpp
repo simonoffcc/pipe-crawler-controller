@@ -16,20 +16,19 @@ WheelController::WheelController(std::shared_ptr<rclcpp::Node> node, QObject* pa
     
     updateActiveControllers();
 
-    current_joint_states_ = {
-        JointData(JointName::FrontLeftOuter, 0.0),
-        JointData(JointName::FrontLeftInner, 0.0),
-        JointData(JointName::FrontUpOuter, 0.0),
-        JointData(JointName::FrontUpInner, 0.0),
-        JointData(JointName::FrontRightOuter, 0.0),
-        JointData(JointName::FrontRightInner, 0.0),
-        JointData(JointName::BackLeftOuter, 0.0),
-        JointData(JointName::BackLeftInner, 0.0),
-        JointData(JointName::BackUpOuter, 0.0),
-        JointData(JointName::BackUpInner, 0.0),
-        JointData(JointName::BackRightOuter, 0.0),
-        JointData(JointName::BackRightInner, 0.0)
-    };
+    // Инициализация скоростей нулями
+    wheel_speeds_[JointName::FrontLeftOuter] = 0.0;
+    wheel_speeds_[JointName::FrontLeftInner] = 0.0;
+    wheel_speeds_[JointName::FrontUpOuter] = 0.0;
+    wheel_speeds_[JointName::FrontUpInner] = 0.0;
+    wheel_speeds_[JointName::FrontRightOuter] = 0.0;
+    wheel_speeds_[JointName::FrontRightInner] = 0.0;
+    wheel_speeds_[JointName::BackLeftOuter] = 0.0;
+    wheel_speeds_[JointName::BackLeftInner] = 0.0;
+    wheel_speeds_[JointName::BackUpOuter] = 0.0;
+    wheel_speeds_[JointName::BackUpInner] = 0.0;
+    wheel_speeds_[JointName::BackRightOuter] = 0.0;
+    wheel_speeds_[JointName::BackRightInner] = 0.0;
 }
 
 void WheelController::setDriveMode(int mode) {
@@ -113,40 +112,51 @@ void WheelController::createROSInterfaces() {
         std::string controller_name = ControllerName::toString(controller_enum);
         
         auto publisher = node_->create_publisher<std_msgs::msg::Float64MultiArray>(
-            "/" + controller_name + "/commands",
-            100
-        );
+            "/" + controller_name + "/commands", 100);
         pair_velocity_publishers_[controller_enum] = publisher;
     }
 
     joint_state_subscriber_ = node_->create_subscription<sensor_msgs::msg::JointState>(
-        "/joint_states", 
-        100, 
+        "/joint_states", 100,
         std::bind(&WheelController::jointStateCallback, this, std::placeholders::_1)
     );
 }
 
 void WheelController::jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg) {
+    bool speeds_changed = false;
+    
     for (size_t i = 0; i < msg->name.size(); i++) {
         const std::string& joint_name = msg->name[i];
         const double velocity = msg->velocity[i];
 
         auto joint_enum = JointName::fromString(joint_name);
         if (joint_enum != JointName::Unknown) {
-            current_joint_states_[joint_enum].velocity = velocity;
-            emit jointVelocityChanged(joint_enum, velocity);
+            if (std::abs(wheel_speeds_[joint_enum] - velocity) > 0.001) {
+                wheel_speeds_[joint_enum] = velocity;
+                RCLCPP_INFO(node_->get_logger(), "Joint %s speed updated to: %.2f rad/s", 
+                    JointName::toString(joint_enum).c_str(), velocity);
+                speeds_changed = true;
+            }
         }
+    }
+
+    if (speeds_changed) {
+        RCLCPP_INFO(node_->get_logger(), "------- Wheel speeds updated -------");
+        for (const auto& [joint, speed] : wheel_speeds_) {
+            RCLCPP_INFO(node_->get_logger(), "%s: %.2f rad/s", 
+                JointName::toString(joint).c_str(), speed);
+        }
+        RCLCPP_INFO(node_->get_logger(), "--------------------------------");
+        emit wheelSpeedsChanged();
     }
 }
 
-double WheelController::getJointVelocity(int joint_name) {
-    auto enum_value = static_cast<JointName::Name>(joint_name);
-    for (const auto& joint : current_joint_states_) {
-        if (joint.name == enum_value) {
-            return joint.velocity;
-        }
+QVariantMap WheelController::wheelSpeeds() const {
+    QVariantMap speeds;
+    for (const auto& [joint, speed] : wheel_speeds_) {
+        speeds[QString::number(joint)] = speed;
     }
-    return 0.0;
+    return speeds;
 }
 
 void WheelController::publishGlobalSpeed(double speed)
@@ -171,5 +181,3 @@ void WheelController::publishGlobalSpeed(double speed)
 // {
 //     // взаимодействие с ros топиками
 // }
-
-

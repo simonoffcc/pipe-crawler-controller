@@ -4,7 +4,7 @@ import QtQuick.Controls
 Rectangle {
     id: root
 
-    state: "globalConnection"
+    state: "global"
 
     width: 5
     height: 50
@@ -35,19 +35,19 @@ Rectangle {
         propagateComposedEvents: true
 
         onClicked: {
-            if (root.state === "globalConnection") {
-                root.state = "localConnection"
-            } else if (root.state === "localConnection") {
-                root.state = "independentConnection"
+            if (root.state === "global") {
+                root.state = "local"
+            } else if (root.state === "local") {
+                root.state = "independent"
             } else {
-                root.state = "globalConnection"
+                root.state = "global"
             }
         }
     }
 
     states: [
         State {
-            name: "globalConnection"
+            name: "global"
             PropertyChanges {
                 target: root
                 color: "green"
@@ -59,7 +59,7 @@ Rectangle {
             }
         },
         State {
-            name: "localConnection"
+            name: "local"
             PropertyChanges {
                 target: root
                 color: "black"
@@ -71,7 +71,7 @@ Rectangle {
             }
         },
         State {
-            name: "independentConnection"
+            name: "independent"
             PropertyChanges {
                 target: root
                 color: "transparent"

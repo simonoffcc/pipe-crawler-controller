@@ -2,8 +2,6 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Basic
 
-import WheelController
-
 Rectangle {
     id: root
 
@@ -11,7 +9,7 @@ Rectangle {
     property alias telemetrySpeed: telemetryText.text
     property alias jointSpeed: speedInput.text
 
-    state: "globalControl"
+    state: "global"
 
     width: 100
     height: width
@@ -26,16 +24,7 @@ Rectangle {
         anchors.fill: parent
         propagateComposedEvents: true
 
-        onClicked: root.state === "globalControl" ? root.state = "localControl" : root.state = "globalControl"
-    }
-
-    Connections {
-        target: WheelController
-        function onJointVelocityChanged(joint_name, velocity) {
-            if (joint_name === jointName) {
-                telemetrySpeed = velocity.toFixed(2)
-            }
-        }
+        onClicked: root.state === "global" ? root.state = "local" : root.state = "global"
     }
 
     Column {
@@ -90,14 +79,14 @@ Rectangle {
 
     states: [
         State {
-            name: "globalControl"
+            name: "global"
             PropertyChanges {
                 root.border.color: "green"
                 speedInput.visible: false
             }
         },
         State {
-            name: "localControl"
+            name: "local"
             PropertyChanges {
                 root.border.color: "black"
                 speedInput.visible: true

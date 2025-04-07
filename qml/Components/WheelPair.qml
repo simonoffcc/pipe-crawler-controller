@@ -4,30 +4,45 @@ import QtQuick.Controls.Basic
 
 import WheelController
 import controllerName
+import jointName
 
 Item {
     id: root
 
-    property int controllerName
+    property int controllerName: ControllerName.Unknown
     property bool isFront: true
     property bool isPublishButtonOnLeftSide: false
     property int jointControlWidth: 100
     property int elementStrokeWidth: 4
+    property int outerJointName: JointName.Unknown
+    property int innerJointName: JointName.Unknown
 
-    state: "globalSpeedControl"
+    state: "global"
 
     width: jointControlWidth
     height: jointControlWidth * 2.5
 
     Connections {
         target: WheelController
+        
         function onActiveControllersChanged() {
-            root.state = "localSpeedControl"
+            root.state = "local"
             var controllers = WheelController.activeControllers
             for (var i = 0; i < controllers.length; i++) {
                 if (controllers[i] === root.controllerName) {
-                    root.state = "globalSpeedControl"
+                    root.state = "global"
                 }
+            }
+        }
+
+        function onWheelSpeedsChanged() {
+            var speeds = WheelController.wheelSpeeds
+            
+            if (outerJointName in speeds) {
+                outerJoint.telemetrySpeed = speeds[outerJointName].toFixed(2) + "°/sec"
+            }
+            if (innerJointName in speeds) {
+                innerJoint.telemetrySpeed = speeds[innerJointName].toFixed(2) + "°/sec"
             }
         }
     }
@@ -41,9 +56,9 @@ Item {
         cursorShape: Qt.PointingHandCursor
 
         onClicked: {
-            if (root.state === "globalSpeedControl") { root.state = "localSpeedControl" }
-            else if (root.state === "localSpeedControl") { root.state = "independentSpeedControl" }
-            else { root.state = "globalSpeedControl" }
+            if (root.state === "global") { root.state = "local" }
+            else if (root.state === "local") { root.state = "independent" }
+            else { root.state = "global" }
         }
     }
 
@@ -91,6 +106,7 @@ Item {
         width: jointControlWidth
         height: jointControlWidth
         border.width: elementStrokeWidth
+        jointName: root.outerJointName
 
         Component.onCompleted: {
             anchors.horizontalCenter = parent.horizontalCenter
@@ -113,6 +129,7 @@ Item {
         width: jointControlWidth
         height: jointControlWidth
         border.width: elementStrokeWidth
+        jointName: root.innerJointName
 
         Component.onCompleted: {
             anchors.horizontalCenter = parent.horizontalCenter
@@ -122,51 +139,51 @@ Item {
 
     states: [
         State {
-            name: "globalSpeedControl"
+            name: "global"
             PropertyChanges {
                 target: outerJoint
-                state: "globalControl"
+                state: "global"
             }
             PropertyChanges {
                 target: connectionLine
-                state: "globalConnection"
+                state: "global"
             }
             PropertyChanges {
                 target: innerJoint
-                state: "globalControl"
+                state: "global"
             }
         },
         State {
-            name: "localSpeedControl"
+            name: "local"
             PropertyChanges {
                 target: outerJoint
-                state: "localControl"
+                state: "local"
             }
             PropertyChanges {
                 target: connectionLine
-                state: "localConnection"
+                state: "local"
             }
             PropertyChanges {
                 target: innerJoint
-                state: "localControl"
+                state: "local"
             }
             PropertyChanges {
                 publishButton.visible: true
             }
         },
         State {
-            name: "independentSpeedControl"
+            name: "independent"
             PropertyChanges {
                 target: outerJoint
-                state: "localControl"
+                state: "local"
             }
             PropertyChanges {
                 target: connectionLine
-                state: "independentConnection"
+                state: "independent"
             }
             PropertyChanges {
                 target: innerJoint
-                state: "localControl"
+                state: "local"
             }
             PropertyChanges {
                 publishButton.visible: true
