@@ -28,7 +28,7 @@ WheelController::WheelController(std::shared_ptr<rclcpp::Node> node, QObject* pa
     joint_speeds_[JointName::BackUpInner] = 0.0;
     joint_speeds_[JointName::BackRightOuter] = 0.0;
     joint_speeds_[JointName::BackRightInner] = 0.0;
-    emit jointSpeedsChanged();
+    // emit jointSpeedsChanged();
 }
 
 void WheelController::setDriveMode(int mode)
@@ -166,7 +166,7 @@ QVariantMap WheelController::jointSpeeds() const
 void WheelController::publishGlobalSpeed(double speed)
 {
     std_msgs::msg::Float64MultiArray msg;
-    double speed_in_radians = round(qDegreesToRadians(speed) * 1000) / 1000; // перевод в радианы с округлением до 3 знаков
+    double speed_in_radians = qDegreesToRadians(speed);
     msg.data = {speed_in_radians, speed_in_radians};
 
     for (const auto& controller_enum : active_controllers_) {
