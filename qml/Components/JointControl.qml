@@ -34,7 +34,7 @@ Rectangle {
         Text {
             id: telemetryText
 
-            text: qsTr("0°/sec")
+            text: qsTr("0.0°/sec")
             font.pixelSize: 14
 
             horizontalAlignment: Text.AlignHCenter
@@ -48,7 +48,7 @@ Rectangle {
             visible: false
 
             color: "black"
-            placeholderText: qsTr("dq: 1°/sec")
+            placeholderText: qsTr("dq: 1.0°/sec")
             placeholderTextColor: "gray"
             font.pixelSize: 12
 

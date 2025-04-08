@@ -13,25 +13,26 @@ WheelController::WheelController(std::shared_ptr<rclcpp::Node> node, QObject* pa
     qmlRegisterSingletonInstance<WheelController>("WheelController", 1, 0, "WheelController", this);
 
     createROSInterfaces();
-    
+
     updateActiveControllers();
 
-    // Инициализация скоростей нулями
-    wheel_speeds_[JointName::FrontLeftOuter] = 0.0;
-    wheel_speeds_[JointName::FrontLeftInner] = 0.0;
-    wheel_speeds_[JointName::FrontUpOuter] = 0.0;
-    wheel_speeds_[JointName::FrontUpInner] = 0.0;
-    wheel_speeds_[JointName::FrontRightOuter] = 0.0;
-    wheel_speeds_[JointName::FrontRightInner] = 0.0;
-    wheel_speeds_[JointName::BackLeftOuter] = 0.0;
-    wheel_speeds_[JointName::BackLeftInner] = 0.0;
-    wheel_speeds_[JointName::BackUpOuter] = 0.0;
-    wheel_speeds_[JointName::BackUpInner] = 0.0;
-    wheel_speeds_[JointName::BackRightOuter] = 0.0;
-    wheel_speeds_[JointName::BackRightInner] = 0.0;
+    joint_speeds_[JointName::FrontLeftOuter] = 0.0;
+    joint_speeds_[JointName::FrontLeftInner] = 0.0;
+    joint_speeds_[JointName::FrontUpOuter] = 0.0;
+    joint_speeds_[JointName::FrontUpInner] = 0.0;
+    joint_speeds_[JointName::FrontRightOuter] = 0.0;
+    joint_speeds_[JointName::FrontRightInner] = 0.0;
+    joint_speeds_[JointName::BackLeftOuter] = 0.0;
+    joint_speeds_[JointName::BackLeftInner] = 0.0;
+    joint_speeds_[JointName::BackUpOuter] = 0.0;
+    joint_speeds_[JointName::BackUpInner] = 0.0;
+    joint_speeds_[JointName::BackRightOuter] = 0.0;
+    joint_speeds_[JointName::BackRightInner] = 0.0;
+    emit jointSpeedsChanged();
 }
 
-void WheelController::setDriveMode(int mode) {
+void WheelController::setDriveMode(int mode)
+{
     if (current_drive_mode_ != mode) {
         current_drive_mode_ = mode;
         updateActiveControllers();
@@ -104,13 +105,14 @@ void WheelController::updateActiveControllers()
     emit activeControllersChanged();
 }
 
-void WheelController::createROSInterfaces() {
+void WheelController::createROSInterfaces()
+{
     pair_velocity_publishers_.clear();
-    
+
     for (int i = 0; i < 6; ++i) {
         auto controller_enum = static_cast<ControllerName::Name>(i);
         std::string controller_name = ControllerName::toString(controller_enum);
-        
+
         auto publisher = node_->create_publisher<std_msgs::msg::Float64MultiArray>(
             "/" + controller_name + "/commands", 100);
         pair_velocity_publishers_[controller_enum] = publisher;
@@ -122,18 +124,19 @@ void WheelController::createROSInterfaces() {
     );
 }
 
-void WheelController::jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg) {
+void WheelController::jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg)
+{
     bool speeds_changed = false;
-    
+
     for (size_t i = 0; i < msg->name.size(); i++) {
         const std::string& joint_name = msg->name[i];
         const double velocity = msg->velocity[i];
 
         auto joint_enum = JointName::fromString(joint_name);
         if (joint_enum != JointName::Unknown) {
-            if (std::abs(wheel_speeds_[joint_enum] - velocity) > 0.001) {
-                wheel_speeds_[joint_enum] = velocity;
-                RCLCPP_INFO(node_->get_logger(), "Joint %s speed updated to: %.2f rad/s", 
+            if (std::abs(joint_speeds_[joint_enum] - velocity) > precision) {
+                joint_speeds_[joint_enum] = velocity;
+                RCLCPP_INFO(node_->get_logger(), "Joint %s speed updated to: %.2f rad/s",
                     JointName::toString(joint_enum).c_str(), velocity);
                 speeds_changed = true;
             }
@@ -142,19 +145,20 @@ void WheelController::jointStateCallback(const sensor_msgs::msg::JointState::Sha
 
     if (speeds_changed) {
         RCLCPP_INFO(node_->get_logger(), "------- Wheel speeds updated -------");
-        for (const auto& [joint, speed] : wheel_speeds_) {
-            RCLCPP_INFO(node_->get_logger(), "%s: %.2f rad/s", 
+        for (const auto& [joint, speed] : joint_speeds_) {
+            RCLCPP_INFO(node_->get_logger(), "%s: %.2f rad/s",
                 JointName::toString(joint).c_str(), speed);
         }
         RCLCPP_INFO(node_->get_logger(), "--------------------------------");
-        emit wheelSpeedsChanged();
+        emit jointSpeedsChanged();
     }
 }
 
-QVariantMap WheelController::wheelSpeeds() const {
+QVariantMap WheelController::jointSpeeds() const
+{
     QVariantMap speeds;
-    for (const auto& [joint, speed] : wheel_speeds_) {
-        speeds[QString::number(joint)] = speed;
+    for (const auto& [joint, speed] : joint_speeds_) {
+        speeds[QString::number(joint)] = qRadiansToDegrees(speed);
     }
     return speeds;
 }
@@ -162,7 +166,8 @@ QVariantMap WheelController::wheelSpeeds() const {
 void WheelController::publishGlobalSpeed(double speed)
 {
     std_msgs::msg::Float64MultiArray msg;
-    msg.data = {speed, speed};
+    double speed_in_radians = round(qDegreesToRadians(speed) * 1000) / 1000; // перевод в радианы с округлением до 3 знаков
+    msg.data = {speed_in_radians, speed_in_radians};
 
     for (const auto& controller_enum : active_controllers_) {
         auto controller = static_cast<ControllerName::Name>(controller_enum);
@@ -174,10 +179,10 @@ void WheelController::publishGlobalSpeed(double speed)
 
 // void publishLocalSpeed(double speed, const int& controller_name)
 // {
-//     // взаимодействие с ros топиками
+//     // публикация в ros топик
 // }
 
 // void publishIndependentSpeed(double speed, const int& controller_name)
 // {
-//     // взаимодействие с ros топиками
+//     // публикация в ros топик
 // }

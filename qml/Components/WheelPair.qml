@@ -35,14 +35,14 @@ Item {
             }
         }
 
-        function onWheelSpeedsChanged() {
-            var speeds = WheelController.wheelSpeeds
+        function onJointSpeedsChanged() {
+            var speeds = WheelController.jointSpeeds
             
             if (outerJointName in speeds) {
-                outerJoint.telemetrySpeed = speeds[outerJointName].toFixed(2) + "°/sec"
+                outerJoint.telemetrySpeed = speeds[outerJointName].toFixed(1) + "°/sec"
             }
             if (innerJointName in speeds) {
-                innerJoint.telemetrySpeed = speeds[innerJointName].toFixed(2) + "°/sec"
+                innerJoint.telemetrySpeed = speeds[innerJointName].toFixed(1) + "°/sec"
             }
         }
     }
@@ -167,9 +167,9 @@ Item {
                 target: innerJoint
                 state: "local"
             }
-            PropertyChanges {
-                publishButton.visible: true
-            }
+            // PropertyChanges {
+            //     publishButton.visible: true
+            // }
         },
         State {
             name: "independent"
@@ -185,9 +185,9 @@ Item {
                 target: innerJoint
                 state: "local"
             }
-            PropertyChanges {
-                publishButton.visible: true
-            }
+            // PropertyChanges {
+            //     publishButton.visible: true
+            // }
         }
     ]
 }

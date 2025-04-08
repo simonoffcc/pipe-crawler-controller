@@ -32,7 +32,7 @@ class WheelController : public QObject
     Q_PROPERTY(std::vector<int> activeControllers READ activeControllers NOTIFY activeControllersChanged)
 
     // Массив текущих скоростей колес
-    Q_PROPERTY(QVariantMap wheelSpeeds READ wheelSpeeds NOTIFY wheelSpeedsChanged)
+    Q_PROPERTY(QVariantMap jointSpeeds READ jointSpeeds NOTIFY jointSpeedsChanged)
 
 public:
     WheelController(const WheelController &) = delete;
@@ -56,7 +56,7 @@ public:
     const std::vector<int>& activeControllers() const { return active_controllers_; }
     int currentDriveMode() const { return current_drive_mode_; }
     int currentPairsGroupingMode() const { return current_pairs_grouping_mode_; }
-    QVariantMap wheelSpeeds() const;
+    QVariantMap jointSpeeds() const;
 
 public slots:
     void setDriveMode(int mode);
@@ -69,7 +69,7 @@ signals:
     void activeControllersChanged();
     void driveModeChanged();
     void pairsGroupingModeChanged();
-    void wheelSpeedsChanged();
+    void jointSpeedsChanged();
 
 private:
     explicit WheelController(std::shared_ptr<rclcpp::Node> parent_node, QObject* parent = nullptr);
@@ -84,7 +84,7 @@ private:
     int current_pairs_grouping_mode_;                ///< Текущий режим группировки пар
     int current_drive_mode_;                         ///< Текущий привод
     std::vector<int> active_controllers_;            ///< Множество контроллеров, получающих единую целевую скорость
-    std::map<JointName::Name, double> wheel_speeds_; ///< Текущие скорости колес
+    std::map<JointName::Name, double> joint_speeds_; ///< Текущие скорости колес
 
     double precision = 1.0;  ///< точность сравнения скорости шарниров в радианах
 
