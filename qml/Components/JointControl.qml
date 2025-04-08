@@ -89,7 +89,7 @@ Rectangle {
             name: "local"
             PropertyChanges {
                 root.border.color: "black"
-                speedInput.visible: true
+                speedInput.visible: false  // в теории True
             }
         }
     ]

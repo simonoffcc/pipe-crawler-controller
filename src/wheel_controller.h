@@ -32,7 +32,7 @@ class WheelController : public QObject
     Q_PROPERTY(std::vector<int> activeControllers READ activeControllers NOTIFY activeControllersChanged)
 
     // Массив текущих скоростей колес
-    Q_PROPERTY(QVariantMap jointSpeeds READ jointSpeeds NOTIFY jointSpeedsChanged)
+    Q_PROPERTY(QVariantMap jointSpeeds READ jointSpeeds NOTIFY jointSpeedsChanged)   // map<int, double>
 
 public:
     WheelController(const WheelController &) = delete;
@@ -56,7 +56,7 @@ public:
     const std::vector<int>& activeControllers() const { return active_controllers_; }
     int currentDriveMode() const { return current_drive_mode_; }
     int currentPairsGroupingMode() const { return current_pairs_grouping_mode_; }
-    QVariantMap jointSpeeds() const;
+    QVariantMap jointSpeeds() const;   // map<int, double>
 
 public slots:
     void setDriveMode(int mode);
@@ -81,10 +81,10 @@ private:
     void createROSInterfaces();
     void jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg);
 
-    int current_pairs_grouping_mode_;                ///< Текущий режим группировки пар
-    int current_drive_mode_;                         ///< Текущий привод
-    std::vector<int> active_controllers_;            ///< Множество контроллеров, получающих единую целевую скорость
-    std::map<JointName::Name, double> joint_speeds_; ///< Текущие скорости колес
+    int current_pairs_grouping_mode_;           ///< Текущий режим группировки пар
+    int current_drive_mode_;                    ///< Текущий привод
+    std::vector<int> active_controllers_;       ///< Множество контроллеров, получающих единую целевую скорость
+    std::map<JointName::Name, double> joint_speeds_;        ///< Текущие скорости колес
 
     double precision = 1.0;  ///< точность сравнения скорости шарниров в радианах
 
