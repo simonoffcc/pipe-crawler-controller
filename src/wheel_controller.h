@@ -57,8 +57,6 @@ public slots:
     void setPairsGroupingMode(int mode);
     void publishGlobalSpeed(double speed);
     void setControllerState(int controller_name, int state);
-    // void publishLocalSpeed(double speed, const ControllerNames::Name& controller_name);
-    // void publishIndependentSpeed(double speed, const ControllerNames::Name& controller_name);
 
 signals:
     void controllersChanged();

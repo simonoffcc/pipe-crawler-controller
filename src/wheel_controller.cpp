@@ -60,6 +60,20 @@ void WheelController::setPairsGroupingMode(int mode)
     }
 }
 
+void WheelController::setControllerState(int controller_name, int state)
+{
+    auto controller_enum = static_cast<ControllerName::Name>(controller_name);
+    auto state_enum = static_cast<ControlState>(state);
+
+    for (auto& controller : controllers_) {
+        if (controller.name == controller_enum) {
+            controller.state = state_enum;
+            emit controllersChanged();
+            break;
+        }
+    }
+}
+
 void WheelController::updateActiveControllers()
 {
     for (auto& controller : controllers_) {
@@ -224,27 +238,3 @@ void WheelController::publishGlobalSpeed(double speed)
         }
     }
 }
-
-void WheelController::setControllerState(int controller_name, int state)
-{
-    auto controller_enum = static_cast<ControllerName::Name>(controller_name);
-    auto state_enum = static_cast<ControlState>(state);
-    
-    for (auto& controller : controllers_) {
-        if (controller.name == controller_enum) {
-            controller.state = state_enum;
-            emit controllersChanged();
-            break;
-        }
-    }
-}
-
-// void publishLocalSpeed(double speed, const int& controller_name)
-// {
-//     // публикация в ros топик
-// }
-
-// void publishIndependentSpeed(double speed, const int& controller_name)
-// {
-//     // публикация в ros топик
-// }
