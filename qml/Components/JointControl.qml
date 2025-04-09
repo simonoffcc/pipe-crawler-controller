@@ -29,6 +29,10 @@ Rectangle {
     readonly property bool isCustomMode: WheelController.currentPairsGroupingMode === PairsGroupingMode.Custom &&
                                       WheelController.currentDriveMode === DriveMode.Custom
 
+    function clearSpeedInput() {
+        speedInput.text = "";
+    }
+
     function syncSpeedWithPaired(speed) {
         if (isPaired && pairedJoint && root.state === "local" && root.isCustomMode) {
             pairedJoint.jointSpeed = speed;
@@ -70,7 +74,7 @@ Rectangle {
             color: "black"
             placeholderText: qsTr("dq: 1.0°/sec")
             placeholderTextColor: "gray"
-            font.pixelSize: 12
+            font.pixelSize: 11
 
             width: root.width * 0.7
             height: 25
@@ -103,12 +107,14 @@ Rectangle {
 
             Keys.onReturnPressed: {
                 if (text !== "") {
+                    if (root.state === "independent") speedInput.focus = false;
                     root.speedSubmitted(text);
                 }
             }
 
             Keys.onEnterPressed: {
                 if (text !== "") {
+                    if (root.state === "independent") speedInput.focus = false;
                     root.speedSubmitted(text);
                 }
             }
@@ -122,6 +128,10 @@ Rectangle {
                 target: root
                 border.color: "green"
             }
+            PropertyChanges {
+                target: speedInput
+                focus: false;
+            }
         },
         State {
             name: "local"
@@ -129,12 +139,20 @@ Rectangle {
                 target: root
                 border.color: "black"
             }
+            PropertyChanges {
+                target: speedInput
+                focus: false;
+            }
         },
         State {
             name: "independent"
             PropertyChanges {
                 target: root
                 border.color: "black"
+            }
+            PropertyChanges {
+                target: speedInput
+                focus: false;
             }
         }
     ]

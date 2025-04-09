@@ -64,12 +64,16 @@ Item {
             if (!isCustomMode) {
                 root.state = "global";
             }
+            outerJoint.clearSpeedInput();
+            innerJoint.clearSpeedInput();
         }
 
         function onPairsGroupingModeChanged() {
             if (!isCustomMode) {
                 root.state = "global";
             }
+            outerJoint.clearSpeedInput();
+            innerJoint.clearSpeedInput();
         }
     }
 
@@ -95,6 +99,8 @@ Item {
                 newState = "global";
                 WheelController.setControllerState(root.controllerName, 0);
             }
+            outerJoint.clearSpeedInput();
+            innerJoint.clearSpeedInput();
             root.state = newState;
         }
     }
@@ -139,6 +145,8 @@ Item {
         onClicked: {
             if (root.state === "local" && outerJoint.jointSpeed !== "") {
                 WheelController.publishLocalSpeed(parseFloat(outerJoint.jointSpeed), root.controllerName);
+                outerJoint.clearSpeedInput();
+                innerJoint.clearSpeedInput();
             }
         }
     }
@@ -161,6 +169,7 @@ Item {
         onSpeedSubmitted: function(speedValue) {
             if (root.state === "independent") {
                 WheelController.publishIndependentSpeed(parseFloat(speedValue), root.controllerName, true);
+                outerJoint.clearSpeedInput();
             }
         }
     }
@@ -192,6 +201,7 @@ Item {
         onSpeedSubmitted: function(speedValue) {
             if (root.state === "independent") {
                 WheelController.publishIndependentSpeed(parseFloat(speedValue), root.controllerName, false);
+                innerJoint.clearSpeedInput();
             }
         }
     }

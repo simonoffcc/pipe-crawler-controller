@@ -15,6 +15,10 @@ Rectangle {
     width: 130
     height: 130
 
+    function clearSpeedInput() {
+        inputField.text = "";
+    }
+
     Column {
         anchors.centerIn: parent
 
@@ -26,10 +30,10 @@ Rectangle {
 
             width: parent.width
             color: "black"
-            placeholderText: "target_vel"
+            placeholderText: "dq: 1.0°/sec"
             placeholderTextColor: "gray"
             horizontalAlignment: TextInput.AlignHCenter
-            font.pixelSize: 16
+            font.pixelSize: 14
             bottomPadding: 5
             
             validator: DoubleValidator {
@@ -61,6 +65,7 @@ Rectangle {
             onClicked: {
                 if (inputField.text !== "") {
                     WheelController.publishGlobalSpeed(parseFloat(inputField.text))
+                    root.clearSpeedInput()
                 }
             }
 
