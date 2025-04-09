@@ -150,6 +150,8 @@ Item {
         height: jointControlWidth
         border.width: elementStrokeWidth
         jointName: root.outerJointName
+        isPaired: true
+        pairedJoint: innerJoint
 
         Component.onCompleted: {
             anchors.horizontalCenter = parent.horizontalCenter
@@ -179,6 +181,8 @@ Item {
         height: jointControlWidth
         border.width: elementStrokeWidth
         jointName: root.innerJointName
+        isPaired: true
+        pairedJoint: outerJoint
 
         Component.onCompleted: {
             anchors.horizontalCenter = parent.horizontalCenter
@@ -235,7 +239,7 @@ Item {
             name: "independent"
             PropertyChanges {
                 target: outerJoint
-                state: "local"
+                state: "independent"
             }
             PropertyChanges {
                 target: connectionLine
@@ -243,7 +247,7 @@ Item {
             }
             PropertyChanges {
                 target: innerJoint
-                state: "local"
+                state: "independent"
             }
             // PropertyChanges {
             //     target: publishButton

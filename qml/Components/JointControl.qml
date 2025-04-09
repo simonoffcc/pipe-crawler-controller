@@ -12,6 +12,8 @@ Rectangle {
     property int jointName
     property alias telemetrySpeed: telemetryText.text
     property alias jointSpeed: speedInput.text
+    property bool isPaired: false  // Flag to indicate if this joint is paired
+    property var pairedJoint: null // Reference to the paired JointControl
 
     signal speedSubmitted(string speed)
 
@@ -26,6 +28,14 @@ Rectangle {
 
     readonly property bool isCustomMode: WheelController.currentPairsGroupingMode === PairsGroupingMode.Custom &&
                                       WheelController.currentDriveMode === DriveMode.Custom
+
+    // Function to sync speed with paired joint
+    function syncSpeedWithPaired(speed) {
+        if (isPaired && pairedJoint && root.state === "local" && root.isCustomMode) {
+            pairedJoint.jointSpeed = speed;
+            pairedJoint.speedSubmitted(speed);
+        }
+    }
 
     MouseArea {
         enabled: false
@@ -84,6 +94,12 @@ Rectangle {
                 }
             }
 
+            onTextChanged: {
+                if (text !== "") {
+                    root.syncSpeedWithPaired(text);
+                }
+            }
+
             Keys.onReturnPressed: {
                 if (text !== "") {
                     root.speedSubmitted(text);
@@ -108,6 +124,13 @@ Rectangle {
         },
         State {
             name: "local"
+            PropertyChanges {
+                target: root
+                border.color: "black"
+            }
+        },
+        State {
+            name: "independent"
             PropertyChanges {
                 target: root
                 border.color: "black"
