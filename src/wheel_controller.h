@@ -17,7 +17,7 @@
 #include "enums/joint_name.h"
 #include "enums/controller_name.h"
 
-/// \class Класс для управления скорстями групп колёсных пар робота из QML.
+/// \class Класс для управления скорстями групп колёсных пар робота из QML
 class WheelController : public QObject
 {
     Q_OBJECT

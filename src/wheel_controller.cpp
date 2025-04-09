@@ -15,12 +15,30 @@ WheelController::WheelController(std::shared_ptr<rclcpp::Node> node, QObject* pa
     createROSInterfaces();
 
     controllers_ = {
-        { ControllerName::FrontLeft,  ControlState::GLOBAL, {JointName::FrontLeftOuter,  0.0}, {JointName::FrontLeftInner,  0.0} },
-        { ControllerName::FrontUp,    ControlState::GLOBAL, {JointName::FrontUpOuter,    0.0}, {JointName::FrontUpInner,    0.0} },
-        { ControllerName::FrontRight, ControlState::GLOBAL, {JointName::FrontRightOuter, 0.0}, {JointName::FrontRightInner, 0.0} },
-        { ControllerName::BackLeft,   ControlState::GLOBAL, {JointName::BackLeftOuter,   0.0}, {JointName::BackLeftInner,   0.0} },
-        { ControllerName::BackUp,     ControlState::GLOBAL, {JointName::BackUpOuter,     0.0}, {JointName::BackUpInner,     0.0} },
-        { ControllerName::BackRight,  ControlState::GLOBAL, {JointName::BackRightOuter,  0.0}, {JointName::BackRightInner,  0.0} }
+        {
+         ControllerName::FrontLeft,  ControlState::GLOBAL,
+         {JointName::FrontLeftOuter,  0.0}, {JointName::FrontLeftInner,  0.0}
+        },
+        {
+         ControllerName::FrontUp,    ControlState::GLOBAL,
+         {JointName::FrontUpOuter,    0.0}, {JointName::FrontUpInner,    0.0}
+        },
+        {
+         ControllerName::FrontRight, ControlState::GLOBAL,
+         {JointName::FrontRightOuter, 0.0}, {JointName::FrontRightInner, 0.0}
+        },
+        {
+         ControllerName::BackLeft,   ControlState::GLOBAL,
+         {JointName::BackLeftOuter,   0.0}, {JointName::BackLeftInner,   0.0}
+        },
+        {
+         ControllerName::BackUp,     ControlState::GLOBAL,
+         {JointName::BackUpOuter,     0.0}, {JointName::BackUpInner,     0.0}
+        },
+        {
+         ControllerName::BackRight,  ControlState::GLOBAL,
+         {JointName::BackRightOuter,  0.0}, {JointName::BackRightInner,  0.0}
+        }
     };
 }
 
@@ -46,7 +64,6 @@ void WheelController::updateActiveControllers()
         controller.state = ControlState::LOCAL;
     }
 
-    // Update states based on grouping mode and drive mode
     if (current_pairs_grouping_mode_ == PairsGroupingMode::AllPairs) {
         switch (current_drive_mode_) {
             case DriveMode::AllWheelDrive:
@@ -141,7 +158,6 @@ void WheelController::jointStateCallback(const sensor_msgs::msg::JointState::Sha
 
         auto joint_enum = JointName::fromString(joint_name);
         if (joint_enum != JointName::Unknown) {
-            // Update velocity in the corresponding controller
             for (auto& controller : controllers_) {
                 if (controller.outer_joint.name == joint_enum) {
                     if (std::abs(controller.outer_joint.velocity - velocity) > precision) {
