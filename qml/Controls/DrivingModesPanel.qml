@@ -45,11 +45,9 @@ ColumnLayout {
 
         onActivated: {
             if (currentValue === PairsGroupingMode.Custom) {
-                // Если выбран Custom, то и второй комбобокс должен стать Custom
                 driveModes.currentIndex = 0;
                 WheelController.setDriveMode(DriveMode.Custom);
             } else if (driveModes.currentValue === DriveMode.Custom) {
-                // Если был Custom в другом комбобоксе, устанавливаем значения по умолчанию
                 driveModes.currentIndex = 3; // Full-drive
                 WheelController.setDriveMode(DriveMode.AllWheelDrive);
             }
@@ -66,7 +64,7 @@ ColumnLayout {
         Layout.preferredWidth: 200
         
         implicitContentWidthPolicy: ComboBox.WidestText
-        currentIndex: 3  // Full-drive по умолчанию
+        currentIndex: 3
         displayText: "Drive mode: " + currentText
         textRole: "text"
         valueRole: "value"
@@ -79,11 +77,9 @@ ColumnLayout {
 
         onActivated: {
             if (currentValue === DriveMode.Custom) {
-                // Если выбран Custom, то и второй комбобокс должен стать Custom
                 pairGroupingModes.currentIndex = 0;
                 WheelController.setPairsGroupingMode(PairsGroupingMode.Custom);
             } else if (pairGroupingModes.currentValue === PairsGroupingMode.Custom) {
-                // Если был Custom в другом комбобоксе, устанавливаем значения по умолчанию
                 pairGroupingModes.currentIndex = 1; // All cross pairs
                 WheelController.setPairsGroupingMode(PairsGroupingMode.AllPairs);
             }
