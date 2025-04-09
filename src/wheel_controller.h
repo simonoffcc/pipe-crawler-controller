@@ -56,6 +56,8 @@ public slots:
     void setDriveMode(int mode);
     void setPairsGroupingMode(int mode);
     void publishGlobalSpeed(double speed);
+    void publishLocalSpeed(double speed, int controller_name);
+    void publishIndependentSpeed(double speed, int controller_name, bool is_outer_joint);
     void setControllerState(int controller_name, int state);
 
 signals:

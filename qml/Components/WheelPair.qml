@@ -85,15 +85,15 @@ Item {
             let newState;
             if (root.state === "global") { 
                 newState = "local";
-                WheelController.setControllerState(root.controllerName, 1); // LOCAL = 1
+                WheelController.setControllerState(root.controllerName, 1);
             }
             else if (root.state === "local") { 
                 newState = "independent";
-                WheelController.setControllerState(root.controllerName, 2); // INDEPENDENT = 2
+                WheelController.setControllerState(root.controllerName, 2);
             }
             else { 
                 newState = "global";
-                WheelController.setControllerState(root.controllerName, 0); // GLOBAL = 0
+                WheelController.setControllerState(root.controllerName, 0);
             }
             root.state = newState;
         }
@@ -101,7 +101,7 @@ Item {
 
     Button {
         id: publishButton
-        visible: root.isCustomMode && root.state !== "global"
+        visible: root.isCustomMode && root.state !== "global" && root.state !== "independent"
 
         width: jointControlWidth * 0.6
         height: jointControlWidth * 0.3
@@ -136,11 +136,11 @@ Item {
             isPublishButtonOnLeftSide ? anchors.right = connectionLine.left : anchors.left = connectionLine.right
         }
 
-        // onClicked: {
-        //     if (root.state === "local" && outerJoint.jointSpeed !== "") {
-        //         WheelController.publishLocalSpeed(parseFloat(outerJoint.jointSpeed), root.controllerName);
-        //     }
-        // }
+        onClicked: {
+            if (root.state === "local" && outerJoint.jointSpeed !== "") {
+                WheelController.publishLocalSpeed(parseFloat(outerJoint.jointSpeed), root.controllerName);
+            }
+        }
     }
 
     JointControl {
@@ -158,11 +158,11 @@ Item {
             isFront ? anchors.bottom = connectionLine.top : anchors.top = connectionLine.bottom
         }
 
-        // onSpeedSubmitted: {
-        //     if (root.state === "independent") {
-        //         WheelController.publishIndependentSpeed(parseFloat(speed), root.controllerName, true);
-        //     }
-        // }
+        onSpeedSubmitted: function(speedValue) {
+            if (root.state === "independent") {
+                WheelController.publishIndependentSpeed(parseFloat(speedValue), root.controllerName, true);
+            }
+        }
     }
 
     PairConnection {
@@ -189,11 +189,11 @@ Item {
             !isFront ? anchors.bottom = connectionLine.top : anchors.top = connectionLine.bottom
         }
 
-        // onSpeedSubmitted: {
-        //     if (root.state === "independent") {
-        //         WheelController.publishIndependentSpeed(parseFloat(speed), root.controllerName, false);
-        //     }
-        // }
+        onSpeedSubmitted: function(speedValue) {
+            if (root.state === "independent") {
+                WheelController.publishIndependentSpeed(parseFloat(speedValue), root.controllerName, false);
+            }
+        }
     }
 
     states: [

@@ -42,7 +42,9 @@ Rectangle {
         anchors.fill: parent
         propagateComposedEvents: true
 
-        onClicked: root.state === "global" ? root.state = "local" : root.state = "global"
+        onClicked: {
+            root.state === "global" ? root.state = "local" : root.state = "global";
+        }
     }
 
     Column {

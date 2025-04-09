@@ -192,7 +192,7 @@ void WheelController::jointStateCallback(const sensor_msgs::msg::JointState::Sha
     }
 
     if (speeds_changed) {
-        RCLCPP_INFO(node_->get_logger(), "------- Wheel speeds updated -------");
+        RCLCPP_INFO(node_->get_logger(), "----- Wheel speeds updated -----");
         for (const auto& controller : controllers_) {
             RCLCPP_INFO(node_->get_logger(), "%s: outer=%.2f rad/s, inner=%.2f rad/s",
                         ControllerName::toString(controller.name).c_str(),
@@ -226,6 +226,8 @@ QVariantList WheelController::controllers() const
 
 void WheelController::publishGlobalSpeed(double speed)
 {
+    RCLCPP_INFO(node_->get_logger(), "-------- Publish Global --------");
+
     std_msgs::msg::Float64MultiArray msg;
     double speed_in_radians = qDegreesToRadians(speed);
     msg.data = {speed_in_radians, speed_in_radians};
@@ -234,7 +236,58 @@ void WheelController::publishGlobalSpeed(double speed)
         if (controller.state == ControlState::GLOBAL) {
             if (pair_velocity_publishers_.find(controller.name) != pair_velocity_publishers_.end()) {
                 pair_velocity_publishers_[controller.name]->publish(msg);
+                RCLCPP_INFO(node_->get_logger(), "Publishing global speed %.2f rad/s to %s",
+                    speed_in_radians, ControllerName::toString(controller.name).c_str());
             }
         }
     }
+    RCLCPP_INFO(node_->get_logger(), "--------------------------------");
+}
+
+void WheelController::publishLocalSpeed(double speed, int controller_name)
+{
+    RCLCPP_INFO(node_->get_logger(), "-------- Publish Local ---------");
+
+    auto controller_enum = static_cast<ControllerName::Name>(controller_name);
+    std_msgs::msg::Float64MultiArray msg;
+    double speed_in_radians = qDegreesToRadians(speed);
+    msg.data = {speed_in_radians, speed_in_radians};
+
+    for (auto& controller : controllers_) {
+        if (controller.name == controller_enum && controller.state == ControlState::LOCAL) {
+            if (pair_velocity_publishers_.find(controller.name) != pair_velocity_publishers_.end()) {
+                pair_velocity_publishers_[controller.name]->publish(msg);
+                RCLCPP_INFO(node_->get_logger(), "Publishing local speed %.2f rad/s to %s",
+                    speed_in_radians, ControllerName::toString(controller.name).c_str());
+            }
+            break;
+        }
+    }
+    RCLCPP_INFO(node_->get_logger(), "--------------------------------");
+}
+
+void WheelController::publishIndependentSpeed(double speed, int controller_name, bool is_outer_joint)
+{
+    RCLCPP_INFO(node_->get_logger(), "------ Publish Independent -----");
+
+    auto controller_enum = static_cast<ControllerName::Name>(controller_name);
+    std_msgs::msg::Float64MultiArray msg;
+    double speed_in_radians = qDegreesToRadians(speed);
+    
+    for (auto& controller : controllers_) {
+        if (controller.name == controller_enum && controller.state == ControlState::INDEPENDENT) {
+            double outer_speed = is_outer_joint ? speed_in_radians : controller.outer_joint.velocity;
+            double inner_speed = is_outer_joint ? controller.inner_joint.velocity : speed_in_radians;
+            
+            msg.data = {outer_speed, inner_speed};
+            
+            if (pair_velocity_publishers_.find(controller.name) != pair_velocity_publishers_.end()) {
+                pair_velocity_publishers_[controller.name]->publish(msg);
+                RCLCPP_INFO(node_->get_logger(), "Publishing independent speeds (outer: %.2f rad/s, inner: %.2f rad/s) to %s",
+                    outer_speed, inner_speed, ControllerName::toString(controller.name).c_str());
+            }
+            break;
+        }
+    }
+    RCLCPP_INFO(node_->get_logger(), "--------------------------------");
 }
