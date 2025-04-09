@@ -24,8 +24,8 @@ Item {
     width: jointControlWidth
     height: jointControlWidth * 2.5
 
-    readonly property bool isCustomMode: WheelController.currentDriveMode === DriveMode.Custom &&
-                                      WheelController.currentPairsGroupingMode === PairsGroupingMode.Custom
+    readonly property bool isCustomMode: WheelController.pairsGroupingMode === PairsGroupingMode.Custom &&
+                                      WheelController.driveMode === DriveMode.Custom
 
     Component.onCompleted: {
         let controllers = WheelController.controllers;
@@ -61,13 +61,13 @@ Item {
             }
         }
 
-        function onCurrentDriveModeChanged() {
+        function onDriveModeChanged() {
             if (!isCustomMode) {
                 root.state = "global";
             }
         }
 
-        function onCurrentPairsGroupingModeChanged() {
+        function onPairsGroupingModeChanged() {
             if (!isCustomMode) {
                 root.state = "global";
             }
@@ -83,6 +83,7 @@ Item {
         cursorShape: root.isCustomMode ? Qt.PointingHandCursor : Qt.ArrowCursor
 
         onClicked: {
+            // + логика по изменению состояний внутри контейнера в cpp контроллере
             if (root.state === "global") { root.state = "local" }
             else if (root.state === "local") { root.state = "independent" }
             else { root.state = "global" }
@@ -91,7 +92,7 @@ Item {
 
     Button {
         id: publishButton
-        visible: false
+        visible: root.isCustomMode
 
         width: jointControlWidth * 0.6
         height: jointControlWidth * 0.3
@@ -140,7 +141,6 @@ Item {
         height: jointControlWidth
         border.width: elementStrokeWidth
         jointName: root.outerJointName
-        enabled: root.state !== "global"
 
         Component.onCompleted: {
             anchors.horizontalCenter = parent.horizontalCenter
@@ -170,7 +170,6 @@ Item {
         height: jointControlWidth
         border.width: elementStrokeWidth
         jointName: root.innerJointName
-        enabled: root.state !== "global"
 
         Component.onCompleted: {
             anchors.horizontalCenter = parent.horizontalCenter

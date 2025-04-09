@@ -114,7 +114,7 @@ Item {
         anchors {
             horizontalCenter: schemeLinesBack.left
             verticalCenter: schemeLinesBack.verticalCenter
-            verticalCenterOffset:  schemeLinesBack.height / -6
+            verticalCenterOffset: schemeLinesBack.height / -6
         }
     }
 

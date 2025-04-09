@@ -47,6 +47,7 @@ void WheelController::setDriveMode(int mode)
     if (current_drive_mode_ != mode) {
         current_drive_mode_ = mode;
         updateActiveControllers();
+        emit driveModeChanged();
     }
 }
 
@@ -55,6 +56,7 @@ void WheelController::setPairsGroupingMode(int mode)
     if (current_pairs_grouping_mode_ != mode) {
         current_pairs_grouping_mode_ = mode;
         updateActiveControllers();
+        emit pairsGroupingModeChanged();
     }
 }
 
@@ -159,17 +161,17 @@ void WheelController::jointStateCallback(const sensor_msgs::msg::JointState::Sha
         auto joint_enum = JointName::fromString(joint_name);
         if (joint_enum != JointName::Unknown) {
             for (auto& controller : controllers_) {
+                Joint* target_joint = nullptr;
+
                 if (controller.outer_joint.name == joint_enum) {
-                    if (std::abs(controller.outer_joint.velocity - velocity) > precision) {
-                        controller.outer_joint.velocity = velocity;
-                        speeds_changed = true;
-                    }
-                }  // мне кажется, бесполезный иф елз
-                else if (controller.inner_joint.name == joint_enum) {
-                    if (std::abs(controller.inner_joint.velocity - velocity) > precision) {
-                        controller.inner_joint.velocity = velocity;
-                        speeds_changed = true;
-                    }
+                    target_joint = &controller.outer_joint;
+                } else if (controller.inner_joint.name == joint_enum) {
+                    target_joint = &controller.inner_joint;
+                }
+
+                if (target_joint && std::abs(target_joint->velocity - velocity) > precision) {
+                    target_joint->velocity = velocity;
+                    speeds_changed = true;
                 }
             }
         }
@@ -179,9 +181,9 @@ void WheelController::jointStateCallback(const sensor_msgs::msg::JointState::Sha
         RCLCPP_INFO(node_->get_logger(), "------- Wheel speeds updated -------");
         for (const auto& controller : controllers_) {
             RCLCPP_INFO(node_->get_logger(), "%s: outer=%.2f rad/s, inner=%.2f rad/s",
-                ControllerName::toString(controller.name).c_str(),
-                controller.outer_joint.velocity,
-                controller.inner_joint.velocity);
+                        ControllerName::toString(controller.name).c_str(),
+                        controller.outer_joint.velocity,
+                        controller.inner_joint.velocity);
         }
         RCLCPP_INFO(node_->get_logger(), "--------------------------------");
         emit controllersChanged();

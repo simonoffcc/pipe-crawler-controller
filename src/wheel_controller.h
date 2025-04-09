@@ -48,8 +48,6 @@ public:
         return _instance;
     }
 
-    //******************************************************************************//
-
     QVariantList controllers() const;
     int currentDriveMode() const { return current_drive_mode_; }
     int currentPairsGroupingMode() const { return current_pairs_grouping_mode_; }

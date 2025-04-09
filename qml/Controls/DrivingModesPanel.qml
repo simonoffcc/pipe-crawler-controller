@@ -9,8 +9,8 @@ import driveMode
 ColumnLayout {
     id: root
     
-    readonly property bool isCustomMode: pairGroupingModes.currentValue === PairsGroupingMode.Custom &&
-                                      driveModes.currentValue === DriveMode.Custom
+    readonly property bool isCustomMode: WheelController.pairsGroupingMode === PairsGroupingMode.Custom &&
+                                      WheelController.driveMode === DriveMode.Custom
     
     Text {
         id: controlsTitle
@@ -48,7 +48,7 @@ ColumnLayout {
                 driveModes.currentIndex = 0;
                 WheelController.setDriveMode(DriveMode.Custom);
             } else if (driveModes.currentValue === DriveMode.Custom) {
-                driveModes.currentIndex = 3; // Full-drive
+                driveModes.currentIndex = 3;
                 WheelController.setDriveMode(DriveMode.AllWheelDrive);
             }
             WheelController.setPairsGroupingMode(currentValue);
@@ -80,10 +80,10 @@ ColumnLayout {
                 pairGroupingModes.currentIndex = 0;
                 WheelController.setPairsGroupingMode(PairsGroupingMode.Custom);
             } else if (pairGroupingModes.currentValue === PairsGroupingMode.Custom) {
-                pairGroupingModes.currentIndex = 1; // All cross pairs
+                pairGroupingModes.currentIndex = 1;
                 WheelController.setPairsGroupingMode(PairsGroupingMode.AllPairs);
             }
-            WheelController.setDriveMode(currentValue);
+            else { WheelController.setDriveMode(currentValue); }
         }
     }
 
