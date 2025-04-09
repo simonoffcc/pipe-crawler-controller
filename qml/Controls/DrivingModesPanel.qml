@@ -11,7 +11,9 @@ ColumnLayout {
     
     readonly property bool isCustomMode: WheelController.currentPairsGroupingMode === PairsGroupingMode.Custom &&
                                       WheelController.currentDriveMode === DriveMode.Custom
-    
+
+    property bool isLocked: false
+
     Text {
         id: controlsTitle
         
@@ -89,4 +91,30 @@ ColumnLayout {
         }
     }
 
+    Button {
+        id: lockButton
+        visible: root.isCustomMode
+        Layout.leftMargin: 15
+        Layout.topMargin: 5
+        Layout.preferredWidth: 40
+        Layout.preferredHeight: 40
+
+        icon.source: root.isLocked ? "/icons/lock.png" : "/icons/unlock.png"
+        icon.color: "transparent"
+
+        background: Rectangle {
+            radius: 5
+            color: lockButton.pressed ? "#cccccc" :
+                   lockButton.hovered ? "#e6e6e6" : "white"
+            border.color: "black"
+            border.width: 1
+        }
+
+        ToolTip.visible: hovered
+        ToolTip.text: root.isLocked ? "Unlock controller states" : "Lock controller states"
+
+        onClicked: {
+            root.isLocked = !root.isLocked
+        }
+    }
 }

@@ -1,5 +1,6 @@
 add_subdirectory(Components)
 add_subdirectory(Controls)
+
 qt_add_qml_module(main_module
         URI MainModule
         VERSION 1.0

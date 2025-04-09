@@ -18,6 +18,7 @@ Item {
     property int elementStrokeWidth: 4
     property int outerJointName: JointName.Unknown
     property int innerJointName: JointName.Unknown
+    property bool isLocked: false
 
     width: jointControlWidth
     height: jointControlWidth * 2.5
@@ -74,11 +75,11 @@ Item {
 
     MouseArea {
         id: clickArea
-        enabled: root.isCustomMode
+        enabled: root.isCustomMode && !root.isLocked
 
         anchors.fill: parent
 
-        cursorShape: root.isCustomMode ? Qt.PointingHandCursor : Qt.ArrowCursor
+        cursorShape: (root.isCustomMode && !root.isLocked) ? Qt.PointingHandCursor : Qt.ArrowCursor
 
         onClicked: {
             let newState;

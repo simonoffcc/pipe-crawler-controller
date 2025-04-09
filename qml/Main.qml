@@ -32,6 +32,7 @@ ApplicationWindow {
                 id: robotDiagram
 
                 anchors.centerIn: parent
+                isLocked: controlsLayout.isLocked
 
                 width: 600
                 height: 950

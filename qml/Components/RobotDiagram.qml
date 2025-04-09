@@ -10,6 +10,8 @@ Item {
     width: 430
     height: 910
 
+    property bool isLocked: false
+
     SchemeBody {
         id: schemeBody
 
@@ -57,6 +59,7 @@ Item {
         elementStrokeWidth: 4
         outerJointName: JointName.FrontLeftOuter
         innerJointName: JointName.FrontLeftInner
+        isLocked: root.isLocked
 
         anchors {
             horizontalCenter: schemeLinesFront.left
@@ -75,6 +78,7 @@ Item {
         elementStrokeWidth: 4
         outerJointName: JointName.FrontUpOuter
         innerJointName: JointName.FrontUpInner
+        isLocked: root.isLocked
 
         anchors {
             horizontalCenter: schemeLinesFront.horizontalCenter
@@ -92,6 +96,7 @@ Item {
         elementStrokeWidth: 4
         outerJointName: JointName.FrontRightOuter
         innerJointName: JointName.FrontRightInner
+        isLocked: root.isLocked
 
         anchors {
             horizontalCenter: schemeLinesFront.right
@@ -110,6 +115,7 @@ Item {
         elementStrokeWidth: 4
         outerJointName: JointName.BackLeftOuter
         innerJointName: JointName.BackLeftInner
+        isLocked: root.isLocked
 
         anchors {
             horizontalCenter: schemeLinesBack.left
@@ -128,6 +134,7 @@ Item {
         elementStrokeWidth: 4
         outerJointName: JointName.BackUpOuter
         innerJointName: JointName.BackUpInner
+        isLocked: root.isLocked
 
         anchors {
             horizontalCenter: schemeLinesBack.horizontalCenter
@@ -145,6 +152,7 @@ Item {
         elementStrokeWidth: 4
         outerJointName: JointName.BackRightOuter
         innerJointName: JointName.BackRightInner
+        isLocked: root.isLocked
 
         anchors {
             horizontalCenter: schemeLinesBack.right
