@@ -9,6 +9,11 @@ import driveMode
 ColumnLayout {
     id: root
     
+    readonly property bool isCustomMode: WheelController.currentPairsGroupingMode === PairsGroupingMode.Custom &&
+                                       WheelController.currentDriveMode === DriveMode.Custom
+    
+    property bool isLocked: false
+
     Text {
         id: controlsTitle
         
@@ -21,27 +26,80 @@ ColumnLayout {
         text: qsTr("Pair Grouping/Driving modes")
     }
     
-    ComboBox {
-        id: pairGroupingModes
-        
+    Row {
         Layout.leftMargin: 15
         Layout.topMargin: 5
         Layout.rightMargin: 10
-        Layout.preferredWidth: 200
-        
-        implicitContentWidthPolicy: ComboBox.WidestText
-        currentIndex: 1
-        displayText: "Grouping: " + currentText
-        textRole: "text"
-        valueRole: "value"
-        model: [
-            { value: PairsGroupingMode.Custom, text: qsTr("Custom") },
-            { value: PairsGroupingMode.AllPairs, text: qsTr("All cross pairs") },
-            { value: PairsGroupingMode.LeftRight, text: qsTr("Left-Right wheel pairs") }
-        ]
+        spacing: 10
 
-        onActivated: {
-            WheelController.setPairsGroupingMode(currentValue)
+        ComboBox {
+            id: pairGroupingModes
+            
+            width: 200
+            
+            implicitContentWidthPolicy: ComboBox.WidestText
+            displayText: "Grouping: " + currentText
+            textRole: "text"
+            valueRole: "value"
+            model: [
+                { value: PairsGroupingMode.Custom, text: qsTr("Custom") },
+                { value: PairsGroupingMode.LeftRight, text: qsTr("Left-Right wheel pairs") },
+                { value: PairsGroupingMode.AllPairs, text: qsTr("All cross pairs") }
+            ]
+
+            Component.onCompleted: {
+                // Установка начального значения
+                for (let i = 0; i < model.length; i++) {
+                    if (model[i].value === WheelController.currentPairsGroupingMode) {
+                        currentIndex = i;
+                        break;
+                    }
+                }
+            }
+
+            onActivated: {
+                console.log("Pair grouping mode activated with value:", currentValue);
+                WheelController.setPairsGroupingMode(currentValue);
+            }
+
+            Connections {
+                target: WheelController
+                function onPairsGroupingModeChanged() {
+                    console.log("Received pairs grouping mode changed signal, current mode:", WheelController.currentPairsGroupingMode);
+                    for (let i = 0; i < pairGroupingModes.model.length; i++) {
+                        if (pairGroupingModes.model[i].value === WheelController.currentPairsGroupingMode) {
+                            console.log("Setting pair grouping mode index to:", i);
+                            pairGroupingModes.currentIndex = i;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        Button {
+            id: lockButton
+            visible: root.isCustomMode
+            width: height
+            height: pairGroupingModes.height
+
+            icon.source: root.isLocked ? "qrc:/icons/lock.png" : "qrc:/icons/unlock.png"
+            icon.color: "black"
+
+            background: Rectangle {
+                radius: 5
+                color: lockButton.pressed ? "#cccccc" : 
+                       lockButton.hovered ? "#e6e6e6" : "white"
+                border.color: "black"
+                border.width: 1
+            }
+
+            ToolTip.visible: hovered
+            ToolTip.text: root.isLocked ? "Unlock controller states" : "Lock controller states"
+
+            onClicked: {
+                root.isLocked = !root.isLocked
+            }
         }
     }
     
@@ -54,7 +112,6 @@ ColumnLayout {
         Layout.preferredWidth: 200
         
         implicitContentWidthPolicy: ComboBox.WidestText
-        currentIndex: 1
         displayText: "Drive mode: " + currentText
         textRole: "text"
         valueRole: "value"
@@ -65,8 +122,33 @@ ColumnLayout {
             { value: DriveMode.AllWheelDrive, text: qsTr("Full-drive") }
         ]
 
+        Component.onCompleted: {
+            // Установка начального значения
+            for (let i = 0; i < model.length; i++) {
+                if (model[i].value === WheelController.currentDriveMode) {
+                    currentIndex = i;
+                    break;
+                }
+            }
+        }
+
         onActivated: {
-            WheelController.setDriveMode(currentValue)
+            console.log("Drive mode activated with value:", currentValue);
+            WheelController.setDriveMode(currentValue);
+        }
+
+        Connections {
+            target: WheelController
+            function onDriveModeChanged() {
+                console.log("Received drive mode changed signal, current mode:", WheelController.currentDriveMode);
+                for (let i = 0; i < driveModes.model.length; i++) {
+                    if (driveModes.model[i].value === WheelController.currentDriveMode) {
+                        console.log("Setting drive mode index to:", i);
+                        driveModes.currentIndex = i;
+                        break;
+                    }
+                }
+            }
         }
     }
 }

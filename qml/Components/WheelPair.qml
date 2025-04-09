@@ -5,6 +5,8 @@ import QtQuick.Controls.Basic
 import WheelController
 import controllerName
 import jointName
+import driveMode
+import pairsGroupingMode
 
 Item {
     id: root
@@ -22,43 +24,93 @@ Item {
     width: jointControlWidth
     height: jointControlWidth * 2.5
 
+    readonly property bool isCustomMode: WheelController.currentPairsGroupingMode === PairsGroupingMode.Custom && 
+                                      WheelController.currentDriveMode === DriveMode.Custom
+
+    property var drivingModesPanel: null
+
+    readonly property bool canChangeState: isCustomMode && (!drivingModesPanel || !drivingModesPanel.isLocked)
+
+    Component.onCompleted: {
+        let parent = root.parent;
+        while (parent) {
+            if (parent.drivingModesPanel) {
+                drivingModesPanel = parent.drivingModesPanel;
+                break;
+            }
+            parent = parent.parent;
+        }
+
+        let controllers = WheelController.controllers;
+        for (let i = 0; i < controllers.length; i++) {
+            if (controllers[i].name === root.controllerName) {
+                root.state = ["global", "local", "independent"][controllers[i].state];
+                outerJoint.telemetrySpeed = controllers[i].outerJoint.velocity.toFixed(1) + "°/sec";
+                innerJoint.telemetrySpeed = controllers[i].innerJoint.velocity.toFixed(1) + "°/sec";
+                break;
+            }
+        }
+    }
+
     Connections {
         target: WheelController
         
-        function onActiveControllersChanged() {
-            root.state = "local"
-            var controllers = WheelController.activeControllers
-            for (var i = 0; i < controllers.length; i++) {
-                if (controllers[i] === root.controllerName) {
-                    root.state = "global"
+        function onControllersChanged() {
+            let found = false;
+            let controllers = WheelController.controllers;
+            for (let i = 0; i < controllers.length; i++) {
+                if (controllers[i].name === root.controllerName) {
+                    found = true;
+                    if (!isCustomMode) {
+                        root.state = ["global", "local", "independent"][controllers[i].state];
+                    }
+                    outerJoint.telemetrySpeed = controllers[i].outerJoint.velocity.toFixed(1) + "°/sec";
+                    innerJoint.telemetrySpeed = controllers[i].innerJoint.velocity.toFixed(1) + "°/sec";
+                    break;
                 }
+            }
+            if (!found) {
+                if (!isCustomMode) {
+                    root.state = "global";
+                }
+                outerJoint.telemetrySpeed = "0.0°/sec";
+                innerJoint.telemetrySpeed = "0.0°/sec";
             }
         }
 
-        function onJointSpeedsChanged() {
-            var speeds = WheelController.jointSpeeds
-            
-            if (outerJointName in speeds) {
-                outerJoint.telemetrySpeed = speeds[outerJointName].toFixed(1) + "°/sec"
+        function onCurrentDriveModeChanged() {
+            if (!isCustomMode) {
+                root.state = "global";
             }
-            if (innerJointName in speeds) {
-                innerJoint.telemetrySpeed = speeds[innerJointName].toFixed(1) + "°/sec"
+        }
+
+        function onCurrentPairsGroupingModeChanged() {
+            if (!isCustomMode) {
+                root.state = "global";
             }
         }
     }
 
     MouseArea {
         id: clickArea
-        enabled: false
+        enabled: root.canChangeState
 
         anchors.fill: parent
 
-        cursorShape: Qt.PointingHandCursor
+        cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
 
         onClicked: {
-            if (root.state === "global") { root.state = "local" }
-            else if (root.state === "local") { root.state = "independent" }
-            else { root.state = "global" }
+            if (enabled) {
+                if (root.state === "global") { 
+                    root.state = "local";
+                }
+                else if (root.state === "local") { 
+                    root.state = "independent";
+                }
+                else { 
+                    root.state = "global";
+                }
+            }
         }
     }
 
@@ -98,6 +150,12 @@ Item {
             anchors.verticalCenter = connectionLine.verticalCenter
             isPublishButtonOnLeftSide ? anchors.right = connectionLine.left : anchors.left = connectionLine.right
         }
+
+        // onClicked: {
+        //     if (root.state === "local" && outerJoint.jointSpeed !== "") {
+        //         WheelController.publishLocalSpeed(parseFloat(outerJoint.jointSpeed), root.controllerName);
+        //     }
+        // }
     }
 
     JointControl {
@@ -107,11 +165,18 @@ Item {
         height: jointControlWidth
         border.width: elementStrokeWidth
         jointName: root.outerJointName
+        enabled: root.state !== "global"
 
         Component.onCompleted: {
             anchors.horizontalCenter = parent.horizontalCenter
             isFront ? anchors.bottom = connectionLine.top : anchors.top = connectionLine.bottom
         }
+
+        // onSpeedSubmitted: {
+        //     if (root.state === "independent") {
+        //         WheelController.publishIndependentSpeed(parseFloat(speed), root.controllerName, true);
+        //     }
+        // }
     }
 
     PairConnection {
@@ -130,11 +195,18 @@ Item {
         height: jointControlWidth
         border.width: elementStrokeWidth
         jointName: root.innerJointName
+        enabled: root.state !== "global"
 
         Component.onCompleted: {
             anchors.horizontalCenter = parent.horizontalCenter
             !isFront ? anchors.bottom = connectionLine.top : anchors.top = connectionLine.bottom
         }
+
+        // onSpeedSubmitted: {
+        //     if (root.state === "independent") {
+        //         WheelController.publishIndependentSpeed(parseFloat(speed), root.controllerName, false);
+        //     }
+        // }
     }
 
     states: [
@@ -152,6 +224,10 @@ Item {
                 target: innerJoint
                 state: "global"
             }
+            PropertyChanges {
+                target: publishButton
+                visible: false
+            }
         },
         State {
             name: "local"
@@ -167,9 +243,10 @@ Item {
                 target: innerJoint
                 state: "local"
             }
-            // PropertyChanges {
-            //     publishButton.visible: true
-            // }
+            PropertyChanges {
+                target: publishButton
+                visible: true
+            }
         },
         State {
             name: "independent"
@@ -185,9 +262,10 @@ Item {
                 target: innerJoint
                 state: "local"
             }
-            // PropertyChanges {
-            //     publishButton.visible: true
-            // }
+            PropertyChanges {
+                target: publishButton
+                visible: true
+            }
         }
     ]
 }

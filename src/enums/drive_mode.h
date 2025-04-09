@@ -8,10 +8,10 @@ class DriveMode {
     Q_GADGET
 public:
     enum Mode {
-        Custom,          ///< Кастомный пресет (все другие способы привода)
-        FrontDrive,     ///< Передний привод
-        RearDrive,      ///< Задний привод
-        AllWheelDrive  ///< Полный привод
+        Custom = 0,         ///< Кастомный пресет (все другие способы привода)
+        FrontDrive = 1,     ///< Передний привод
+        RearDrive = 2,      ///< Задний привод
+        AllWheelDrive = 3   ///< Полный привод
     };
     Q_ENUM(Mode)
 };

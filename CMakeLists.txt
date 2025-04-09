@@ -44,8 +44,11 @@ include_directories(
 
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp *.h)
 
+# Qt Resources
+set(RESOURCES resources/resources.qrc)
+
 # Create main executable
-qt_add_executable(${PROJECT_NAME}_node ${SOURCES})
+qt_add_executable(${PROJECT_NAME}_node ${SOURCES} ${RESOURCES})
 
 # Link libraries
 target_link_libraries(${PROJECT_NAME}_node

@@ -9,6 +9,8 @@ Rectangle {
     property alias telemetrySpeed: telemetryText.text
     property alias jointSpeed: speedInput.text
 
+    signal speedSubmitted(string speed)
+
     state: "global"
 
     width: 100
@@ -45,7 +47,7 @@ Rectangle {
 
         TextField {
             id: speedInput
-            visible: false
+            visible: root.state !== "global"
 
             color: "black"
             placeholderText: qsTr("dq: 1.0°/sec")
@@ -74,6 +76,18 @@ Rectangle {
                     right: parent.right
                 }
             }
+
+            Keys.onReturnPressed: {
+                if (text !== "") {
+                    root.speedSubmitted(text);
+                }
+            }
+
+            Keys.onEnterPressed: {
+                if (text !== "") {
+                    root.speedSubmitted(text);
+                }
+            }
         }
     }
 
@@ -81,15 +95,15 @@ Rectangle {
         State {
             name: "global"
             PropertyChanges {
-                root.border.color: "green"
-                speedInput.visible: false
+                target: root
+                border.color: "green"
             }
         },
         State {
             name: "local"
             PropertyChanges {
-                root.border.color: "black"
-                speedInput.visible: false  // в теории True
+                target: root
+                border.color: "black"
             }
         }
     ]
