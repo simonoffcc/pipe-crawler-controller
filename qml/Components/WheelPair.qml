@@ -211,10 +211,6 @@ Item {
                 target: innerJoint
                 state: "global"
             }
-            // PropertyChanges {
-            //     target: publishButton
-            //     visible: false
-            // }
         },
         State {
             name: "local"
@@ -230,10 +226,6 @@ Item {
                 target: innerJoint
                 state: "local"
             }
-            // PropertyChanges {
-            //     target: publishButton
-            //     visible: true
-            // }
         },
         State {
             name: "independent"
@@ -249,10 +241,6 @@ Item {
                 target: innerJoint
                 state: "independent"
             }
-            // PropertyChanges {
-            //     target: publishButton
-            //     visible: true
-            // }
         }
     ]
 }

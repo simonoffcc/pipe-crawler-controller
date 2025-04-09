@@ -12,8 +12,8 @@ Rectangle {
     property int jointName
     property alias telemetrySpeed: telemetryText.text
     property alias jointSpeed: speedInput.text
-    property bool isPaired: false  // Flag to indicate if this joint is paired
-    property var pairedJoint: null // Reference to the paired JointControl
+    property bool isPaired: false
+    property var pairedJoint: null
 
     signal speedSubmitted(string speed)
 
@@ -29,7 +29,6 @@ Rectangle {
     readonly property bool isCustomMode: WheelController.currentPairsGroupingMode === PairsGroupingMode.Custom &&
                                       WheelController.currentDriveMode === DriveMode.Custom
 
-    // Function to sync speed with paired joint
     function syncSpeedWithPaired(speed) {
         if (isPaired && pairedJoint && root.state === "local" && root.isCustomMode) {
             pairedJoint.jointSpeed = speed;
