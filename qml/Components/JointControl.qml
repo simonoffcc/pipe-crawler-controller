@@ -2,6 +2,10 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Basic
 
+import WheelController
+import pairsGroupingMode
+import driveMode
+
 Rectangle {
     id: root
 
@@ -19,6 +23,9 @@ Rectangle {
     radius: width / 2
     border.width: 4
     color: "white"
+
+    readonly property bool isCustomMode: WheelController.currentPairsGroupingMode === PairsGroupingMode.Custom &&
+                                      WheelController.currentDriveMode === DriveMode.Custom
 
     MouseArea {
         enabled: false
@@ -47,7 +54,7 @@ Rectangle {
 
         TextField {
             id: speedInput
-            visible: root.state !== "global"
+            visible: root.isCustomMode && root.state !== "global"
 
             color: "black"
             placeholderText: qsTr("dq: 1.0°/sec")

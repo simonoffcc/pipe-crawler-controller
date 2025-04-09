@@ -100,7 +100,7 @@ Item {
 
     Button {
         id: publishButton
-        visible: root.isCustomMode
+        visible: root.isCustomMode && root.state !== "global"
 
         width: jointControlWidth * 0.6
         height: jointControlWidth * 0.3
