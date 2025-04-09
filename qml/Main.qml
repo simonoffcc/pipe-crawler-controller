@@ -32,7 +32,6 @@ ApplicationWindow {
                 id: robotDiagram
 
                 anchors.centerIn: parent
-                drivingModesPanel: controlsLayout
 
                 width: 600
                 height: 950

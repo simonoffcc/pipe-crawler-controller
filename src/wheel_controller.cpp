@@ -24,52 +24,37 @@ WheelController::WheelController(std::shared_ptr<rclcpp::Node> node, QObject* pa
     };
 }
 
-void WheelController::setDriveMode(DriveMode::Mode mode)
+void WheelController::setDriveMode(int mode)
 {
-    RCLCPP_INFO(node_->get_logger(), "setDriveMode called with mode: %d", static_cast<int>(mode));
     if (current_drive_mode_ != mode) {
         current_drive_mode_ = mode;
-        RCLCPP_INFO(node_->get_logger(), "Drive mode changed, updating controllers");
         updateActiveControllers();
-        emit driveModeChanged();
     }
 }
 
-void WheelController::setPairsGroupingMode(PairsGroupingMode::Mode mode)
+void WheelController::setPairsGroupingMode(int mode)
 {
-    RCLCPP_INFO(node_->get_logger(), "setPairsGroupingMode called with mode: %d", static_cast<int>(mode));
     if (current_pairs_grouping_mode_ != mode) {
         current_pairs_grouping_mode_ = mode;
-        RCLCPP_INFO(node_->get_logger(), "Pairs grouping mode changed, updating controllers");
         updateActiveControllers();
-        emit pairsGroupingModeChanged();
     }
 }
 
 void WheelController::updateActiveControllers()
 {
-    RCLCPP_INFO(node_->get_logger(), "updateActiveControllers called with modes: drive=%d, grouping=%d", 
-                static_cast<int>(current_drive_mode_), static_cast<int>(current_pairs_grouping_mode_));
-
-    // Сначала все контроллеры в LOCAL
     for (auto& controller : controllers_) {
         controller.state = ControlState::LOCAL;
     }
 
-    // Если оба режима Custom, оставляем все в LOCAL
-    if (current_pairs_grouping_mode_ == PairsGroupingMode::Custom && 
-        current_drive_mode_ == DriveMode::Custom) {
-        RCLCPP_INFO(node_->get_logger(), "Both modes are Custom, all controllers stay LOCAL");
-    }
-    // Если только группировка Custom, применяем только режим привода
-    else if (current_pairs_grouping_mode_ == PairsGroupingMode::Custom) {
-        RCLCPP_INFO(node_->get_logger(), "Grouping is Custom, applying only drive mode");
+    // Update states based on grouping mode and drive mode
+    if (current_pairs_grouping_mode_ == PairsGroupingMode::AllPairs) {
         switch (current_drive_mode_) {
             case DriveMode::AllWheelDrive:
                 for (auto& controller : controllers_) {
                     controller.state = ControlState::GLOBAL;
                 }
                 break;
+
             case DriveMode::FrontDrive:
                 for (auto& controller : controllers_) {
                     if (controller.name == ControllerName::FrontLeft ||
@@ -79,6 +64,7 @@ void WheelController::updateActiveControllers()
                     }
                 }
                 break;
+
             case DriveMode::RearDrive:
                 for (auto& controller : controllers_) {
                     if (controller.name == ControllerName::BackLeft ||
@@ -88,101 +74,39 @@ void WheelController::updateActiveControllers()
                     }
                 }
                 break;
-            case DriveMode::Custom:
-                break;
         }
     }
-    // Если только привод Custom, применяем только режим группировки
-    else if (current_drive_mode_ == DriveMode::Custom) {
-        RCLCPP_INFO(node_->get_logger(), "Drive mode is Custom, applying only grouping mode");
-        if (current_pairs_grouping_mode_ == PairsGroupingMode::AllPairs) {
-            for (auto& controller : controllers_) {
-                controller.state = ControlState::GLOBAL;
-            }
-        }
-        else if (current_pairs_grouping_mode_ == PairsGroupingMode::LeftRight) {
-            for (auto& controller : controllers_) {
-                if (controller.name == ControllerName::FrontLeft ||
-                    controller.name == ControllerName::FrontRight ||
-                    controller.name == ControllerName::BackLeft ||
-                    controller.name == ControllerName::BackRight) {
-                    controller.state = ControlState::GLOBAL;
-                }
-            }
-        }
-    }
-    // Обычная логика для не-Custom режимов
-    else {
-        if (current_pairs_grouping_mode_ == PairsGroupingMode::AllPairs) {
-            RCLCPP_INFO(node_->get_logger(), "Processing AllPairs mode");
-            switch (current_drive_mode_) {
-                case DriveMode::AllWheelDrive:
-                    for (auto& controller : controllers_) {
+    else if (current_pairs_grouping_mode_ == PairsGroupingMode::LeftRight) {
+        switch (current_drive_mode_) {
+            case DriveMode::AllWheelDrive:
+                for (auto& controller : controllers_) {
+                    if (controller.name == ControllerName::FrontLeft ||
+                        controller.name == ControllerName::FrontRight ||
+                        controller.name == ControllerName::BackLeft ||
+                        controller.name == ControllerName::BackRight) {
                         controller.state = ControlState::GLOBAL;
                     }
-                    break;
-                case DriveMode::FrontDrive:
-                    for (auto& controller : controllers_) {
-                        if (controller.name == ControllerName::FrontLeft ||
-                            controller.name == ControllerName::FrontUp ||
-                            controller.name == ControllerName::FrontRight) {
-                            controller.state = ControlState::GLOBAL;
-                        }
-                    }
-                    break;
-                case DriveMode::RearDrive:
-                    for (auto& controller : controllers_) {
-                        if (controller.name == ControllerName::BackLeft ||
-                            controller.name == ControllerName::BackUp ||
-                            controller.name == ControllerName::BackRight) {
-                            controller.state = ControlState::GLOBAL;
-                        }
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-        else if (current_pairs_grouping_mode_ == PairsGroupingMode::LeftRight) {
-            RCLCPP_INFO(node_->get_logger(), "Processing LeftRight mode");
-            switch (current_drive_mode_) {
-                case DriveMode::AllWheelDrive:
-                    for (auto& controller : controllers_) {
-                        if (controller.name == ControllerName::FrontLeft ||
-                            controller.name == ControllerName::FrontRight ||
-                            controller.name == ControllerName::BackLeft ||
-                            controller.name == ControllerName::BackRight) {
-                            controller.state = ControlState::GLOBAL;
-                        }
-                    }
-                    break;
-                case DriveMode::FrontDrive:
-                    for (auto& controller : controllers_) {
-                        if (controller.name == ControllerName::FrontLeft ||
-                            controller.name == ControllerName::FrontRight) {
-                            controller.state = ControlState::GLOBAL;
-                        }
-                    }
-                    break;
-                case DriveMode::RearDrive:
-                    for (auto& controller : controllers_) {
-                        if (controller.name == ControllerName::BackLeft ||
-                            controller.name == ControllerName::BackRight) {
-                            controller.state = ControlState::GLOBAL;
-                        }
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
+                }
+                break;
 
-    RCLCPP_INFO(node_->get_logger(), "Controller states after update:");
-    for (const auto& controller : controllers_) {
-        RCLCPP_INFO(node_->get_logger(), "%s: state=%d",
-            ControllerName::toString(controller.name).c_str(),
-            static_cast<int>(controller.state));
+            case DriveMode::FrontDrive:
+                for (auto& controller : controllers_) {
+                    if (controller.name == ControllerName::FrontLeft ||
+                        controller.name == ControllerName::FrontRight) {
+                        controller.state = ControlState::GLOBAL;
+                    }
+                }
+                break;
+
+            case DriveMode::RearDrive:
+                for (auto& controller : controllers_) {
+                    if (controller.name == ControllerName::BackLeft ||
+                        controller.name == ControllerName::BackRight) {
+                        controller.state = ControlState::GLOBAL;
+                    }
+                }
+                break;
+        }
     }
 
     emit controllersChanged();
@@ -217,18 +141,19 @@ void WheelController::jointStateCallback(const sensor_msgs::msg::JointState::Sha
 
         auto joint_enum = JointName::fromString(joint_name);
         if (joint_enum != JointName::Unknown) {
+            // Update velocity in the corresponding controller
             for (auto& controller : controllers_) {
-                Joint* target_joint = nullptr;
-                
                 if (controller.outer_joint.name == joint_enum) {
-                    target_joint = &controller.outer_joint;
-                } else if (controller.inner_joint.name == joint_enum) {
-                    target_joint = &controller.inner_joint;
-                }
-
-                if (target_joint && std::abs(target_joint->velocity - velocity) > precision) {
-                    target_joint->velocity = velocity;
-                    speeds_changed = true;
+                    if (std::abs(controller.outer_joint.velocity - velocity) > precision) {
+                        controller.outer_joint.velocity = velocity;
+                        speeds_changed = true;
+                    }
+                }  // мне кажется, бесполезный иф елз
+                else if (controller.inner_joint.name == joint_enum) {
+                    if (std::abs(controller.inner_joint.velocity - velocity) > precision) {
+                        controller.inner_joint.velocity = velocity;
+                        speeds_changed = true;
+                    }
                 }
             }
         }

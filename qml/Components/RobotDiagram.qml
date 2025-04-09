@@ -10,9 +10,6 @@ Item {
     width: 430
     height: 910
 
-    // Свойство для доступа к панели управления
-    property var drivingModesPanel: null
-
     SchemeBody {
         id: schemeBody
 
@@ -60,7 +57,6 @@ Item {
         elementStrokeWidth: 4
         outerJointName: JointName.FrontLeftOuter
         innerJointName: JointName.FrontLeftInner
-        drivingModesPanel: root.drivingModesPanel
 
         anchors {
             horizontalCenter: schemeLinesFront.left
@@ -79,7 +75,6 @@ Item {
         elementStrokeWidth: 4
         outerJointName: JointName.FrontUpOuter
         innerJointName: JointName.FrontUpInner
-        drivingModesPanel: root.drivingModesPanel
 
         anchors {
             horizontalCenter: schemeLinesFront.horizontalCenter
@@ -97,7 +92,6 @@ Item {
         elementStrokeWidth: 4
         outerJointName: JointName.FrontRightOuter
         innerJointName: JointName.FrontRightInner
-        drivingModesPanel: root.drivingModesPanel
 
         anchors {
             horizontalCenter: schemeLinesFront.right
@@ -116,7 +110,6 @@ Item {
         elementStrokeWidth: 4
         outerJointName: JointName.BackLeftOuter
         innerJointName: JointName.BackLeftInner
-        drivingModesPanel: root.drivingModesPanel
 
         anchors {
             horizontalCenter: schemeLinesBack.left
@@ -135,7 +128,6 @@ Item {
         elementStrokeWidth: 4
         outerJointName: JointName.BackUpOuter
         innerJointName: JointName.BackUpInner
-        drivingModesPanel: root.drivingModesPanel
 
         anchors {
             horizontalCenter: schemeLinesBack.horizontalCenter
@@ -153,12 +145,11 @@ Item {
         elementStrokeWidth: 4
         outerJointName: JointName.BackRightOuter
         innerJointName: JointName.BackRightInner
-        drivingModesPanel: root.drivingModesPanel
 
         anchors {
             horizontalCenter: schemeLinesBack.right
             verticalCenter: schemeLinesBack.verticalCenter
-            verticalCenterOffset:  schemeLinesBack.height / -6
+            verticalCenterOffset: schemeLinesBack.height / -6
         }
     }
 }

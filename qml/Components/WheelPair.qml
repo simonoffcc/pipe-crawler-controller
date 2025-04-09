@@ -24,23 +24,10 @@ Item {
     width: jointControlWidth
     height: jointControlWidth * 2.5
 
-    readonly property bool isCustomMode: WheelController.currentPairsGroupingMode === PairsGroupingMode.Custom && 
-                                      WheelController.currentDriveMode === DriveMode.Custom
-
-    property var drivingModesPanel: null
-
-    readonly property bool canChangeState: isCustomMode && (!drivingModesPanel || !drivingModesPanel.isLocked)
+    readonly property bool isCustomMode: WheelController.currentDriveMode === DriveMode.Custom &&
+                                      WheelController.currentPairsGroupingMode === PairsGroupingMode.Custom
 
     Component.onCompleted: {
-        let parent = root.parent;
-        while (parent) {
-            if (parent.drivingModesPanel) {
-                drivingModesPanel = parent.drivingModesPanel;
-                break;
-            }
-            parent = parent.parent;
-        }
-
         let controllers = WheelController.controllers;
         for (let i = 0; i < controllers.length; i++) {
             if (controllers[i].name === root.controllerName) {
@@ -61,18 +48,14 @@ Item {
             for (let i = 0; i < controllers.length; i++) {
                 if (controllers[i].name === root.controllerName) {
                     found = true;
-                    if (!isCustomMode) {
-                        root.state = ["global", "local", "independent"][controllers[i].state];
-                    }
+                    root.state = ["global", "local", "independent"][controllers[i].state];
                     outerJoint.telemetrySpeed = controllers[i].outerJoint.velocity.toFixed(1) + "°/sec";
                     innerJoint.telemetrySpeed = controllers[i].innerJoint.velocity.toFixed(1) + "°/sec";
                     break;
                 }
             }
             if (!found) {
-                if (!isCustomMode) {
-                    root.state = "global";
-                }
+                root.state = "independent";
                 outerJoint.telemetrySpeed = "0.0°/sec";
                 innerJoint.telemetrySpeed = "0.0°/sec";
             }
@@ -93,24 +76,16 @@ Item {
 
     MouseArea {
         id: clickArea
-        enabled: root.canChangeState
+        enabled: root.isCustomMode
 
         anchors.fill: parent
 
-        cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+        cursorShape: root.isCustomMode ? Qt.PointingHandCursor : Qt.ArrowCursor
 
         onClicked: {
-            if (enabled) {
-                if (root.state === "global") { 
-                    root.state = "local";
-                }
-                else if (root.state === "local") { 
-                    root.state = "independent";
-                }
-                else { 
-                    root.state = "global";
-                }
-            }
+            if (root.state === "global") { root.state = "local" }
+            else if (root.state === "local") { root.state = "independent" }
+            else { root.state = "global" }
         }
     }
 

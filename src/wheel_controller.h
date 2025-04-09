@@ -17,16 +17,16 @@
 #include "enums/joint_name.h"
 #include "enums/controller_name.h"
 
-/// \class Класс для управления скорстями групп колёсных пар робота из QML
+/// \class Класс для управления скорстями групп колёсных пар робота из QML.
 class WheelController : public QObject
 {
     Q_OBJECT
 
     // Режим управления, который необходим для отображения в комбо-боксах в GUI
-    Q_PROPERTY(DriveMode::Mode currentDriveMode READ currentDriveMode WRITE setDriveMode NOTIFY driveModeChanged)
+    Q_PROPERTY(int currentDriveMode READ currentDriveMode WRITE setDriveMode NOTIFY driveModeChanged)
 
     // Режим группировки пар, который необходим для отображения в комбо-боксах в GUI
-    Q_PROPERTY(PairsGroupingMode::Mode currentPairsGroupingMode READ currentPairsGroupingMode WRITE setPairsGroupingMode NOTIFY pairsGroupingModeChanged)
+    Q_PROPERTY(int currentPairsGroupingMode READ currentPairsGroupingMode WRITE setPairsGroupingMode NOTIFY pairsGroupingModeChanged)
 
     // Массив контроллеров колесных пар
     Q_PROPERTY(QVariantList controllers READ controllers NOTIFY controllersChanged)
@@ -48,13 +48,15 @@ public:
         return _instance;
     }
 
+    //******************************************************************************//
+
     QVariantList controllers() const;
-    DriveMode::Mode currentDriveMode() const { return current_drive_mode_; }
-    PairsGroupingMode::Mode currentPairsGroupingMode() const { return current_pairs_grouping_mode_; }
+    int currentDriveMode() const { return current_drive_mode_; }
+    int currentPairsGroupingMode() const { return current_pairs_grouping_mode_; }
 
 public slots:
-    void setDriveMode(DriveMode::Mode mode);
-    void setPairsGroupingMode(PairsGroupingMode::Mode mode);
+    void setDriveMode(int mode);
+    void setPairsGroupingMode(int mode);
     void publishGlobalSpeed(double speed);
     // void publishLocalSpeed(double speed, const ControllerNames::Name& controller_name);
     // void publishIndependentSpeed(double speed, const ControllerNames::Name& controller_name);
@@ -75,8 +77,8 @@ private:
     void jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg);
     void updateActiveControllers();
 
-    PairsGroupingMode::Mode current_pairs_grouping_mode_;   ///< Текущий режим группировки пар
-    DriveMode::Mode current_drive_mode_;                    ///< Текущий привод
+    int current_pairs_grouping_mode_;   ///< Текущий режим группировки пар
+    int current_drive_mode_;            ///< Текущий привод
 
     enum class ControlState {
         GLOBAL = 0,
@@ -97,7 +99,7 @@ private:
     };
 
     std::vector<Controller> controllers_;   ///< Массив контроллеров колесных пар
-    double precision = 1.0;                 ///< точность сравнения скорости шарниров в радианах
+    double precision = 1.0;  ///< точность сравнения скорости шарниров в радианах
 };
 
 #endif // WHEEL_CONTROLLER_H
