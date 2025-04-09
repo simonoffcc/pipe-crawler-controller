@@ -19,13 +19,11 @@ Item {
     property int outerJointName: JointName.Unknown
     property int innerJointName: JointName.Unknown
 
-    state: "global"
-
     width: jointControlWidth
     height: jointControlWidth * 2.5
 
-    readonly property bool isCustomMode: WheelController.pairsGroupingMode === PairsGroupingMode.Custom &&
-                                      WheelController.driveMode === DriveMode.Custom
+    readonly property bool isCustomMode: WheelController.currentPairsGroupingMode === PairsGroupingMode.Custom &&
+                                      WheelController.currentDriveMode === DriveMode.Custom
 
     Component.onCompleted: {
         let controllers = WheelController.controllers;
@@ -83,10 +81,20 @@ Item {
         cursorShape: root.isCustomMode ? Qt.PointingHandCursor : Qt.ArrowCursor
 
         onClicked: {
-            // + логика по изменению состояний внутри контейнера в cpp контроллере
-            if (root.state === "global") { root.state = "local" }
-            else if (root.state === "local") { root.state = "independent" }
-            else { root.state = "global" }
+            let newState;
+            if (root.state === "global") { 
+                newState = "local";
+                WheelController.setControllerState(root.controllerName, 1); // LOCAL = 1
+            }
+            else if (root.state === "local") { 
+                newState = "independent";
+                WheelController.setControllerState(root.controllerName, 2); // INDEPENDENT = 2
+            }
+            else { 
+                newState = "global";
+                WheelController.setControllerState(root.controllerName, 0); // GLOBAL = 0
+            }
+            root.state = newState;
         }
     }
 
@@ -198,10 +206,10 @@ Item {
                 target: innerJoint
                 state: "global"
             }
-            PropertyChanges {
-                target: publishButton
-                visible: false
-            }
+            // PropertyChanges {
+            //     target: publishButton
+            //     visible: false
+            // }
         },
         State {
             name: "local"
@@ -217,10 +225,10 @@ Item {
                 target: innerJoint
                 state: "local"
             }
-            PropertyChanges {
-                target: publishButton
-                visible: true
-            }
+            // PropertyChanges {
+            //     target: publishButton
+            //     visible: true
+            // }
         },
         State {
             name: "independent"
@@ -236,10 +244,10 @@ Item {
                 target: innerJoint
                 state: "local"
             }
-            PropertyChanges {
-                target: publishButton
-                visible: true
-            }
+            // PropertyChanges {
+            //     target: publishButton
+            //     visible: true
+            // }
         }
     ]
 }

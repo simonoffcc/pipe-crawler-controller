@@ -46,8 +46,8 @@ void WheelController::setDriveMode(int mode)
 {
     if (current_drive_mode_ != mode) {
         current_drive_mode_ = mode;
-        updateActiveControllers();
         emit driveModeChanged();
+        updateActiveControllers();
     }
 }
 
@@ -55,8 +55,8 @@ void WheelController::setPairsGroupingMode(int mode)
 {
     if (current_pairs_grouping_mode_ != mode) {
         current_pairs_grouping_mode_ = mode;
-        updateActiveControllers();
         emit pairsGroupingModeChanged();
+        updateActiveControllers();
     }
 }
 
@@ -221,6 +221,20 @@ void WheelController::publishGlobalSpeed(double speed)
             if (pair_velocity_publishers_.find(controller.name) != pair_velocity_publishers_.end()) {
                 pair_velocity_publishers_[controller.name]->publish(msg);
             }
+        }
+    }
+}
+
+void WheelController::setControllerState(int controller_name, int state)
+{
+    auto controller_enum = static_cast<ControllerName::Name>(controller_name);
+    auto state_enum = static_cast<ControlState>(state);
+    
+    for (auto& controller : controllers_) {
+        if (controller.name == controller_enum) {
+            controller.state = state_enum;
+            emit controllersChanged();
+            break;
         }
     }
 }
