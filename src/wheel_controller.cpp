@@ -233,7 +233,7 @@ void WheelController::publishSpeed(rclcpp::Publisher<std_msgs::msg::Float64Multi
                     msg.data.at(0), topic_name.c_str());
     }
     else {
-        RCLCPP_ERROR(node_->get_logger(), "Failed publishing speed %.2f rad/s to %s: "
+        RCLCPP_INFO(node_->get_logger(), "Failed publishing speed %.2f rad/s to %s: "
                                           "There are no subscribers for this topic",
                     msg.data.at(0), topic_name.c_str());
     }

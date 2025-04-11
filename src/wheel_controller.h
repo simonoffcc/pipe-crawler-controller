@@ -52,7 +52,7 @@ public:
     int currentDriveMode() const { return current_drive_mode_; }
     int currentPairsGroupingMode() const { return current_pairs_grouping_mode_; }
     Q_INVOKABLE double getVelocityStep() const { return velocity_step; }
-    
+
 public slots:
     void setDriveMode(int mode);
     void setPairsGroupingMode(int mode);
