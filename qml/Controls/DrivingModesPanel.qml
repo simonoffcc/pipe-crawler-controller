@@ -64,6 +64,7 @@ ColumnLayout {
         Layout.leftMargin: 15
         Layout.topMargin: 5
         Layout.rightMargin: 10
+        Layout.bottomMargin: 10
         Layout.preferredWidth: 200
         
         implicitContentWidthPolicy: ComboBox.WidestText
@@ -93,11 +94,13 @@ ColumnLayout {
 
     Button {
         id: lockButton
+
         visible: root.isCustomMode
         Layout.leftMargin: 15
         Layout.topMargin: 5
-        Layout.preferredWidth: 40
-        Layout.preferredHeight: 40
+        Layout.bottomMargin: 10
+        Layout.preferredWidth: 35
+        Layout.preferredHeight: 35
 
         icon.source: root.isLocked ? "/icons/lock.png" : "/icons/unlock.png"
         icon.color: "transparent"

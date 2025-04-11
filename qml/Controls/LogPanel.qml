@@ -27,6 +27,7 @@ Rectangle {
 
         ListView {
             id: logView
+
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.margins: 4

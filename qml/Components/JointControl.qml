@@ -14,6 +14,7 @@ Rectangle {
     property alias jointSpeed: speedInput.text
     property bool isPaired: false
     property var pairedJoint: null
+    property bool isLocked: false
 
     signal speedSubmitted(string speed)
 
@@ -42,6 +43,8 @@ Rectangle {
 
     MouseArea {
         enabled: false
+
+        cursorShape: (root.isCustomMode && !root.isLocked) ? Qt.PointingHandCursor : Qt.ArrowCursor
 
         anchors.fill: parent
         propagateComposedEvents: true

@@ -161,6 +161,7 @@ Item {
         jointName: root.outerJointName
         isPaired: true
         pairedJoint: innerJoint
+        isLocked: root.isLocked
 
         Component.onCompleted: {
             anchors.horizontalCenter = parent.horizontalCenter
@@ -193,6 +194,7 @@ Item {
         jointName: root.innerJointName
         isPaired: true
         pairedJoint: outerJoint
+        isLocked: root.isLocked
 
         Component.onCompleted: {
             anchors.horizontalCenter = parent.horizontalCenter

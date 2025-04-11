@@ -26,6 +26,10 @@ ApplicationWindow {
             id: diagramBackground
 
             color: "lightgray"
+
+            Layout.preferredWidth: robotDiagram.width + 100
+            Layout.minimumWidth: robotDiagram.width
+
             Layout.fillWidth: true
             Layout.fillHeight: true
 
@@ -41,9 +45,9 @@ ApplicationWindow {
         }
 
         ColumnLayout {
-            Layout.preferredWidth: 300
-            Layout.minimumWidth: 300
-            Layout.maximumWidth: 300
+            Layout.preferredWidth: 400
+            Layout.minimumWidth: 400
+            Layout.maximumWidth: 400
             Layout.fillHeight: true
             spacing: 4
 
@@ -52,7 +56,7 @@ ApplicationWindow {
 
                 color: "lightgray"
                 Layout.fillWidth: true
-                Layout.preferredHeight: controlsLayout.height + 20
+                Layout.preferredHeight: controlsLayout.height
 
                 DrivingModesPanel {
                     id: controlsLayout
