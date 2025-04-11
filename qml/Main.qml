@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 
+import WheelController
 import Components
 import Controls
 
@@ -39,20 +40,33 @@ ApplicationWindow {
             }
         }
 
-        Rectangle {
-            id: selectorsBackground
-
-            color: "lightgray"
+        ColumnLayout {
             Layout.preferredWidth: 300
             Layout.minimumWidth: 300
             Layout.maximumWidth: 300
             Layout.fillHeight: true
+            spacing: 4
 
-            DrivingModesPanel {
-                id: controlsLayout
+            Rectangle {
+                id: selectorsBackground
 
-                anchors.left: parent.left
-                spacing: 2
+                color: "lightgray"
+                Layout.fillWidth: true
+                Layout.preferredHeight: controlsLayout.height + 20
+
+                DrivingModesPanel {
+                    id: controlsLayout
+                    anchors.left: parent.left
+                    spacing: 2
+                }
+            }
+
+            LogPanel {
+                id: logPanel
+
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                model: WheelController.logMessages
             }
         }
     }

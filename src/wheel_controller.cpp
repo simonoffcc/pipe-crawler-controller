@@ -224,18 +224,31 @@ QVariantList WheelController::controllers() const
     return result;
 }
 
+void WheelController::addLogMessage(const QString& message) {
+    log_messages_.prepend(message);
+    while (log_messages_.size() > MAX_LOG_MESSAGES) {
+        log_messages_.removeLast();
+    }
+    emit logMessagesChanged();
+}
+
 void WheelController::publishSpeed(rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr publisher, std_msgs::msg::Float64MultiArray msg) {
     std::string topic_name = publisher->get_topic_name();
     
     if (publisher->get_subscription_count() > 0) {
         publisher->publish(msg);
-        RCLCPP_INFO(node_->get_logger(), "Publishing speed %.2f rad/s to %s",
-                    msg.data.at(0), topic_name.c_str());
+        QString logMsg = QString("Publishing speed %1 rad/s to %2")
+                        .arg(msg.data.at(0), 0, 'f', 2)
+                        .arg(QString::fromStdString(topic_name));
+        RCLCPP_INFO(node_->get_logger(), "%s", logMsg.toStdString().c_str());
+        addLogMessage(logMsg);
     }
     else {
-        RCLCPP_INFO(node_->get_logger(), "Failed publishing speed %.2f rad/s to %s: "
-                                          "There are no subscribers for this topic",
-                    msg.data.at(0), topic_name.c_str());
+        QString logMsg = QString("Failed publishing speed %1 rad/s to %2: There are no subscribers for this topic")
+                        .arg(msg.data.at(0), 0, 'f', 2)
+                        .arg(QString::fromStdString(topic_name));
+        RCLCPP_INFO(node_->get_logger(), "%s", logMsg.toStdString().c_str());
+        addLogMessage(logMsg);
     }
 }
 

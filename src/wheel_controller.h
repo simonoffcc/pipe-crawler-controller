@@ -31,6 +31,9 @@ class WheelController : public QObject
     // Массив контроллеров колесных пар
     Q_PROPERTY(QVariantList controllers READ controllers NOTIFY controllersChanged)
 
+    // Property for log messages
+    Q_PROPERTY(QStringList logMessages READ logMessages NOTIFY logMessagesChanged)
+
 public:
     WheelController(const WheelController &) = delete;
     WheelController &operator=(const WheelController &) = delete;
@@ -52,6 +55,7 @@ public:
     int currentDriveMode() const { return current_drive_mode_; }
     int currentPairsGroupingMode() const { return current_pairs_grouping_mode_; }
     Q_INVOKABLE double getVelocityStep() const { return velocity_step; }
+    QStringList logMessages() const { return log_messages_; }
 
 public slots:
     void setDriveMode(int mode);
@@ -65,6 +69,7 @@ signals:
     void controllersChanged();
     void driveModeChanged();
     void pairsGroupingModeChanged();
+    void logMessagesChanged();
 
 private:
     explicit WheelController(std::shared_ptr<rclcpp::Node> parent_node, QObject* parent = nullptr);
@@ -74,11 +79,10 @@ private:
     rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr joint_state_subscriber_;
 
     void createROSInterfaces();
-    void publishSpeed(rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr, std_msgs::msg::Float64MultiArray msg);
     void jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg);
     void updateActiveControllers();
 
-
+    void publishSpeed(rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr, std_msgs::msg::Float64MultiArray msg);
 
     int current_pairs_grouping_mode_;   ///< Текущий режим группировки пар
     int current_drive_mode_;            ///< Текущий привод
@@ -103,6 +107,10 @@ private:
 
     std::vector<Controller> controllers_;   ///< Массив контроллеров колесных пар
     double velocity_step = 0.001;  ///< шаг для сравнения текущей и предыдущей скорости шарниров в радианах
+
+    QStringList log_messages_;
+    static const int MAX_LOG_MESSAGES = 100;
+    void addLogMessage(const QString& message);
 };
 
 #endif // WHEEL_CONTROLLER_H
