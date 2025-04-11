@@ -6,7 +6,6 @@ Rectangle {
     id: root
 
     color: "lightgray"
-
     property alias model: logView.model
 
     ColumnLayout {
