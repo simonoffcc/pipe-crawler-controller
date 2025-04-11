@@ -224,6 +224,21 @@ QVariantList WheelController::controllers() const
     return result;
 }
 
+void WheelController::publishSpeed(rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr publisher, std_msgs::msg::Float64MultiArray msg) {
+    std::string topic_name = publisher->get_topic_name();
+    
+    if (publisher->get_subscription_count() > 0) {
+        publisher->publish(msg);
+        RCLCPP_INFO(node_->get_logger(), "Publishing speed %.2f rad/s to %s",
+                    msg.data.at(0), topic_name.c_str());
+    }
+    else {
+        RCLCPP_ERROR(node_->get_logger(), "Failed publishing speed %.2f rad/s to %s: "
+                                          "There are no subscribers for this topic",
+                    msg.data.at(0), topic_name.c_str());
+    }
+}
+
 void WheelController::publishGlobalSpeed(double speed)
 {
     RCLCPP_INFO(node_->get_logger(), "-------- Publish Global --------");
@@ -235,9 +250,7 @@ void WheelController::publishGlobalSpeed(double speed)
     for (const auto& controller : controllers_) {
         if (controller.state == ControlState::GLOBAL) {
             if (pair_velocity_publishers_.find(controller.name) != pair_velocity_publishers_.end()) {
-                pair_velocity_publishers_[controller.name]->publish(msg);
-                RCLCPP_INFO(node_->get_logger(), "Publishing global speed %.2f rad/s to %s",
-                    speed_in_radians, ControllerName::toString(controller.name).c_str());
+                publishSpeed(pair_velocity_publishers_[controller.name], msg);
             }
         }
     }
@@ -256,9 +269,7 @@ void WheelController::publishLocalSpeed(double speed, int controller_name)
     for (auto& controller : controllers_) {
         if (controller.name == controller_enum && controller.state == ControlState::LOCAL) {
             if (pair_velocity_publishers_.find(controller.name) != pair_velocity_publishers_.end()) {
-                pair_velocity_publishers_[controller.name]->publish(msg);
-                RCLCPP_INFO(node_->get_logger(), "Publishing local speed %.2f rad/s to %s",
-                    speed_in_radians, ControllerName::toString(controller.name).c_str());
+                publishSpeed(pair_velocity_publishers_[controller.name], msg);
             }
             break;
         }
@@ -282,9 +293,7 @@ void WheelController::publishIndependentSpeed(double speed, int controller_name,
             msg.data = {outer_speed, inner_speed};
             
             if (pair_velocity_publishers_.find(controller.name) != pair_velocity_publishers_.end()) {
-                pair_velocity_publishers_[controller.name]->publish(msg);
-                RCLCPP_INFO(node_->get_logger(), "Publishing independent speeds (outer: %.2f rad/s, inner: %.2f rad/s) to %s",
-                    outer_speed, inner_speed, ControllerName::toString(controller.name).c_str());
+                publishSpeed(pair_velocity_publishers_[controller.name], msg);
             }
             break;
         }

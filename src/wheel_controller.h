@@ -73,8 +73,11 @@ private:
     rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr joint_state_subscriber_;
 
     void createROSInterfaces();
+    void publishSpeed(rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr, std_msgs::msg::Float64MultiArray msg);
     void jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg);
     void updateActiveControllers();
+
+
 
     int current_pairs_grouping_mode_;   ///< Текущий режим группировки пар
     int current_drive_mode_;            ///< Текущий привод
