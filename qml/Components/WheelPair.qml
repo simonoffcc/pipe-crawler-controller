@@ -25,13 +25,12 @@ Item {
 
     readonly property bool isCustomMode: WheelController.currentPairsGroupingMode === PairsGroupingMode.Custom &&
                                       WheelController.currentDriveMode === DriveMode.Custom
+    readonly property int precision: 2
 
     Component.onCompleted: {
         let controllers = WheelController.controllers;
         for (let i = 0; i < controllers.length; i++) {
             if (controllers[i].name === root.controllerName) {
-                let velocityStep = WheelController.getVelocityStep();
-                let precision = Math.max(1, -Math.floor(Math.log10(velocityStep)));
                 root.state = ["global", "local", "independent"][controllers[i].state];
                 outerJoint.telemetrySpeed = controllers[i].outerJoint.velocity.toFixed(precision) + "°/sec";
                 innerJoint.telemetrySpeed = controllers[i].innerJoint.velocity.toFixed(precision) + "°/sec";
@@ -49,8 +48,6 @@ Item {
             for (let i = 0; i < controllers.length; i++) {
                 if (controllers[i].name === root.controllerName) {
                     found = true;
-                    let velocityStep = WheelController.getVelocityStep();
-                    let precision = Math.max(1, -Math.floor(Math.log10(velocityStep)));
                     root.state = ["global", "local", "independent"][controllers[i].state];
                     outerJoint.telemetrySpeed = controllers[i].outerJoint.velocity.toFixed(precision) + "°/sec";
                     innerJoint.telemetrySpeed = controllers[i].innerJoint.velocity.toFixed(precision) + "°/sec";
