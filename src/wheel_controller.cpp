@@ -183,7 +183,7 @@ void WheelController::jointStateCallback(const sensor_msgs::msg::JointState::Sha
                     target_joint = &controller.inner_joint;
                 }
 
-                if (target_joint && std::abs(target_joint->velocity - velocity) > precision) {
+                if (target_joint && std::abs(target_joint->velocity - velocity) > velocity_step) {
                     target_joint->velocity = velocity;
                     speeds_changed = true;
                 }

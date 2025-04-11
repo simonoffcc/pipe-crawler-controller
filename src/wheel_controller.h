@@ -51,7 +51,8 @@ public:
     QVariantList controllers() const;
     int currentDriveMode() const { return current_drive_mode_; }
     int currentPairsGroupingMode() const { return current_pairs_grouping_mode_; }
-
+    Q_INVOKABLE double getVelocityStep() const { return velocity_step; }
+    
 public slots:
     void setDriveMode(int mode);
     void setPairsGroupingMode(int mode);
@@ -101,7 +102,7 @@ private:
     };
 
     std::vector<Controller> controllers_;   ///< Массив контроллеров колесных пар
-    double precision = 1.0;  ///< точность сравнения скорости шарниров в радианах
+    double velocity_step = 0.001;  ///< шаг для сравнения текущей и предыдущей скорости шарниров в радианах
 };
 
 #endif // WHEEL_CONTROLLER_H
