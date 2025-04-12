@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
+import QtQuick.Window
 
 import WheelController
 import Components
@@ -13,7 +14,12 @@ ApplicationWindow {
     height: 1000
     minimumWidth: 800
     minimumHeight: 1000
-    visibility: Window.Maximized
+    flags: Qt.Window
+    visibility: {
+        if (Qt.platform.os === "linux")
+            return Window.Maximized
+        return Window.AutomaticVisibility
+    }
     title: qsTr("Pipe Crawler Wheels Control")
 
     RowLayout {
