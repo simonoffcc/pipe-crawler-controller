@@ -65,7 +65,6 @@ Rectangle {
             onClicked: {
                 if (inputField.text !== "") {
                     WheelController.publishGlobalSpeed(parseFloat(inputField.text))
-                    root.clearSpeedInput()
                 }
             }
 
