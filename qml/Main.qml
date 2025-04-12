@@ -12,7 +12,7 @@ ApplicationWindow {
     visible: true
     width: 900
     height: 1000
-    minimumWidth: 800
+    minimumWidth: diagramBackground.Layout.minimumWidth + controlsPanel.Layout.minimumWidth + mainLayout.spacing + mainLayout.anchors.margins * 2
     minimumHeight: 1000
     flags: Qt.Window
     visibility: {
@@ -33,7 +33,8 @@ ApplicationWindow {
             color: "lightgray"
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.minimumWidth: robotDiagram.width
+            Layout.minimumWidth: 430
+            Layout.preferredWidth: 600
 
             RobotDiagram {
                 id: robotDiagram
@@ -45,6 +46,7 @@ ApplicationWindow {
         }
 
         ColumnLayout {
+            id: controlsPanel
             Layout.preferredWidth: 350
             Layout.minimumWidth: 350
             Layout.maximumWidth: 400
