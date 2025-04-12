@@ -54,7 +54,6 @@ public:
     QVariantList controllers() const;
     int currentDriveMode() const { return current_drive_mode_; }
     int currentPairsGroupingMode() const { return current_pairs_grouping_mode_; }
-    Q_INVOKABLE double getVelocityStep() const { return velocity_step; }
     QStringList logMessages() const { return log_messages_; }
 
 public slots:
@@ -64,6 +63,7 @@ public slots:
     void publishLocalSpeed(double speed, int controller_name);
     void publishIndependentSpeed(double speed, int controller_name, bool is_outer_joint);
     void setControllerState(int controller_name, int state);
+    Q_INVOKABLE void addLogMessage(const QString& message);
 
 signals:
     void controllersChanged();
@@ -110,7 +110,6 @@ private:
 
     QStringList log_messages_;
     static const int MAX_LOG_MESSAGES = 100;
-    void addLogMessage(const QString& message);
 };
 
 #endif // WHEEL_CONTROLLER_H

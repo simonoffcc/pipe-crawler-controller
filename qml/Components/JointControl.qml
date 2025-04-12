@@ -50,7 +50,9 @@ Rectangle {
         propagateComposedEvents: true
 
         onClicked: {
-            root.state === "global" ? root.state = "local" : root.state = "global";
+            if (root.state === "global") { root.state = "local"; }
+            else if (root.state === "local") { root.state = "independent"; }
+            else { root.state = "global"; }
         }
     }
 
@@ -110,15 +112,19 @@ Rectangle {
 
             Keys.onReturnPressed: {
                 if (text !== "") {
-                    if (root.state === "independent") speedInput.focus = false;
-                    root.speedSubmitted(text);
+                    if (root.state === "independent") {
+                        speedInput.focus = false;
+                        root.speedSubmitted(text);
+                    }
                 }
             }
 
             Keys.onEnterPressed: {
                 if (text !== "") {
-                    if (root.state === "independent") speedInput.focus = false;
-                    root.speedSubmitted(text);
+                    if (root.state === "independent") {
+                        speedInput.focus = false;
+                        root.speedSubmitted(text);
+                    }
                 }
             }
         }
