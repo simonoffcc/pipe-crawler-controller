@@ -18,56 +18,42 @@ ApplicationWindow {
 
     RowLayout {
         id: mainLayout
-
         anchors.fill: parent
-        spacing: 1
+        anchors.margins: 4
+        spacing: 4
 
         Rectangle {
             id: diagramBackground
-
             color: "lightgray"
-
-            Layout.preferredWidth: robotDiagram.width + 100
-            Layout.minimumWidth: robotDiagram.width
-
             Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.minimumWidth: robotDiagram.width
 
             RobotDiagram {
                 id: robotDiagram
-
                 anchors.centerIn: parent
                 isLocked: controlsLayout.isLocked
-
-                width: 600
-                height: 950
+                width: Math.min(parent.width - 40, 600)
+                height: Math.min(parent.height - 40, 950)
             }
         }
 
         ColumnLayout {
-            Layout.preferredWidth: 400
-            Layout.minimumWidth: 400
+            Layout.preferredWidth: 350
+            Layout.minimumWidth: 350
             Layout.maximumWidth: 400
             Layout.fillHeight: true
             spacing: 4
 
-            Rectangle {
-                id: selectorsBackground
-
-                color: "lightgray"
+            DrivingModesPanel {
+                id: controlsLayout
                 Layout.fillWidth: true
-                Layout.preferredHeight: controlsLayout.height
-
-                DrivingModesPanel {
-                    id: controlsLayout
-                    anchors.left: parent.left
-                    spacing: 2
-                }
+                Layout.minimumHeight: implicitHeight
+                Layout.preferredHeight: implicitHeight
             }
 
             LogPanel {
                 id: logPanel
-
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 model: WheelController.logMessages
@@ -80,7 +66,6 @@ ApplicationWindow {
 
         Menu {
             title: qsTr("File")
-
             Action { text: qsTr("Preferences") }
             MenuSeparator { }
             Action {

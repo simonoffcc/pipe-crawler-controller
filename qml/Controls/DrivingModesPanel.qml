@@ -6,118 +6,114 @@ import WheelController
 import pairsGroupingMode
 import driveMode
 
-ColumnLayout {
+Rectangle {
     id: root
+    color: "lightgray"
+    implicitHeight: contentLayout.implicitHeight + 20
     
     readonly property bool isCustomMode: WheelController.currentPairsGroupingMode === PairsGroupingMode.Custom &&
                                       WheelController.currentDriveMode === DriveMode.Custom
 
     property bool isLocked: false
 
-    Text {
-        id: controlsTitle
-        
-        Layout.leftMargin: 10
-        Layout.topMargin: 10
-        Layout.rightMargin: 10
-        
-        font.pixelSize: 16
-        color: "black"
-        text: qsTr("Pair Grouping/Driving modes")
-    }
-    
-    ComboBox {
-        id: pairGroupingModes
-        
-        Layout.leftMargin: 15
-        Layout.topMargin: 5
-        Layout.rightMargin: 10
-        Layout.preferredWidth: 200
-        
-        implicitContentWidthPolicy: ComboBox.WidestText
-        currentIndex: 1
-        displayText: "Grouping: " + currentText
-        textRole: "text"
-        valueRole: "value"
-        model: [
-            { value: PairsGroupingMode.Custom, text: qsTr("Custom") },
-            { value: PairsGroupingMode.AllPairs, text: qsTr("All cross pairs") },
-            { value: PairsGroupingMode.LeftRight, text: qsTr("Left-Right wheel pairs") }
-        ]
+    ColumnLayout {
+        id: contentLayout
+        anchors.fill: parent
+        anchors.margins: 10
+        spacing: 12
 
-        onActivated: {
-            if (currentValue === PairsGroupingMode.Custom) {
-                driveModes.currentIndex = 0;
-                WheelController.setDriveMode(DriveMode.Custom);
-            }
-            else if (driveModes.currentValue === DriveMode.Custom) {
-                driveModes.currentIndex = 3;
-                WheelController.setDriveMode(DriveMode.AllWheelDrive);
-            }
-            WheelController.setPairsGroupingMode(currentValue);
+        Text {
+            id: controlsTitle
+            Layout.fillWidth: true
+            font.pixelSize: 14
+            font.bold: true
+            color: "black"
+            text: qsTr("Pair Grouping/Driving modes")
         }
-    }
-    
-    ComboBox {
-        id: driveModes
         
-        Layout.leftMargin: 15
-        Layout.topMargin: 5
-        Layout.rightMargin: 10
-        Layout.bottomMargin: 10
-        Layout.preferredWidth: 200
-        
-        implicitContentWidthPolicy: ComboBox.WidestText
-        currentIndex: 3
-        displayText: "Drive mode: " + currentText
-        textRole: "text"
-        valueRole: "value"
-        model: [
-            { value: DriveMode.Custom, text: qsTr("Custom") },
-            { value: DriveMode.FrontDrive, text: qsTr("Front-drive") },
-            { value: DriveMode.RearDrive, text: qsTr("Rear-drive") },
-            { value: DriveMode.AllWheelDrive, text: qsTr("Full-drive") }
-        ]
+        ComboBox {
+            id: pairGroupingModes
+            Layout.fillWidth: true
+            Layout.preferredHeight: 32
+            
+            implicitContentWidthPolicy: ComboBox.WidestText
+            currentIndex: 1
+            displayText: "Grouping: " + currentText
+            textRole: "text"
+            valueRole: "value"
+            model: [
+                { value: PairsGroupingMode.Custom, text: qsTr("Custom") },
+                { value: PairsGroupingMode.AllPairs, text: qsTr("All cross pairs") },
+                { value: PairsGroupingMode.LeftRight, text: qsTr("Left-Right wheel pairs") }
+            ]
 
-        onActivated: {
-            if (currentValue === DriveMode.Custom) {
-                pairGroupingModes.currentIndex = 0;
-                WheelController.setPairsGroupingMode(PairsGroupingMode.Custom);
+            onActivated: {
+                if (currentValue === PairsGroupingMode.Custom) {
+                    driveModes.currentIndex = 0;
+                    WheelController.setDriveMode(DriveMode.Custom);
+                }
+                else if (driveModes.currentValue === DriveMode.Custom) {
+                    driveModes.currentIndex = 3;
+                    WheelController.setDriveMode(DriveMode.AllWheelDrive);
+                }
+                WheelController.setPairsGroupingMode(currentValue);
             }
-            else if (pairGroupingModes.currentValue === PairsGroupingMode.Custom) {
-                pairGroupingModes.currentIndex = 1;
-                WheelController.setPairsGroupingMode(PairsGroupingMode.AllPairs);
-            }
-            WheelController.setDriveMode(currentValue);
         }
-    }
+        
+        ComboBox {
+            id: driveModes
+            Layout.fillWidth: true
+            Layout.preferredHeight: 32
+            
+            implicitContentWidthPolicy: ComboBox.WidestText
+            currentIndex: 3
+            displayText: "Drive mode: " + currentText
+            textRole: "text"
+            valueRole: "value"
+            model: [
+                { value: DriveMode.Custom, text: qsTr("Custom") },
+                { value: DriveMode.FrontDrive, text: qsTr("Front-drive") },
+                { value: DriveMode.RearDrive, text: qsTr("Rear-drive") },
+                { value: DriveMode.AllWheelDrive, text: qsTr("Full-drive") }
+            ]
 
-    Button {
-        id: lockButton
-
-        visible: root.isCustomMode
-        Layout.leftMargin: 15
-        Layout.topMargin: 5
-        Layout.bottomMargin: 10
-        Layout.preferredWidth: 35
-        Layout.preferredHeight: 35
-
-        icon.source: root.isLocked ? "/icons/lock.png" : "/icons/unlock.png"
-        icon.color: "transparent"
-
-        background: Rectangle {
-            radius: 5
-            color: lockButton.pressed ? "#cccccc" :
-                   lockButton.hovered ? "#e6e6e6" : "white"
-            border.color: "black"
-            border.width: 1
+            onActivated: {
+                if (currentValue === DriveMode.Custom) {
+                    pairGroupingModes.currentIndex = 0;
+                    WheelController.setPairsGroupingMode(PairsGroupingMode.Custom);
+                }
+                else if (pairGroupingModes.currentValue === PairsGroupingMode.Custom) {
+                    pairGroupingModes.currentIndex = 1;
+                    WheelController.setPairsGroupingMode(PairsGroupingMode.AllPairs);
+                }
+                WheelController.setDriveMode(currentValue);
+            }
         }
 
-        ToolTip.visible: hovered
-        ToolTip.text: root.isLocked ? "Unlock controller states" : "Lock controller states"
+        Button {
+            id: lockButton
+            visible: root.isCustomMode
+            Layout.preferredWidth: 32
+            Layout.preferredHeight: 32
+            Layout.alignment: Qt.AlignLeft
 
-        onClicked: {
-            root.isLocked = !root.isLocked
+            icon.source: root.isLocked ? "/icons/lock.png" : "/icons/unlock.png"
+            icon.color: "transparent"
+
+            background: Rectangle {
+                radius: 5
+                color: lockButton.pressed ? "#cccccc" :
+                       lockButton.hovered ? "#e6e6e6" : "white"
+                border.color: "black"
+                border.width: 1
+            }
+
+            ToolTip.visible: hovered
+            ToolTip.text: root.isLocked ? "Unlock controller states" : "Lock controller states"
+
+            onClicked: {
+                root.isLocked = !root.isLocked
+            }
         }
     }
 }

@@ -4,52 +4,62 @@ import QtQuick.Layouts
 
 Rectangle {
     id: root
-
     color: "lightgray"
     property alias model: logView.model
 
     ColumnLayout {
         anchors.fill: parent
-        spacing: 4
+        anchors.margins: 10
+        spacing: 8
 
         Text {
             id: controlsTitle
-
-            Layout.leftMargin: 10
-            Layout.topMargin: 10
-            Layout.rightMargin: 10
-
-            font.pixelSize: 16
+            Layout.fillWidth: true
+            font.pixelSize: 14
+            font.bold: true
             color: "black"
             text: qsTr("Log Messages")
         }
 
-        ListView {
-            id: logView
-
+        Rectangle {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.margins: 4
-            clip: true
-            verticalLayoutDirection: ListView.BottomToTop
+            color: "white"
+            radius: 4
+            border.color: "#cccccc"
+            border.width: 1
 
-            delegate: Rectangle {
-                width: ListView.view.width
-                height: messageText.height + 8
-                color: index % 2 ? "#f0f0f0" : "white"
+            ListView {
+                id: logView
+                anchors.fill: parent
+                anchors.margins: 4
+                clip: true
+                verticalLayoutDirection: ListView.BottomToTop
+                spacing: 1
 
-                Text {
-                    id: messageText
+                delegate: Rectangle {
+                    width: ListView.view.width
+                    height: messageText.contentHeight + 16
+                    color: index % 2 ? "#f8f8f8" : "white"
 
-                    text: modelData
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.margins: 4
-                    wrapMode: Text.WordWrap
+                    Text {
+                        id: messageText
+                        anchors {
+                            left: parent.left
+                            right: parent.right
+                            verticalCenter: parent.verticalCenter
+                            margins: 8
+                        }
+                        text: modelData
+                        wrapMode: Text.WordWrap
+                        font.pixelSize: 12
+                    }
+                }
+
+                ScrollBar.vertical: ScrollBar {
+                    active: true
                 }
             }
-
-            ScrollBar.vertical: ScrollBar {}
         }
     }
 } 
