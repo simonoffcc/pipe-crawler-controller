@@ -2,6 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+import WheelController
+
 Rectangle {
     id: root
     color: "lightgray"
@@ -12,13 +14,23 @@ Rectangle {
         anchors.margins: 10
         spacing: 8
 
-        Text {
-            id: controlsTitle
+        RowLayout {
             Layout.fillWidth: true
-            font.pixelSize: 14
-            font.bold: true
-            color: "black"
-            text: qsTr("Log Messages")
+            spacing: 8
+
+            Text {
+                id: controlsTitle
+                Layout.fillWidth: true
+                font.pixelSize: 14
+                font.bold: true
+                color: "black"
+                text: qsTr("Log Messages")
+            }
+
+            Button {
+                text: qsTr("Clear")
+                onClicked: WheelController.clearLogMessages()
+            }
         }
 
         Rectangle {

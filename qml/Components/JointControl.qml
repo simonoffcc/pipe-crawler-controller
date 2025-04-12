@@ -112,7 +112,10 @@ Rectangle {
 
             Keys.onReturnPressed: {
                 if (text !== "") {
-                    if (root.state === "independent") {
+                    if (root.state === "local") {
+                        WheelController.addLogMessage("Warning: In local mode, please use the 'Publish' button instead.");
+                    }
+                    else if (root.state === "independent") {
                         speedInput.focus = false;
                         root.speedSubmitted(text);
                     }
@@ -121,7 +124,10 @@ Rectangle {
 
             Keys.onEnterPressed: {
                 if (text !== "") {
-                    if (root.state === "independent") {
+                    if (root.state === "local") {
+                        WheelController.addLogMessage("Warning: In local mode, please use the 'Publish' button instead.");
+                    }
+                    else if (root.state === "independent") {
                         speedInput.focus = false;
                         root.speedSubmitted(text);
                     }

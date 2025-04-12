@@ -25,15 +25,15 @@ Item {
 
     readonly property bool isCustomMode: WheelController.currentPairsGroupingMode === PairsGroupingMode.Custom &&
                                       WheelController.currentDriveMode === DriveMode.Custom
-    readonly property int precision: 2
+    readonly property int outputPrecision: 2
 
     Component.onCompleted: {
         let controllers = WheelController.controllers;
         for (let i = 0; i < controllers.length; i++) {
             if (controllers[i].name === root.controllerName) {
                 root.state = ["global", "local", "independent"][controllers[i].state];
-                outerJoint.telemetrySpeed = controllers[i].outerJoint.velocity.toFixed(precision) + "°/sec";
-                innerJoint.telemetrySpeed = controllers[i].innerJoint.velocity.toFixed(precision) + "°/sec";
+                outerJoint.telemetrySpeed = controllers[i].outerJoint.velocity.toFixed(outputPrecision) + "°/sec";
+                innerJoint.telemetrySpeed = controllers[i].innerJoint.velocity.toFixed(outputPrecision) + "°/sec";
                 break;
             }
         }
@@ -41,7 +41,7 @@ Item {
 
     Connections {
         target: WheelController
-        
+
         function onControllersChanged() {
             let found = false;
             let controllers = WheelController.controllers;
@@ -49,8 +49,8 @@ Item {
                 if (controllers[i].name === root.controllerName) {
                     found = true;
                     root.state = ["global", "local", "independent"][controllers[i].state];
-                    outerJoint.telemetrySpeed = controllers[i].outerJoint.velocity.toFixed(precision) + "°/sec";
-                    innerJoint.telemetrySpeed = controllers[i].innerJoint.velocity.toFixed(precision) + "°/sec";
+                    outerJoint.telemetrySpeed = controllers[i].outerJoint.velocity.toFixed(outputPrecision) + "°/sec";
+                    innerJoint.telemetrySpeed = controllers[i].innerJoint.velocity.toFixed(outputPrecision) + "°/sec";
                     break;
                 }
             }
@@ -88,15 +88,15 @@ Item {
 
         onClicked: {
             let newState;
-            if (root.state === "global") { 
+            if (root.state === "global") {
                 newState = "local";
                 WheelController.setControllerState(root.controllerName, 1);
             }
-            else if (root.state === "local") { 
+            else if (root.state === "local") {
                 newState = "independent";
                 WheelController.setControllerState(root.controllerName, 2);
             }
-            else { 
+            else {
                 newState = "global";
                 WheelController.setControllerState(root.controllerName, 0);
             }

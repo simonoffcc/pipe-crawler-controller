@@ -65,17 +65,11 @@ ApplicationWindow {
         id: menuBar
 
         Menu {
-            title: qsTr("File")
-            Action { text: qsTr("Preferences") }
-            MenuSeparator { }
+            title: qsTr("Program")
             Action {
                 text: qsTr("Quit")
                 onTriggered: Qt.quit()
             }
-        }
-        Menu {
-            title: qsTr("Help")
-            Action { text: qsTr("About") }
         }
     }
 }

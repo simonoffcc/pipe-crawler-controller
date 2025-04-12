@@ -56,6 +56,9 @@ public:
     int currentPairsGroupingMode() const { return current_pairs_grouping_mode_; }
     QStringList logMessages() const { return log_messages_; }
 
+    Q_INVOKABLE void addLogMessage(const QString& message);
+    Q_INVOKABLE void clearLogMessages();
+
 public slots:
     void setDriveMode(int mode);
     void setPairsGroupingMode(int mode);
@@ -63,7 +66,6 @@ public slots:
     void publishLocalSpeed(double speed, int controller_name);
     void publishIndependentSpeed(double speed, int controller_name, bool is_outer_joint);
     void setControllerState(int controller_name, int state);
-    Q_INVOKABLE void addLogMessage(const QString& message);
 
 signals:
     void controllersChanged();
@@ -81,11 +83,12 @@ private:
     void createROSInterfaces();
     void jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg);
     void updateActiveControllers();
-
+    void updateGlobalControllersCount();
     void publishSpeed(rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr, std_msgs::msg::Float64MultiArray msg);
 
     int current_pairs_grouping_mode_;   ///< Текущий режим группировки пар
     int current_drive_mode_;            ///< Текущий привод
+    int global_controllers_count_ = 0;  ///< Количество контроллеров в глобальном режиме
 
     enum class ControlState {
         GLOBAL = 0,

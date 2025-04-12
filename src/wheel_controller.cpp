@@ -40,6 +40,8 @@ WheelController::WheelController(std::shared_ptr<rclcpp::Node> node, QObject* pa
          {JointName::BackRightOuter,  0.0}, {JointName::BackRightInner,  0.0}
         }
     };
+
+    updateGlobalControllersCount();
 }
 
 void WheelController::setDriveMode(int mode)
@@ -67,6 +69,13 @@ void WheelController::setControllerState(int controller_name, int state)
 
     for (auto& controller : controllers_) {
         if (controller.name == controller_enum) {
+            bool wasGlobal = controller.state == ControlState::GLOBAL;
+            bool willBeGlobal = state_enum == ControlState::GLOBAL;
+            
+            if (wasGlobal != willBeGlobal) {
+                global_controllers_count_ += willBeGlobal ? 1 : -1;
+            }
+            
             controller.state = state_enum;
             emit controllersChanged();
             break;
@@ -79,6 +88,8 @@ void WheelController::updateActiveControllers()
     for (auto& controller : controllers_) {
         controller.state = ControlState::LOCAL;
     }
+    
+    global_controllers_count_ = 0;
 
     if (current_pairs_grouping_mode_ == PairsGroupingMode::AllPairs) {
         switch (current_drive_mode_) {
@@ -86,6 +97,7 @@ void WheelController::updateActiveControllers()
                 for (auto& controller : controllers_) {
                     controller.state = ControlState::GLOBAL;
                 }
+                global_controllers_count_ = controllers_.size();
                 break;
 
             case DriveMode::FrontDrive:
@@ -94,6 +106,7 @@ void WheelController::updateActiveControllers()
                         controller.name == ControllerName::FrontUp ||
                         controller.name == ControllerName::FrontRight) {
                         controller.state = ControlState::GLOBAL;
+                        global_controllers_count_++;
                     }
                 }
                 break;
@@ -104,6 +117,7 @@ void WheelController::updateActiveControllers()
                         controller.name == ControllerName::BackUp ||
                         controller.name == ControllerName::BackRight) {
                         controller.state = ControlState::GLOBAL;
+                        global_controllers_count_++;
                     }
                 }
                 break;
@@ -118,6 +132,7 @@ void WheelController::updateActiveControllers()
                         controller.name == ControllerName::BackLeft ||
                         controller.name == ControllerName::BackRight) {
                         controller.state = ControlState::GLOBAL;
+                        global_controllers_count_++;
                     }
                 }
                 break;
@@ -127,6 +142,7 @@ void WheelController::updateActiveControllers()
                     if (controller.name == ControllerName::FrontLeft ||
                         controller.name == ControllerName::FrontRight) {
                         controller.state = ControlState::GLOBAL;
+                        global_controllers_count_++;
                     }
                 }
                 break;
@@ -136,6 +152,7 @@ void WheelController::updateActiveControllers()
                     if (controller.name == ControllerName::BackLeft ||
                         controller.name == ControllerName::BackRight) {
                         controller.state = ControlState::GLOBAL;
+                        global_controllers_count_++;
                     }
                 }
                 break;
@@ -235,7 +252,7 @@ void WheelController::publishSpeed(rclcpp::Publisher<std_msgs::msg::Float64Multi
         addLogMessage(logMsg);
     }
     else {
-        QString logMsg = QString("Failed publishing speed %1 rad/s to %2: There are no subscribers for this topic")
+        QString logMsg = QString("Failed publishing speed %1 rad/s to %2: There are no subscribers for this topic.")
                         .arg(msg.data.at(0), 0, 'f', 2)
                         .arg(QString::fromStdString(topic_name));
         addLogMessage(logMsg);
@@ -244,6 +261,11 @@ void WheelController::publishSpeed(rclcpp::Publisher<std_msgs::msg::Float64Multi
 
 void WheelController::publishGlobalSpeed(double speed)
 {
+    if (global_controllers_count_ == 0) {
+        addLogMessage(QString("Warning: Cannot publish global speed - no controllers in global mode."));
+        return;
+    }
+
     std_msgs::msg::Float64MultiArray msg;
     double speed_in_radians = qDegreesToRadians(speed);
     msg.data = {speed_in_radians, speed_in_radians};
@@ -294,4 +316,20 @@ void WheelController::publishIndependentSpeed(double speed, int controller_name,
             break;
         }
     }
+}
+
+void WheelController::updateGlobalControllersCount()
+{
+    global_controllers_count_ = 0;
+    for (const auto& controller : controllers_) {
+        if (controller.state == ControlState::GLOBAL) {
+            global_controllers_count_++;
+        }
+    }
+}
+
+void WheelController::clearLogMessages()
+{
+    log_messages_.clear();
+    emit logMessagesChanged();
 }
