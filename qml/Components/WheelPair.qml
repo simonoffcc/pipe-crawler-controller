@@ -13,7 +13,8 @@ Item {
 
     property int controllerName: ControllerName.Unknown
     property bool isFront: true
-    property bool isPublishButtonOnLeftSide: false
+    property bool isSpeedPublishButtonOnLeft: false
+    property bool isRayPositionPublishButtonOnLeft: false
     property int jointControlWidth: 100
     property int elementStrokeWidth: 4
     property int outerJointName: JointName.Unknown
@@ -140,7 +141,7 @@ Item {
             anchors.leftMargin = jointControlWidth / 8
             anchors.rightMargin = jointControlWidth / 8
             anchors.verticalCenter = connectionLine.verticalCenter
-            isPublishButtonOnLeftSide ? anchors.right = connectionLine.left : anchors.left = connectionLine.right
+            isSpeedPublishButtonOnLeft ? anchors.right = connectionLine.left : anchors.left = connectionLine.right
         }
 
         onClicked: {
@@ -153,25 +154,28 @@ Item {
     }
 
     Row {
+        spacing: 3
+
         RaySlider {
             id: controlSlider
+            publishButtonOnLeft: root.isRayPositionPublishButtonOnLeft
 
             onValueSubmitted: function(value) {
                 // TODO: publishRayPosition(value)
+                console.log("Publishing ray position:", value)
             }
         }
 
         RaySlider {
             id: telemetrySlider
-            readOnly: true
+            blocked: true
         }
-
 
         Component.onCompleted: {
             anchors.leftMargin = jointControlWidth / 2
             anchors.rightMargin = jointControlWidth / 2
             anchors.verticalCenter = connectionLine.verticalCenter
-            isPublishButtonOnLeftSide ? anchors.left = connectionLine.right : anchors.right = connectionLine.left
+            isSpeedPublishButtonOnLeft ? anchors.left = connectionLine.right : anchors.right = connectionLine.left
         }
     }
 
