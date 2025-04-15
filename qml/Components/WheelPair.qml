@@ -152,12 +152,24 @@ Item {
         }
     }
 
-    RaySlider {
-        id: slider
+    Row {
+        RaySlider {
+            id: controlSlider
+
+            onValueSubmitted: function(value) {
+                // TODO: publishRayPosition(value)
+            }
+        }
+
+        RaySlider {
+            id: telemetrySlider
+            readOnly: true
+        }
+
 
         Component.onCompleted: {
-            anchors.leftMargin = jointControlWidth / 3
-            anchors.rightMargin = jointControlWidth / 3
+            anchors.leftMargin = jointControlWidth / 2
+            anchors.rightMargin = jointControlWidth / 2
             anchors.verticalCenter = connectionLine.verticalCenter
             isPublishButtonOnLeftSide ? anchors.left = connectionLine.right : anchors.right = connectionLine.left
         }

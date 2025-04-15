@@ -31,7 +31,7 @@ Item {
             bottom: schemeBody.top
         }
 
-        width: schemeBody.width * 2.5
+        width: 400 /*schemeBody.width * 2.5*/
         height: schemeBody.height * 2
     }
 
@@ -45,7 +45,7 @@ Item {
             top: schemeBody.bottom
         }
 
-        width: schemeBody.width * 2.5
+        width: 400 /*schemeBody.width * 2.5*/
         height: schemeBody.height * 2
     }
 

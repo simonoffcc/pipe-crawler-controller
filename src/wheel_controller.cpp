@@ -17,27 +17,27 @@ WheelController::WheelController(std::shared_ptr<rclcpp::Node> node, QObject* pa
     controllers_ = {
         {
          ControllerName::FrontLeft,  ControlState::GLOBAL,
-         {JointName::FrontLeftOuter,  0.0}, {JointName::FrontLeftInner,  0.0}
+         {JointName::FrontLeftOuter,  0.0}, {JointName::FrontLeftInner,  0.0}, 0.0, 0.0
         },
         {
          ControllerName::FrontUp,    ControlState::GLOBAL,
-         {JointName::FrontUpOuter,    0.0}, {JointName::FrontUpInner,    0.0}
+         {JointName::FrontUpOuter,    0.0}, {JointName::FrontUpInner,    0.0}, 0.0, 0.0
         },
         {
          ControllerName::FrontRight, ControlState::GLOBAL,
-         {JointName::FrontRightOuter, 0.0}, {JointName::FrontRightInner, 0.0}
+         {JointName::FrontRightOuter, 0.0}, {JointName::FrontRightInner, 0.0}, 0.0, 0.0
         },
         {
          ControllerName::BackLeft,   ControlState::GLOBAL,
-         {JointName::BackLeftOuter,   0.0}, {JointName::BackLeftInner,   0.0}
+         {JointName::BackLeftOuter,   0.0}, {JointName::BackLeftInner,   0.0}, 0.0, 0.0
         },
         {
          ControllerName::BackUp,     ControlState::GLOBAL,
-         {JointName::BackUpOuter,     0.0}, {JointName::BackUpInner,     0.0}
+         {JointName::BackUpOuter,     0.0}, {JointName::BackUpInner,     0.0}, 0.0, 0.0
         },
         {
          ControllerName::BackRight,  ControlState::GLOBAL,
-         {JointName::BackRightOuter,  0.0}, {JointName::BackRightInner,  0.0}
+         {JointName::BackRightOuter,  0.0}, {JointName::BackRightInner,  0.0}, 0.0, 0.0
         }
     };
 

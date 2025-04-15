@@ -5,12 +5,16 @@ import QtQuick.Controls.Basic
 Item {
     id: root
     height: 150
-    width: 80
+    width: slideBackground.width + handleRect.width
+
+    property bool readOnly: false
+    signal valueSubmitted(real value)
 
     Slider {
         id: slider
         anchors.fill: parent
         orientation: Qt.Vertical
+        enabled: !root.readOnly
 
         from: 0
         value: 55
@@ -24,12 +28,12 @@ Item {
             width: 8
             height: slider.availableHeight
             radius: 4
-            color: "#008080"
+            color: root.readOnly ? "#808080" : "#008080"
 
             Rectangle {
                 width: parent.width
                 height: slider.visualPosition * parent.height
-                color: "#bdbebf"
+                color: root.readOnly ? "#a0a0a0" : "#bdbebf"
                 radius: 4
             }
         }
@@ -38,9 +42,9 @@ Item {
             id: handleRect
             x: slider.leftPadding + slider.availableWidth / 2 - width / 2
             y: slider.topPadding + slider.visualPosition * (slider.availableHeight - height)
-            width: 50
+            width: 40
             height: 24
-            color: "#f0f0f0"
+            color: root.readOnly ? "#e0e0e0" : "#f0f0f0"
             border.color: "#bdbebf"
             border.width: 1
             radius: 4
@@ -56,6 +60,7 @@ Item {
                 verticalAlignment: TextInput.AlignVCenter
                 font.pixelSize: 12
                 font.bold: true
+                readOnly: root.readOnly
                 background: Rectangle {
                     color: "transparent"
                 }
@@ -76,11 +81,27 @@ Item {
                         text = Math.round(slider.value).toString()
                     }
                 }
+
+                Keys.onReturnPressed: {
+                    if (!root.readOnly && text.length > 0) {
+                        root.valueSubmitted(parseFloat(text))
+                        text = ""
+                    }
+                }
+
+                Keys.onEnterPressed: {
+                    if (!root.readOnly && text.length > 0) {
+                        root.valueSubmitted(parseFloat(text))
+                        text = ""
+                    }
+                }
             }
         }
 
         onValueChanged: {
-            inputField.text = Math.round(value).toString()
+            if (!inputField.focus) {
+                inputField.text = Math.round(value).toString()
+            }
         }
     }
 }

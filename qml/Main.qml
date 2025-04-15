@@ -29,8 +29,8 @@ ApplicationWindow {
             color: "lightgray"
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.minimumWidth: 550
-            Layout.preferredWidth: 600
+            Layout.minimumWidth: 720
+            Layout.preferredWidth: 750
 
             RobotDiagram {
                 id: robotDiagram

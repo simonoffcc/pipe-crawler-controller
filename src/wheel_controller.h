@@ -28,7 +28,7 @@ class WheelController : public QObject
     // Режим группировки пар, который необходим для отображения в комбо-боксах в GUI
     Q_PROPERTY(int currentPairsGroupingMode READ currentPairsGroupingMode WRITE setPairsGroupingMode NOTIFY pairsGroupingModeChanged)
 
-    // Массив контроллеров колесных пар
+    // Массив контроллеров колесных пар с телеметрией скоростей и позиции лучей
     Q_PROPERTY(QVariantList controllers READ controllers NOTIFY controllersChanged)
 
     // Property for log messages
@@ -106,6 +106,8 @@ private:
         ControlState state;
         Joint outer_joint;
         Joint inner_joint;
+        double ray_position;
+        double effort;
     };
 
     std::vector<Controller> controllers_;   ///< Массив контроллеров колесных пар
