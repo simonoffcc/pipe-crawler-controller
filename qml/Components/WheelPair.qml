@@ -108,7 +108,7 @@ Item {
 
     Button {
         id: publishButton
-        visible: root.isCustomMode && root.state !== "global" && root.state !== "independent"
+        visible: root.isCustomMode && root.state === "local"
 
         width: jointControlWidth * 0.6
         height: jointControlWidth * 0.3
@@ -149,6 +149,17 @@ Item {
                 outerJoint.clearSpeedInput();
                 innerJoint.clearSpeedInput();
             }
+        }
+    }
+
+    RaySlider {
+        id: slider
+
+        Component.onCompleted: {
+            anchors.leftMargin = jointControlWidth / 3
+            anchors.rightMargin = jointControlWidth / 3
+            anchors.verticalCenter = connectionLine.verticalCenter
+            isPublishButtonOnLeftSide ? anchors.left = connectionLine.right : anchors.right = connectionLine.left
         }
     }
 
