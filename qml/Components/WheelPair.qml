@@ -153,32 +153,6 @@ Item {
         }
     }
 
-    Row {
-        spacing: 3
-
-        RaySlider {
-            id: controlSlider
-            publishButtonOnLeft: root.isRayPositionPublishButtonOnLeft
-
-            onValueSubmitted: function(value) {
-                // TODO: publishRayPosition(value)
-                console.log("Publishing ray position:", value)
-            }
-        }
-
-        RaySlider {
-            id: telemetrySlider
-            blocked: true
-        }
-
-        Component.onCompleted: {
-            anchors.leftMargin = jointControlWidth / 2
-            anchors.rightMargin = jointControlWidth / 2
-            anchors.verticalCenter = connectionLine.verticalCenter
-            isSpeedPublishButtonOnLeft ? anchors.left = connectionLine.right : anchors.right = connectionLine.left
-        }
-    }
-
     JointControl {
         id: outerJoint
 
