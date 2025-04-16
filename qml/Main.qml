@@ -26,6 +26,8 @@ ApplicationWindow {
         Rectangle {
             id: diagramBackground
 
+            visible: false
+
             color: "lightgray"
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -37,6 +39,22 @@ ApplicationWindow {
 
                 anchors.centerIn: parent
                 isLocked: controlsLayout.isLocked
+            }
+        }
+
+        Rectangle {
+            id: robotRaysDiagram
+
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.minimumWidth: 500
+            Layout.preferredWidth: 500
+            color: "lightgray"
+
+            RaySlider {
+                id: raySlider
+
+                anchors.centerIn: parent
             }
         }
 
