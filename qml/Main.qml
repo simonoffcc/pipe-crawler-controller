@@ -51,11 +51,21 @@ ApplicationWindow {
             Layout.preferredWidth: 500
             color: "lightgray"
 
-            RaySlider {
-                id: raySlider
+            RayControl {
+                id: rayIndicator
 
                 anchors.centerIn: parent
             }
+
+            // RaySpinBox {
+            //     id: raySpinBox
+
+            //     anchors {
+            //         bottom: rayIndicator.top
+            //         bottomMargin: 10
+            //     }
+            // }
+
         }
 
         ColumnLayout {
