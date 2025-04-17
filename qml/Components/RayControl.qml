@@ -92,8 +92,8 @@ Item {
         handle: Shape {
             id: handlePointer
 
-            x: root.backgroundWidth + (handlePointer.width / 2)
-            y: raySlider.visualPosition * (raySlider.availableHeight - handlePointer.height)
+            x: root.backgroundWidth
+            y: raySlider.visualPosition * raySlider.availableHeight
             width: 20
             height: 15
 
