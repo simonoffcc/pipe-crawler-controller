@@ -1,91 +1,135 @@
 import QtQuick
+import QtQuick.Controls
 import QtQuick.Controls.Basic
 
-SpinBox {
-    id: control
+Row {
+    id: root
 
-    from: 0
-    to: 220
-    value: from
-    editable: true
+    spacing: 5
 
-    padding: 0
-    leftPadding: down.indicator ? down.indicator.width + commonSpacing : commonSpacing
-    rightPadding: up.indicator ? up.indicator.width + commonSpacing : commonSpacing
+    property int commonRadidus: 4
+    property int commonHeight: 30
 
-    property int commonSpacing: 4
+    SpinBox {
+        id: spinBox
 
-    font.pixelSize: 12
+        value: from
+        from: 0
+        to: 220
+        stepSize: 1
+        editable: true
 
-    contentItem: Item {
-        implicitWidth: input.implicitWidth
-        implicitHeight: input.implicitHeight
+        leftPadding: down.indicator ? down.indicator.width : 0
+        rightPadding: up.indicator ? up.indicator.width : 0
 
-        TextInput {
-            id: input
+        contentItem: Item {
+            implicitWidth: input.implicitWidth
+            implicitHeight: input.implicitHeight
+
+            TextInput {
+                id: input
+                anchors.fill: parent
+                text: spinBox.textFromValue(spinBox.value, spinBox.locale)
+
+                font: spinBox.font
+                color: "black"
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+
+                readOnly: !spinBox.editable
+                validator: spinBox.validator
+                inputMethodHints: Qt.ImhFormattedNumbersOnly
+
+                onTextChanged: {
+                    if (text === "") return
+                    const val = parseInt(text)
+                    if (!isNaN(val) && val >= spinBox.from && val <= spinBox.to) {
+                        spinBox.value = val
+                    }
+                }
+            }
+        }
+
+        up.indicator: Item {
+            x: spinBox.mirrored ? 0 : parent.width - width
+            height: parent.height
+            implicitWidth: 30
+            implicitHeight: root.commonHeight
+
+            Rectangle {
+                anchors.fill: parent
+                color: spinBox.up.pressed ? "#e4e4e4" : "#f6f6f6"
+                border.color: enabled ? "#97999b" : "#bdbebf"
+                radius: root.commonRadidus
+
+                Text {
+                    anchors.centerIn: parent
+                    text: "+1"
+                    font.pixelSize: spinBox.font.pixelSize
+                    color: "#97999b"
+                }
+            }
+        }
+
+        down.indicator: Item {
+            x: spinBox.mirrored ? parent.width - width : 0
+            height: parent.height
+            implicitWidth: 30
+            implicitHeight: root.commonHeight
+
+            Rectangle {
+                anchors.fill: parent
+                color: spinBox.down.pressed ? "#e4e4e4" : "#f6f6f6"
+                border.color: enabled ? "#97999b" : "#bdbebf"
+                radius: root.commonRadidus
+
+                Text {
+                    anchors.centerIn: parent
+                    text: "-1"
+                    font.pixelSize: spinBox.font.pixelSize
+                    color: "#97999b"
+                }
+            }
+        }
+
+        background: Rectangle {
+            id: spinBoxBackground
+
+            implicitWidth: 140
+            border.color: "#bdbebf"
+            radius: root.commonRadidus
+        }
+    }
+
+    Button {
+        id: publishButton
+
+        implicitWidth: 60
+        implicitHeight: root.commonHeight
+        hoverEnabled: true
+
+        text: qsTr("Publish")
+
+        background: Rectangle {
+            property color normalColor: "#ffffff"
+            property color hoveredColor: "#cccccc"
+            property color pressedColor: "#999999"
+
+            radius: root.commonRadidus
+            color: publishButton.pressed ? pressedColor :
+                   publishButton.hovered ? hoveredColor : normalColor
+
+            border.color: enabled ? "#97999b" : "#bdbebf"
+        }
+
+        contentItem: Text {
             anchors.fill: parent
-            text: control.textFromValue(control.value, control.locale)
 
-            font: control.font
+            text: publishButton.text
+            font.pixelSize: 12
             color: "black"
-            selectionColor: "#97999b"
-            selectedTextColor: "#ffffff"
-            horizontalAlignment: Qt.AlignHCenter
-            verticalAlignment: Qt.AlignVCenter
-
-            readOnly: !control.editable
-            validator: control.validator
-            inputMethodHints: Qt.ImhFormattedNumbersOnly
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
         }
-    }
-
-    up.indicator: Item {
-        x: control.mirrored ? commonSpacing : parent.width - width - commonSpacing
-        height: parent.height
-        implicitWidth: 32
-        implicitHeight: 32
-        
-        Rectangle {
-            anchors.fill: parent
-            anchors.margins: 1
-            color: control.up.pressed ? "#e4e4e4" : "#f6f6f6"
-            border.color: enabled ? "#97999b" : "#bdbebf"
-            radius: 4
-
-            Text {
-                anchors.centerIn: parent
-                text: "+1"
-                font.pixelSize: control.font.pixelSize * 1.5
-                color: "#97999b"
-            }
-        }
-    }
-
-    down.indicator: Item {
-        x: control.mirrored ? parent.width - width - commonSpacing : commonSpacing
-        height: parent.height
-        implicitWidth: 32
-        implicitHeight: 32
-
-        Rectangle {
-            anchors.fill: parent
-            anchors.margins: 1
-            color: control.down.pressed ? "#e4e4e4" : "#f6f6f6"
-            border.color: enabled ? "#97999b" : "#bdbebf"
-            radius: 4
-
-            Text {
-                anchors.centerIn: parent
-                text: "-1"
-                font.pixelSize: control.font.pixelSize * 1.5
-                color: "#97999b"
-            }
-        }
-    }
-
-    background: Rectangle {
-        implicitWidth: 120
-        border.color: "#bdbebf"
-        radius: 4
     }
 }

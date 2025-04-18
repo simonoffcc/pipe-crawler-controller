@@ -115,4 +115,25 @@ Item {
             }
         }
     }
+
+    Rectangle {
+        id: telemetryTextBackground
+
+        anchors.centerIn: indicatorBackground
+        implicitWidth: telemetryText.width + 12
+        implicitHeight: telemetryText.height + 6
+
+        radius: 7
+        color: "white"
+        border.color: "#97999b"
+
+        Text {
+            id: telemetryText
+
+            anchors.centerIn: parent
+            text: root.positionValue + qsTr(" mm")
+            font.pixelSize: 14
+            color: "black"
+        }
+    }
 }

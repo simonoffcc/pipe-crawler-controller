@@ -17,13 +17,13 @@ Item {
     RayControl {
         id: rayIndicator
 
-        visible: false
-
         anchors.centerIn: parent
     }
 
     RaySpinBox {
         id: raySpinBox
+
+        visible: false
 
         anchors.centerIn: parent
     }
