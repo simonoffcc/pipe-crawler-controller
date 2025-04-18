@@ -89,25 +89,57 @@ Item {
             }
         }
 
-        handle: Shape {
-            id: handlePointer
-
+        handle: Item {
             x: root.backgroundWidth
             y: -raySlider.bottomPadding + raySlider.visualPosition * root.backgroundHeight
-            width: 20
-            height: width
+            width: handlePointer.width
+            height: handlePointer.height
 
-            ShapePath {
-                id: triangle
+            Rectangle {
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+                width: parent.width
+                height: parent.height
+                color: "transparent"
 
-                fillColor: "#f0f0f0"
-                strokeWidth: 1
-                strokeColor: "#97999b"
+                MouseArea {
+                    anchors.fill: parent
+                    anchors.rightMargin: -handlePointer.width
+                    cursorShape: Qt.PointingHandCursor
+                    drag.target: parent.parent
+                    drag.axis: Drag.YAxis
+                    drag.minimumY: -parent.parent.height/2
+                    drag.maximumY: raySlider.height - parent.parent.height/2
 
-                startX: handlePointer.width; startY: handlePointer.height
-                PathLine { x: 0; y: handlePointer.height / 2 }
-                PathLine { x: handlePointer.width; y:  0}
-                PathLine { x: handlePointer.width; y:  handlePointer.height}
+                    function updateValue() {
+                        var pos = parent.parent.y + parent.parent.height/2
+                        var availableHeight = raySlider.height
+                        var normalizedPos = Math.max(0, Math.min(pos, availableHeight)) / availableHeight
+                        raySlider.value = raySlider.to - normalizedPos * (raySlider.to - raySlider.from)
+                    }
+
+                    onPositionChanged: updateValue()
+                    onPressed: updateValue()
+                }
+            }
+
+            Shape {
+                id: handlePointer
+                width: 20
+                height: width
+
+                ShapePath {
+                    id: triangle
+
+                    fillColor: "#f0f0f0"
+                    strokeWidth: 1
+                    strokeColor: "#97999b"
+
+                    startX: handlePointer.width; startY: handlePointer.height
+                    PathLine { x: 0; y: handlePointer.height / 2 }
+                    PathLine { x: handlePointer.width; y:  0}
+                    PathLine { x: handlePointer.width; y:  handlePointer.height}
+                }
             }
         }
     }
