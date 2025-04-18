@@ -95,34 +95,6 @@ Item {
             width: handlePointer.width
             height: handlePointer.height
 
-            Rectangle {
-                anchors.right: parent.right
-                anchors.verticalCenter: parent.verticalCenter
-                width: parent.width
-                height: parent.height
-                color: "transparent"
-
-                MouseArea {
-                    anchors.fill: parent
-                    anchors.rightMargin: -handlePointer.width
-                    cursorShape: Qt.PointingHandCursor
-                    drag.target: parent.parent
-                    drag.axis: Drag.YAxis
-                    drag.minimumY: -parent.parent.height/2
-                    drag.maximumY: raySlider.height - parent.parent.height/2
-
-                    function updateValue() {
-                        var pos = parent.parent.y + parent.parent.height/2
-                        var availableHeight = raySlider.height
-                        var normalizedPos = Math.max(0, Math.min(pos, availableHeight)) / availableHeight
-                        raySlider.value = raySlider.to - normalizedPos * (raySlider.to - raySlider.from)
-                    }
-
-                    onPositionChanged: updateValue()
-                    onPressed: updateValue()
-                }
-            }
-
             Shape {
                 id: handlePointer
                 width: 20
