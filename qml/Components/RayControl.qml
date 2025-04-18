@@ -72,9 +72,9 @@ Item {
             id: slideBackground
 
             x: root.backgroundWidth / 2 - width / 2
-            y: 0
-            width: root.backgroundWidth
-            height: parent.height
+            y: root.backgroundBorderWidth
+            width: root.backgroundWidth - 2 * root.backgroundBorderWidth
+            height: parent.height - 2 * root.backgroundBorderWidth
             radius: root.commonRadius
             color: "#008080"
             opacity: 0.5
