@@ -1,6 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 
+import Components
+
 import controllerName
 import jointName
 

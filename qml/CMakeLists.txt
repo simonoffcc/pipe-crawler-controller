@@ -1,5 +1,6 @@
 add_subdirectory(Components)
-add_subdirectory(Controls)
+add_subdirectory(Diagrams)
+add_subdirectory(Panels)
 
 qt_add_qml_module(main_module
         URI MainModule
@@ -10,5 +11,6 @@ qt_add_qml_module(main_module
 )
 target_link_libraries(main_module PUBLIC
     componentsplugin
-    controlsplugin
+    diagramsplugin
+    panelsplugin
 )

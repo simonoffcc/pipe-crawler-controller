@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 
-import Components
-import Controls
+import Diagrams
+import Panels
 
 import WheelController
 
@@ -34,7 +34,7 @@ ApplicationWindow {
             Layout.minimumWidth: 720
             Layout.preferredWidth: 750
 
-            RobotDiagram {
+            WheelPairsDiagram {
                 id: robotDiagram
 
                 anchors.centerIn: parent
@@ -51,20 +51,11 @@ ApplicationWindow {
             Layout.preferredWidth: 500
             color: "lightgray"
 
-            RayControl {
-                id: rayIndicator
+            RaysDiagram {
+                id: raysDigram
 
                 anchors.centerIn: parent
             }
-
-            // RaySpinBox {
-            //     id: raySpinBox
-
-            //     anchors {
-            //         bottom: rayIndicator.top
-            //         bottomMargin: 10
-            //     }
-            // }
 
         }
 
