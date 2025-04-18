@@ -8,7 +8,6 @@ Item {
 
     property int backgroundWidth: 100
     property int backgroundHeight: backgroundWidth * 1.5
-    property bool borderAllOver: false
     property int backgroundBorderWidth : 2
     property int commonRadius: 1
 
@@ -25,8 +24,8 @@ Item {
     Item {
         id: rayIndicator
 
-        width: root.backgroundWidth
-        height: root.backgroundHeight
+        implicitWidth: root.backgroundWidth
+        implicitHeight: root.backgroundHeight
 
         Rectangle {
             id: indicatorBackground
@@ -44,10 +43,10 @@ Item {
                     left: parent.left
                     right: parent.right
                     bottom: parent.bottom
-                    margins: borderAllOver ? root.backgroundBorderWidth : 0
+                    margins: root.backgroundBorderWidth
                 }
 
-                height: root.positionValue / root.maxPositionValue * root.height
+                height: root.positionValue / root.maxPositionValue * parent.height
                 radius: root.commonRadius
                 color: "#008080"
             }
@@ -61,6 +60,8 @@ Item {
         height: root.backgroundHeight
 
         orientation: Qt.Vertical
+        topPadding: handlePointer.height / 2
+        bottomPadding: handlePointer.height / 2
 
         value: 55
         from: 0
@@ -71,10 +72,9 @@ Item {
             id: slideBackground
 
             x: root.backgroundWidth / 2 - width / 2
-            y: raySlider.topPadding - raySlider.bottomPadding
-
+            y: 0
             width: root.backgroundWidth
-            height: root.backgroundHeight
+            height: parent.height
             radius: root.commonRadius
             color: "#008080"
             opacity: 0.5
@@ -93,9 +93,9 @@ Item {
             id: handlePointer
 
             x: root.backgroundWidth
-            y: raySlider.visualPosition * raySlider.availableHeight
+            y: -raySlider.bottomPadding + raySlider.visualPosition * root.backgroundHeight
             width: 20
-            height: 15
+            height: width
 
             ShapePath {
                 id: triangle
