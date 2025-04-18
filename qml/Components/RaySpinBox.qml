@@ -1,68 +1,91 @@
 import QtQuick
-import QtQuick.Controls
 import QtQuick.Controls.Basic
 
 SpinBox {
-    id: root
-    value: 50
+    id: control
+
+    from: 0
+    to: 220
+    value: from
     editable: true
 
-    contentItem: TextInput {
-        z: 2
-        text: root.textFromValue(root.value, root.locale)
+    padding: 0
+    leftPadding: down.indicator ? down.indicator.width + commonSpacing : commonSpacing
+    rightPadding: up.indicator ? up.indicator.width + commonSpacing : commonSpacing
 
-        font: root.font
-        color: "#21be2b"
-        selectionColor: "#21be2b"
-        selectedTextColor: "#ffffff"
-        horizontalAlignment: Qt.AlignHCenter
-        verticalAlignment: Qt.AlignVCenter
+    property int commonSpacing: 4
 
-        readOnly: !root.editable
-        validator: root.validator
-        inputMethodHints: Qt.ImhFormattedNumbersOnly
-    }
+    font.pixelSize: 12
 
-    up.indicator: Rectangle {
-        x: root.mirrored ? 0 : parent.width - width
-        height: parent.height
-        implicitWidth: 40
-        implicitHeight: 40
-        color: root.up.pressed ? "#e4e4e4" : "#f6f6f6"
-        border.color: enabled ? "#21be2b" : "#bdbebf"
+    contentItem: Item {
+        implicitWidth: input.implicitWidth
+        implicitHeight: input.implicitHeight
 
-        Text {
-            text: "+"
-            font.pixelSize: root.font.pixelSize * 2
-            color: "#21be2b"
+        TextInput {
+            id: input
             anchors.fill: parent
-            fontSizeMode: Text.Fit
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
+            text: control.textFromValue(control.value, control.locale)
+
+            font: control.font
+            color: "black"
+            selectionColor: "#97999b"
+            selectedTextColor: "#ffffff"
+            horizontalAlignment: Qt.AlignHCenter
+            verticalAlignment: Qt.AlignVCenter
+
+            readOnly: !control.editable
+            validator: control.validator
+            inputMethodHints: Qt.ImhFormattedNumbersOnly
         }
     }
 
-    down.indicator: Rectangle {
-        x: root.mirrored ? parent.width - width : 0
+    up.indicator: Item {
+        x: control.mirrored ? commonSpacing : parent.width - width - commonSpacing
         height: parent.height
-        implicitWidth: 40
-        implicitHeight: 40
-        color: root.down.pressed ? "#e4e4e4" : "#f6f6f6"
-        border.color: enabled ? "#21be2b" : "#bdbebf"
-
-        Text {
-            text: "-"
-            font.pixelSize: root.font.pixelSize * 2
-            color: "#21be2b"
+        implicitWidth: 32
+        implicitHeight: 32
+        
+        Rectangle {
             anchors.fill: parent
-            fontSizeMode: Text.Fit
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
+            anchors.margins: 1
+            color: control.up.pressed ? "#e4e4e4" : "#f6f6f6"
+            border.color: enabled ? "#97999b" : "#bdbebf"
+            radius: 4
+
+            Text {
+                anchors.centerIn: parent
+                text: "+1"
+                font.pixelSize: control.font.pixelSize * 1.5
+                color: "#97999b"
+            }
+        }
+    }
+
+    down.indicator: Item {
+        x: control.mirrored ? parent.width - width - commonSpacing : commonSpacing
+        height: parent.height
+        implicitWidth: 32
+        implicitHeight: 32
+
+        Rectangle {
+            anchors.fill: parent
+            anchors.margins: 1
+            color: control.down.pressed ? "#e4e4e4" : "#f6f6f6"
+            border.color: enabled ? "#97999b" : "#bdbebf"
+            radius: 4
+
+            Text {
+                anchors.centerIn: parent
+                text: "-1"
+                font.pixelSize: control.font.pixelSize * 1.5
+                color: "#97999b"
+            }
         }
     }
 
     background: Rectangle {
-        implicitWidth: 140
+        implicitWidth: 120
         border.color: "#bdbebf"
+        radius: 4
     }
 }
