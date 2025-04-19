@@ -15,11 +15,11 @@ Item {
     property alias pointerHeight: handlePointer.height
     property alias pointerBorderWidth: triangle.strokeWidth
 
-    readonly property int positionValue: 120 // потом будет проперти, который будет передавать значение с телеметрии
+    property int positionValue: 120 // потом будет проперти, который будет передавать значение с телеметрии
     readonly property double maxPositionValue: 220
 
-    width: Math.max(rayIndicator.width, raySlider.width)
-    height: Math.max(rayIndicator.height, raySlider.height)
+    implicitWidth: Math.max(rayIndicator.width, raySlider.width)
+    implicitHeight: Math.max(rayIndicator.height, raySlider.height)
 
     Item {
         id: rayIndicator
@@ -56,25 +56,24 @@ Item {
     Slider {
         id: raySlider
 
-        width: root.backgroundWidth
-        height: root.backgroundHeight
-
-        orientation: Qt.Vertical
+        implicitWidth: root.backgroundWidth + handleItem.width
+        implicitHeight: root.backgroundHeight
         topPadding: handlePointer.height / 2
         bottomPadding: handlePointer.height / 2
+        orientation: Qt.Vertical
 
         value: 55
         from: 0
-        to: 220
+        to: root.maxPositionValue
         stepSize: 5
 
         background: Rectangle {
             id: slideBackground
 
-            x: root.backgroundWidth / 2 - width / 2
+            x: root.backgroundWidth / 2 - slideBackground.width / 2
             y: root.backgroundBorderWidth
             width: root.backgroundWidth - 2 * root.backgroundBorderWidth
-            height: parent.height - 2 * root.backgroundBorderWidth
+            height: root.backgroundHeight - 2 * root.backgroundBorderWidth
             radius: root.commonRadius
             color: "#008080"
             opacity: 0.5
@@ -82,14 +81,37 @@ Item {
             Rectangle {
                 id: slideBackgroundNotUsed
 
-                width: parent.width
-                height: raySlider.visualPosition * parent.height
+                width: slideBackground.width
+                height: raySlider.visualPosition * slideBackground.height
                 radius: root.commonRadius
                 color: "#bdbebf"
             }
         }
 
+        Rectangle {
+            id: telemetryText
+
+            anchors.centerIn: slideBackground
+            implicitWidth: text.width + 12
+            implicitHeight: text.height + 6
+
+            radius: 10
+            color: "white"
+            border.color: "#97999b"
+
+            Text {
+                id: text
+
+                anchors.centerIn: parent
+                text: root.positionValue + qsTr(" mm")
+                font.pixelSize: 14
+                color: "black"
+            }
+        }
+
         handle: Item {
+            id: handleItem
+
             x: root.backgroundWidth
             y: -raySlider.bottomPadding + raySlider.visualPosition * root.backgroundHeight
             width: handlePointer.width
@@ -113,27 +135,6 @@ Item {
                     PathLine { x: handlePointer.width; y:  handlePointer.height}
                 }
             }
-        }
-    }
-
-    Rectangle {
-        id: telemetryTextBackground
-
-        anchors.centerIn: indicatorBackground
-        implicitWidth: telemetryText.width + 12
-        implicitHeight: telemetryText.height + 6
-
-        radius: 7
-        color: "white"
-        border.color: "#97999b"
-
-        Text {
-            id: telemetryText
-
-            anchors.centerIn: parent
-            text: root.positionValue + qsTr(" mm")
-            font.pixelSize: 14
-            color: "black"
         }
     }
 }

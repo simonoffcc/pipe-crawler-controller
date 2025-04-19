@@ -11,11 +11,11 @@ import Components
 Item {
     id: root
 
-    width: 430
-    height: 910
+    width: 500
+    height: 500
 
     RayControl {
-        id: rayIndicator
+        id: rayControl
 
         anchors.centerIn: parent
     }
