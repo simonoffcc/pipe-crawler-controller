@@ -17,6 +17,8 @@ Item {
     RayControl {
         id: rayControl
 
+        rotation: 120
+
         anchors.centerIn: parent
     }
 

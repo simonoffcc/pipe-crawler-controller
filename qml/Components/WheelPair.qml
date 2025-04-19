@@ -11,15 +11,16 @@ import pairsGroupingMode
 Item {
     id: root
 
-    property int controllerName: ControllerName.Unknown
     property bool isFront: true
     property bool isSpeedPublishButtonOnLeft: false
     property bool isRayPositionPublishButtonOnLeft: false
     property int jointControlWidth: 100
     property int elementStrokeWidth: 4
+    property bool isLocked: false
+
+    property int controllerName: ControllerName.Unknown
     property int outerJointName: JointName.Unknown
     property int innerJointName: JointName.Unknown
-    property bool isLocked: false
 
     width: jointControlWidth
     height: jointControlWidth * 2.5
@@ -27,18 +28,6 @@ Item {
     readonly property bool isCustomMode: WheelController.currentPairsGroupingMode === PairsGroupingMode.Custom &&
                                       WheelController.currentDriveMode === DriveMode.Custom
     readonly property int outputPrecision: 2
-
-    Component.onCompleted: {
-        let controllers = WheelController.controllers;
-        for (let i = 0; i < controllers.length; i++) {
-            if (controllers[i].name === root.controllerName) {
-                root.state = ["global", "local", "independent"][controllers[i].state];
-                outerJoint.telemetrySpeed = controllers[i].outerJoint.velocity.toFixed(outputPrecision) + "°/sec";
-                innerJoint.telemetrySpeed = controllers[i].innerJoint.velocity.toFixed(outputPrecision) + "°/sec";
-                break;
-            }
-        }
-    }
 
     Connections {
         target: WheelController
@@ -206,6 +195,18 @@ Item {
             if (root.state === "independent") {
                 WheelController.publishIndependentSpeed(parseFloat(speedValue), root.controllerName, false);
                 innerJoint.clearSpeedInput();
+            }
+        }
+    }
+
+    Component.onCompleted: {
+        let controllers = WheelController.controllers;
+        for (let i = 0; i < controllers.length; i++) {
+            if (controllers[i].name === root.controllerName) {
+                root.state = ["global", "local", "independent"][controllers[i].state];
+                outerJoint.telemetrySpeed = controllers[i].outerJoint.velocity.toFixed(outputPrecision) + "°/sec";
+                innerJoint.telemetrySpeed = controllers[i].innerJoint.velocity.toFixed(outputPrecision) + "°/sec";
+                break;
             }
         }
     }

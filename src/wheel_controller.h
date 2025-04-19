@@ -28,7 +28,7 @@ class WheelController : public QObject
     // Режим группировки пар, который необходим для отображения в комбо-боксах в GUI
     Q_PROPERTY(int currentPairsGroupingMode READ currentPairsGroupingMode WRITE setPairsGroupingMode NOTIFY pairsGroupingModeChanged)
 
-    // Массив контроллеров колесных пар с телеметрией скоростей и позиции лучей
+    // Массив контроллеров колесных пар для хранения телеметрии шарниров, лучей и усилий
     Q_PROPERTY(QVariantList controllers READ controllers NOTIFY controllersChanged)
 
     // Property for log messages

@@ -6,6 +6,7 @@ import QtQuick.Controls.Basic
 Item {
     id: root
 
+    // property int rayName: RayName.Unknown
     property int backgroundWidth: 100
     property int backgroundHeight: backgroundWidth * 1.5
     property int backgroundBorderWidth : 2
@@ -15,7 +16,7 @@ Item {
     property alias pointerHeight: handlePointer.height
     property alias pointerBorderWidth: triangle.strokeWidth
 
-    property int positionValue: 120 // потом будет проперти, который будет передавать значение с телеметрии
+    property int positionValue: 55 // потом будет проперти, который будет передавать значение с телеметрии
     readonly property double maxPositionValue: 220
 
     implicitWidth: Math.max(rayIndicator.width, raySlider.width)
@@ -62,7 +63,6 @@ Item {
         bottomPadding: handlePointer.height / 2
         orientation: Qt.Vertical
 
-        value: 55
         from: 0
         to: root.maxPositionValue
         stepSize: 5
@@ -91,9 +91,11 @@ Item {
         Rectangle {
             id: telemetryText
 
+            rotation: -root.rotation
+
             anchors.centerIn: slideBackground
-            implicitWidth: text.width + 12
-            implicitHeight: text.height + 6
+            implicitWidth: text.width * 1.5
+            implicitHeight: text.height * 1.5
 
             radius: 10
             color: "white"
