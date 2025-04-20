@@ -57,7 +57,6 @@ Item {
         controllerName: ControllerName.FrontLeft
         isFront: true
         isSpeedPublishButtonOnLeft: false
-        isRayPositionPublishButtonOnLeft: true
         jointControlWidth: 100
         elementStrokeWidth: 4
         outerJointName: JointName.FrontLeftOuter
@@ -77,7 +76,6 @@ Item {
         controllerName: ControllerName.FrontUp
         isFront: true
         isSpeedPublishButtonOnLeft: true
-        isRayPositionPublishButtonOnLeft: false
         jointControlWidth: 100
         elementStrokeWidth: 4
         outerJointName: JointName.FrontUpOuter
@@ -96,7 +94,6 @@ Item {
         controllerName: ControllerName.FrontRight
         isFront: true
         isSpeedPublishButtonOnLeft: true
-        isRayPositionPublishButtonOnLeft: false
         jointControlWidth: 100
         elementStrokeWidth: 4
         outerJointName: JointName.FrontRightOuter
@@ -116,7 +113,6 @@ Item {
         controllerName: ControllerName.BackLeft
         isFront: false
         isSpeedPublishButtonOnLeft: false
-        isRayPositionPublishButtonOnLeft: true
         jointControlWidth: 100
         elementStrokeWidth: 4
         outerJointName: JointName.BackLeftOuter
@@ -136,7 +132,6 @@ Item {
         controllerName: ControllerName.BackUp
         isFront: false
         isSpeedPublishButtonOnLeft: false
-        isRayPositionPublishButtonOnLeft: true
         jointControlWidth: 100
         elementStrokeWidth: 4
         outerJointName: JointName.BackUpOuter
@@ -155,7 +150,6 @@ Item {
         controllerName: ControllerName.BackRight
         isFront: false
         isSpeedPublishButtonOnLeft: true
-        isRayPositionPublishButtonOnLeft: false
         jointControlWidth: 100
         elementStrokeWidth: 4
         outerJointName: JointName.BackRightOuter

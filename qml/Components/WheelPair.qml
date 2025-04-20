@@ -11,12 +11,11 @@ import pairsGroupingMode
 Item {
     id: root
 
-    property bool isFront: true
-    property bool isSpeedPublishButtonOnLeft: false
-    property bool isRayPositionPublishButtonOnLeft: false
     property int jointControlWidth: 100
     property int elementStrokeWidth: 4
+    property bool isFront: true
     property bool isLocked: false
+    property bool isSpeedPublishButtonOnLeft: false
 
     property int controllerName: ControllerName.Unknown
     property int outerJointName: JointName.Unknown
@@ -146,7 +145,7 @@ Item {
         id: outerJoint
 
         width: jointControlWidth
-        height: jointControlWidth
+        height: width
         border.width: elementStrokeWidth
         jointName: root.outerJointName
         isPaired: true
@@ -179,7 +178,7 @@ Item {
         id: innerJoint
 
         width: jointControlWidth
-        height: jointControlWidth
+        height: width
         border.width: elementStrokeWidth
         jointName: root.innerJointName
         isPaired: true

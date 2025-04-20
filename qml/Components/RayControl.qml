@@ -11,16 +11,17 @@ Item {
     property int backgroundHeight: backgroundWidth * 1.5
     property int backgroundBorderWidth : 2
     property int commonRadius: 1
+    property bool isPointerOnRight: true
 
-    property alias pointerWidth: handlePointer.width
-    property alias pointerHeight: handlePointer.height
+    property alias pointerWidth: pointer.width
+    property alias pointerHeight: pointer.height
     property alias pointerBorderWidth: triangle.strokeWidth
 
-    property int positionValue: 55 // потом будет проперти, который будет передавать значение с телеметрии
-    readonly property double maxPositionValue: 220
+    property int rayPositionValue: 55 // потом будет проперти, который будет передавать значение с телеметрии
+    readonly property double maxRayPositionValue: 220
 
-    implicitWidth: Math.max(rayIndicator.width, raySlider.width)
-    implicitHeight: Math.max(rayIndicator.height, raySlider.height)
+    implicitWidth: raySlider.width
+    implicitHeight: raySlider.height
 
     Item {
         id: rayIndicator
@@ -47,7 +48,7 @@ Item {
                     margins: root.backgroundBorderWidth
                 }
 
-                height: root.positionValue / root.maxPositionValue * parent.height
+                height: root.rayPositionValue / root.maxRayPositionValue * parent.height
                 radius: root.commonRadius
                 color: "#008080"
             }
@@ -57,14 +58,14 @@ Item {
     Slider {
         id: raySlider
 
-        implicitWidth: root.backgroundWidth + handleItem.width
+        implicitWidth: handle.width
         implicitHeight: root.backgroundHeight
-        topPadding: handlePointer.height / 2
-        bottomPadding: handlePointer.height / 2
+        topPadding: pointer.height / 2
+        bottomPadding: pointer.height / 2
         orientation: Qt.Vertical
 
         from: 0
-        to: root.maxPositionValue
+        to: root.maxRayPositionValue
         stepSize: 5
 
         background: Rectangle {
@@ -105,22 +106,29 @@ Item {
                 id: text
 
                 anchors.centerIn: parent
-                text: root.positionValue + qsTr(" mm")
+                text: root.rayPositionValue + qsTr(" mm")
                 font.pixelSize: 14
                 color: "black"
             }
         }
 
-        handle: Item {
-            id: handleItem
+        handle: Rectangle {
+            id: handle
 
-            x: root.backgroundWidth
+            x: root.isPointerOnRight ? 0 : -pointer.width
             y: -raySlider.bottomPadding + raySlider.visualPosition * root.backgroundHeight
-            width: handlePointer.width
-            height: handlePointer.height
+            width: pointer.width + root.backgroundWidth
+            height: pointer.height
+
+            color: "black"
+            opacity: 0.5
 
             Shape {
-                id: handlePointer
+                id: pointer
+
+                x: root.isPointerOnRight ? root.backgroundWidth : 0
+                rotation: root.isPointerOnRight ? 0 : 180
+
                 width: 20
                 height: width
 
@@ -131,10 +139,10 @@ Item {
                     strokeWidth: 1
                     strokeColor: "#97999b"
 
-                    startX: handlePointer.width; startY: handlePointer.height
-                    PathLine { x: 0; y: handlePointer.height / 2 }
-                    PathLine { x: handlePointer.width; y:  0}
-                    PathLine { x: handlePointer.width; y:  handlePointer.height}
+                    startX: pointer.width; startY: pointer.height
+                    PathLine { x: 0; y: pointer.height / 2 }
+                    PathLine { x: pointer.width; y:  0}
+                    PathLine { x: pointer.width; y:  pointer.height}
                 }
             }
         }
