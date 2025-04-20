@@ -14,20 +14,13 @@ Item {
     width: 500
     height: 500
 
-    Rectangle {
-        width: rayControl.width + 1
-        height: rayControl.height + 1
-        border.color: "red"
-        border.width: 1
+    RayControl {
+        id: rayControl
 
-        RayControl {
-            id: rayControl
+        rotation: 120
+        isPointerOnRight: false
 
-            rotation: 0
-            isPointerOnRight: false
-
-            anchors.centerIn: parent
-        }
+        anchors.centerIn: parent
     }
 
     RaySpinBox {

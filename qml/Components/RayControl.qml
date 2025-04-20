@@ -13,10 +13,6 @@ Item {
     property int commonRadius: 1
     property bool isPointerOnRight: true
 
-    property alias pointerWidth: pointer.width
-    property alias pointerHeight: pointer.height
-    property alias pointerBorderWidth: triangle.strokeWidth
-
     property int rayPositionValue: 55 // потом будет проперти, который будет передавать значение с телеметрии
     readonly property double maxRayPositionValue: 220
 
@@ -28,6 +24,8 @@ Item {
 
         implicitWidth: root.backgroundWidth
         implicitHeight: root.backgroundHeight
+        anchors.left: root.isPointerOnRight ? parent.left : undefined
+        anchors.right: !root.isPointerOnRight ? parent.right : undefined
 
         Rectangle {
             id: indicatorBackground
@@ -60,6 +58,12 @@ Item {
 
         implicitWidth: handle.width
         implicitHeight: root.backgroundHeight
+
+        transform: Scale {
+            xScale: root.isPointerOnRight ? 1 : -1
+        }
+        anchors.left: root.isPointerOnRight ? parent.left : parent.right
+
         topPadding: pointer.height / 2
         bottomPadding: pointer.height / 2
         orientation: Qt.Vertical
@@ -89,45 +93,19 @@ Item {
             }
         }
 
-        Rectangle {
-            id: telemetryText
-
-            rotation: -root.rotation
-
-            anchors.centerIn: slideBackground
-            implicitWidth: text.width * 1.5
-            implicitHeight: text.height * 1.5
-
-            radius: 10
-            color: "white"
-            border.color: "#97999b"
-
-            Text {
-                id: text
-
-                anchors.centerIn: parent
-                text: root.rayPositionValue + qsTr(" mm")
-                font.pixelSize: 14
-                color: "black"
-            }
-        }
-
         handle: Rectangle {
             id: handle
 
-            x: root.isPointerOnRight ? 0 : -pointer.width
             y: -raySlider.bottomPadding + raySlider.visualPosition * root.backgroundHeight
             width: pointer.width + root.backgroundWidth
             height: pointer.height
 
-            color: "black"
-            opacity: 0.5
+            color: "transparent"
 
             Shape {
                 id: pointer
 
-                x: root.isPointerOnRight ? root.backgroundWidth : 0
-                rotation: root.isPointerOnRight ? 0 : 180
+                anchors.right: parent.right
 
                 width: 20
                 height: width
@@ -145,6 +123,30 @@ Item {
                     PathLine { x: pointer.width; y:  pointer.height}
                 }
             }
+        }
+    }
+
+    Rectangle {
+        id: telemetryText
+
+        rotation: -root.rotation
+
+        anchors.centerIn: rayIndicator
+
+        implicitWidth: text.width * 1.5
+        implicitHeight: text.height * 1.5
+
+        radius: 10
+        color: "white"
+        border.color: "#97999b"
+
+        Text {
+            id: text
+
+            anchors.centerIn: parent
+            text: root.rayPositionValue + qsTr(" mm")
+            font.pixelSize: 14
+            color: "black"
         }
     }
 }
