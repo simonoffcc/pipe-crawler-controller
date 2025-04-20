@@ -8,7 +8,7 @@ Item {
 
     // property int rayName: RayName.Unknown
     property int backgroundWidth: 100
-    property int backgroundHeight: backgroundWidth * 1.5
+    property int backgroundHeight: 125
     property int backgroundBorderWidth : 2
     property int commonRadius: 1
     property bool isPointerOnRight: true
@@ -16,8 +16,8 @@ Item {
     property int rayPositionValue: 55 // потом будет проперти, который будет передавать значение с телеметрии
     readonly property double maxRayPositionValue: 220
 
-    implicitWidth: raySlider.width
-    implicitHeight: raySlider.height
+    implicitWidth: rayIndicator.width
+    implicitHeight: rayIndicator.height
 
     Item {
         id: rayIndicator
