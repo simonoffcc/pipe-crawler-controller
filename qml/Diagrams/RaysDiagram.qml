@@ -47,7 +47,6 @@ Item {
     }
 
     PathView {
-
         id: controlsPositioning
         anchors.fill: parent
         interactive: false
