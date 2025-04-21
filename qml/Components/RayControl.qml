@@ -8,7 +8,7 @@ import rayName
 Item {
     id: root
 
-    // property int rayName: RayName.Unknown
+    property int rayName: RayName.Unknown
     property int backgroundWidth: 100
     property int backgroundHeight: 125
     property int backgroundBorderWidth : 2

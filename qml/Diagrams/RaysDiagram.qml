@@ -1,6 +1,7 @@
 import QtQuick
 
 import Components
+import rayName
 
 /*
 тут будут собраны контроллеры для всех лучей с помощью:
@@ -26,11 +27,12 @@ Item {
 
         model: 3
         delegate: RayControl {
+            property var rayNames: [RayName.FrontRight, RayName.FrontUp, RayName.FrontLeft]
             property var angles: [120, 0, -120]
             property var pointers: [false, true, true]
             property var values: [11, 22, 33]
-            // property var rayNames: [RayName.upRay, RayName.leftRay, RayName.rightRay]
 
+            rayName: rayNames[index]
             rotation: angles[index]
             isPointerOnRight: pointers[index]
             rayPositionValue: values[index]
