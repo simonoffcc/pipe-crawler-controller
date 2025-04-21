@@ -16,6 +16,8 @@ Item {
 
     implicitWidth: 800
     implicitHeight: 800
+    // implicitWidth: 430
+    // implicitHeight: 910
 
     PathView {
         id: circlePositioning

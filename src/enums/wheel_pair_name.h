@@ -1,10 +1,10 @@
-#ifndef CONTROLLER_NAME_H
-#define CONTROLLER_NAME_H
+#ifndef WHEEL_PAIR_NAME_H
+#define WHEEL_PAIR_NAME_H
 
 #include <QObject>
 #include <string>
 
-class ControllerName {
+class WheelPairName {
     Q_GADGET
 public:
     enum Name {
@@ -26,7 +26,7 @@ public:
         case Name::BackLeft: return "back_left_wheels_controller";
         case Name::BackUp: return "back_up_wheels_controller";
         case Name::BackRight: return "back_right_wheels_controller";
-        default: return "";
+        default: return "unknown";
         }
     }
 
@@ -41,4 +41,4 @@ public:
     }
 };
 
-#endif // CONTROLLER_NAME_H
+#endif // WHEEL_PAIR_NAME_H

@@ -38,7 +38,7 @@ public:
         case Name::BackUpInner: return "back_up_inner_wheel_joint";
         case Name::BackRightOuter: return "back_right_outer_wheel_joint";
         case Name::BackRightInner: return "back_right_inner_wheel_joint";
-        default: return "";
+        default: return "unknown";
         }
     }
 

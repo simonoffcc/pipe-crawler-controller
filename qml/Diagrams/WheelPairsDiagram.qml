@@ -3,14 +3,14 @@ import QtQuick.Controls
 
 import Components
 
-import controllerName
+import wheelPairName
 import jointName
 
 Item {
     id: root
 
-    width: 430
-    height: 910
+    implicitWidth: 430
+    implicitHeight: 910
 
     property bool isLocked: false
 
@@ -54,7 +54,7 @@ Item {
     WheelPair {
         id: front_left
 
-        controllerName: ControllerName.FrontLeft
+        wheelPairName: WheelPairName.FrontLeft
         isFront: true
         isSpeedPublishButtonOnLeft: false
         jointControlWidth: 100
@@ -73,7 +73,7 @@ Item {
     WheelPair {
         id: front_up
 
-        controllerName: ControllerName.FrontUp
+        wheelPairName: WheelPairName.FrontUp
         isFront: true
         isSpeedPublishButtonOnLeft: true
         jointControlWidth: 100
@@ -91,7 +91,7 @@ Item {
     WheelPair {
         id: front_right
 
-        controllerName: ControllerName.FrontRight
+        wheelPairName: WheelPairName.FrontRight
         isFront: true
         isSpeedPublishButtonOnLeft: true
         jointControlWidth: 100
@@ -110,7 +110,7 @@ Item {
     WheelPair {
         id: back_left
 
-        controllerName: ControllerName.BackLeft
+        wheelPairName: WheelPairName.BackLeft
         isFront: false
         isSpeedPublishButtonOnLeft: false
         jointControlWidth: 100
@@ -129,7 +129,7 @@ Item {
     WheelPair {
         id: back_up
 
-        controllerName: ControllerName.BackUp
+        wheelPairName: WheelPairName.BackUp
         isFront: false
         isSpeedPublishButtonOnLeft: false
         jointControlWidth: 100
@@ -147,7 +147,7 @@ Item {
     WheelPair {
         id: back_right
 
-        controllerName: ControllerName.BackRight
+        wheelPairName: WheelPairName.BackRight
         isFront: false
         isSpeedPublishButtonOnLeft: true
         jointControlWidth: 100

@@ -9,35 +9,36 @@ WheelController::WheelController(std::shared_ptr<rclcpp::Node> node, QObject* pa
     qmlRegisterUncreatableType<PairsGroupingMode>("pairsGroupingMode", 1, 0, "PairsGroupingMode", "Not creatable as it is an enum type.");
     qmlRegisterUncreatableType<DriveMode>("driveMode", 1, 0, "DriveMode", "Not creatable as it is an enum type.");
     qmlRegisterUncreatableType<JointName>("jointName", 1, 0, "JointName", "Not creatable as it is an enum type.");
-    qmlRegisterUncreatableType<ControllerName>("controllerName", 1, 0, "ControllerName", "Not creatable as it is an enum type.");
+    qmlRegisterUncreatableType<WheelPairName>("wheelPairName", 1, 0, "WheelPairName", "Not creatable as it is an enum type.");
+    qmlRegisterUncreatableType<RayName>("rayName", 1, 0, "RayName", "Not creatable as it is an enum type.");
     qmlRegisterSingletonInstance<WheelController>("WheelController", 1, 0, "WheelController", this);
 
     createROSInterfaces();
 
     controllers_ = {
         {
-         ControllerName::FrontLeft,  ControlState::GLOBAL,
-         {JointName::FrontLeftOuter,  0.0}, {JointName::FrontLeftInner,  0.0}, 0.0, 0.0
+         WheelPairName::FrontLeft, RayName::FrontLeft, WheelPairState::Global,
+         {JointName::FrontLeftOuter, 0.0}, {JointName::FrontLeftInner, 0.0}, 0.0, 0.0
         },
         {
-         ControllerName::FrontUp,    ControlState::GLOBAL,
-         {JointName::FrontUpOuter,    0.0}, {JointName::FrontUpInner,    0.0}, 0.0, 0.0
+         WheelPairName::FrontUp, RayName::FrontUp, WheelPairState::Global,
+         {JointName::FrontUpOuter, 0.0}, {JointName::FrontUpInner, 0.0}, 0.0, 0.0
         },
         {
-         ControllerName::FrontRight, ControlState::GLOBAL,
+         WheelPairName::FrontRight, RayName::FrontRight, WheelPairState::Global,
          {JointName::FrontRightOuter, 0.0}, {JointName::FrontRightInner, 0.0}, 0.0, 0.0
         },
         {
-         ControllerName::BackLeft,   ControlState::GLOBAL,
-         {JointName::BackLeftOuter,   0.0}, {JointName::BackLeftInner,   0.0}, 0.0, 0.0
+         WheelPairName::BackLeft, RayName::BackLeft, WheelPairState::Global,
+         {JointName::BackLeftOuter, 0.0}, {JointName::BackLeftInner, 0.0}, 0.0, 0.0
         },
         {
-         ControllerName::BackUp,     ControlState::GLOBAL,
-         {JointName::BackUpOuter,     0.0}, {JointName::BackUpInner,     0.0}, 0.0, 0.0
+         WheelPairName::BackUp, RayName::BackUp, WheelPairState::Global,
+         {JointName::BackUpOuter, 0.0}, {JointName::BackUpInner, 0.0}, 0.0, 0.0
         },
         {
-         ControllerName::BackRight,  ControlState::GLOBAL,
-         {JointName::BackRightOuter,  0.0}, {JointName::BackRightInner,  0.0}, 0.0, 0.0
+         WheelPairName::BackRight, RayName::BackRight, WheelPairState::Global,
+         {JointName::BackRightOuter, 0.0}, {JointName::BackRightInner, 0.0}, 0.0, 0.0
         }
     };
 
@@ -64,18 +65,18 @@ void WheelController::setPairsGroupingMode(int mode)
 
 void WheelController::setControllerState(int controller_name, int state)
 {
-    auto controller_enum = static_cast<ControllerName::Name>(controller_name);
-    auto state_enum = static_cast<ControlState>(state);
+    auto controller_enum = static_cast<WheelPairName::Name>(controller_name);
+    auto state_enum = static_cast<WheelPairState>(state);
 
     for (auto& controller : controllers_) {
-        if (controller.name == controller_enum) {
-            bool wasGlobal = controller.state == ControlState::GLOBAL;
-            bool willBeGlobal = state_enum == ControlState::GLOBAL;
-            
+        if (controller.wheel_pair_name == controller_enum) {
+            bool wasGlobal = controller.state == WheelPairState::Global;
+            bool willBeGlobal = state_enum == WheelPairState::Global;
+
             if (wasGlobal != willBeGlobal) {
                 global_controllers_count_ += willBeGlobal ? 1 : -1;
             }
-            
+
             controller.state = state_enum;
             emit controllersChanged();
             break;
@@ -86,26 +87,26 @@ void WheelController::setControllerState(int controller_name, int state)
 void WheelController::updateActiveControllers()
 {
     for (auto& controller : controllers_) {
-        controller.state = ControlState::LOCAL;
+        controller.state = WheelPairState::Local;
     }
-    
+
     global_controllers_count_ = 0;
 
     if (current_pairs_grouping_mode_ == PairsGroupingMode::AllPairs) {
         switch (current_drive_mode_) {
             case DriveMode::AllWheelDrive:
                 for (auto& controller : controllers_) {
-                    controller.state = ControlState::GLOBAL;
+                    controller.state = WheelPairState::Global;
                 }
                 global_controllers_count_ = controllers_.size();
                 break;
 
             case DriveMode::FrontDrive:
                 for (auto& controller : controllers_) {
-                    if (controller.name == ControllerName::FrontLeft ||
-                        controller.name == ControllerName::FrontUp ||
-                        controller.name == ControllerName::FrontRight) {
-                        controller.state = ControlState::GLOBAL;
+                    if (controller.wheel_pair_name == WheelPairName::FrontLeft ||
+                        controller.wheel_pair_name == WheelPairName::FrontUp ||
+                        controller.wheel_pair_name == WheelPairName::FrontRight) {
+                        controller.state = WheelPairState::Global;
                         global_controllers_count_++;
                     }
                 }
@@ -113,10 +114,10 @@ void WheelController::updateActiveControllers()
 
             case DriveMode::RearDrive:
                 for (auto& controller : controllers_) {
-                    if (controller.name == ControllerName::BackLeft ||
-                        controller.name == ControllerName::BackUp ||
-                        controller.name == ControllerName::BackRight) {
-                        controller.state = ControlState::GLOBAL;
+                    if (controller.wheel_pair_name == WheelPairName::BackLeft ||
+                        controller.wheel_pair_name == WheelPairName::BackUp ||
+                        controller.wheel_pair_name == WheelPairName::BackRight) {
+                        controller.state = WheelPairState::Global;
                         global_controllers_count_++;
                     }
                 }
@@ -127,11 +128,11 @@ void WheelController::updateActiveControllers()
         switch (current_drive_mode_) {
             case DriveMode::AllWheelDrive:
                 for (auto& controller : controllers_) {
-                    if (controller.name == ControllerName::FrontLeft ||
-                        controller.name == ControllerName::FrontRight ||
-                        controller.name == ControllerName::BackLeft ||
-                        controller.name == ControllerName::BackRight) {
-                        controller.state = ControlState::GLOBAL;
+                    if (controller.wheel_pair_name == WheelPairName::FrontLeft ||
+                        controller.wheel_pair_name == WheelPairName::FrontRight ||
+                        controller.wheel_pair_name == WheelPairName::BackLeft ||
+                        controller.wheel_pair_name == WheelPairName::BackRight) {
+                        controller.state = WheelPairState::Global;
                         global_controllers_count_++;
                     }
                 }
@@ -139,9 +140,9 @@ void WheelController::updateActiveControllers()
 
             case DriveMode::FrontDrive:
                 for (auto& controller : controllers_) {
-                    if (controller.name == ControllerName::FrontLeft ||
-                        controller.name == ControllerName::FrontRight) {
-                        controller.state = ControlState::GLOBAL;
+                    if (controller.wheel_pair_name == WheelPairName::FrontLeft ||
+                        controller.wheel_pair_name == WheelPairName::FrontRight) {
+                        controller.state = WheelPairState::Global;
                         global_controllers_count_++;
                     }
                 }
@@ -149,9 +150,9 @@ void WheelController::updateActiveControllers()
 
             case DriveMode::RearDrive:
                 for (auto& controller : controllers_) {
-                    if (controller.name == ControllerName::BackLeft ||
-                        controller.name == ControllerName::BackRight) {
-                        controller.state = ControlState::GLOBAL;
+                    if (controller.wheel_pair_name == WheelPairName::BackLeft ||
+                        controller.wheel_pair_name == WheelPairName::BackRight) {
+                        controller.state = WheelPairState::Global;
                         global_controllers_count_++;
                     }
                 }
@@ -167,8 +168,8 @@ void WheelController::createROSInterfaces()
     pair_velocity_publishers_.clear();
 
     for (int i = 0; i < 6; ++i) {
-        auto controller_enum = static_cast<ControllerName::Name>(i);
-        std::string controller_name = ControllerName::toString(controller_enum);
+        auto controller_enum = static_cast<WheelPairName::Name>(i);
+        std::string controller_name = WheelPairName::toString(controller_enum);
 
         auto publisher = node_->create_publisher<std_msgs::msg::Float64MultiArray>(
             "/" + controller_name + "/commands", 100);
@@ -218,7 +219,7 @@ QVariantList WheelController::controllers() const
     QVariantList result;
     for (const auto& controller : controllers_) {
         QVariantMap controllerMap;
-        controllerMap["name"] = static_cast<int>(controller.name);
+        controllerMap["name"] = static_cast<int>(controller.wheel_pair_name);
         controllerMap["state"] = static_cast<int>(controller.state);
         controllerMap["outerJoint"] = QVariantMap{
             {"name", static_cast<int>(controller.outer_joint.name)},
@@ -243,7 +244,7 @@ void WheelController::addLogMessage(const QString& message) {
 
 void WheelController::publishSpeed(rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr publisher, std_msgs::msg::Float64MultiArray msg) {
     std::string topic_name = publisher->get_topic_name();
-    
+
     if (publisher->get_subscription_count() > 0) {
         publisher->publish(msg);
         QString logMsg = QString("Publishing speed %1 rad/s to %2")
@@ -271,9 +272,9 @@ void WheelController::publishGlobalSpeed(double speed)
     msg.data = {speed_in_radians, speed_in_radians};
 
     for (const auto& controller : controllers_) {
-        if (controller.state == ControlState::GLOBAL) {
-            if (pair_velocity_publishers_.find(controller.name) != pair_velocity_publishers_.end()) {
-                publishSpeed(pair_velocity_publishers_[controller.name], msg);
+        if (controller.state == WheelPairState::Global) {
+            if (pair_velocity_publishers_.find(controller.wheel_pair_name) != pair_velocity_publishers_.end()) {
+                publishSpeed(pair_velocity_publishers_[controller.wheel_pair_name], msg);
             }
         }
     }
@@ -282,15 +283,15 @@ void WheelController::publishGlobalSpeed(double speed)
 void WheelController::publishLocalSpeed(double speed, int controller_name)
 {
 
-    auto controller_enum = static_cast<ControllerName::Name>(controller_name);
+    auto controller_enum = static_cast<WheelPairName::Name>(controller_name);
     std_msgs::msg::Float64MultiArray msg;
     double speed_in_radians = qDegreesToRadians(speed);
     msg.data = {speed_in_radians, speed_in_radians};
 
     for (auto& controller : controllers_) {
-        if (controller.name == controller_enum && controller.state == ControlState::LOCAL) {
-            if (pair_velocity_publishers_.find(controller.name) != pair_velocity_publishers_.end()) {
-                publishSpeed(pair_velocity_publishers_[controller.name], msg);
+        if (controller.wheel_pair_name == controller_enum && controller.state == WheelPairState::Local) {
+            if (pair_velocity_publishers_.find(controller.wheel_pair_name) != pair_velocity_publishers_.end()) {
+                publishSpeed(pair_velocity_publishers_[controller.wheel_pair_name], msg);
             }
             break;
         }
@@ -299,19 +300,19 @@ void WheelController::publishLocalSpeed(double speed, int controller_name)
 
 void WheelController::publishIndependentSpeed(double speed, int controller_name, bool is_outer_joint)
 {
-    auto controller_enum = static_cast<ControllerName::Name>(controller_name);
+    auto controller_enum = static_cast<WheelPairName::Name>(controller_name);
     std_msgs::msg::Float64MultiArray msg;
     double speed_in_radians = qDegreesToRadians(speed);
-    
+
     for (auto& controller : controllers_) {
-        if (controller.name == controller_enum && controller.state == ControlState::INDEPENDENT) {
+        if (controller.wheel_pair_name == controller_enum && controller.state == WheelPairState::Independent) {
             double outer_speed = is_outer_joint ? speed_in_radians : controller.outer_joint.velocity;
             double inner_speed = is_outer_joint ? controller.inner_joint.velocity : speed_in_radians;
-            
+
             msg.data = {outer_speed, inner_speed};
-            
-            if (pair_velocity_publishers_.find(controller.name) != pair_velocity_publishers_.end()) {
-                publishSpeed(pair_velocity_publishers_[controller.name], msg);
+
+            if (pair_velocity_publishers_.find(controller.wheel_pair_name) != pair_velocity_publishers_.end()) {
+                publishSpeed(pair_velocity_publishers_[controller.wheel_pair_name], msg);
             }
             break;
         }
@@ -322,7 +323,7 @@ void WheelController::updateGlobalControllersCount()
 {
     global_controllers_count_ = 0;
     for (const auto& controller : controllers_) {
-        if (controller.state == ControlState::GLOBAL) {
+        if (controller.state == WheelPairState::Global) {
             global_controllers_count_++;
         }
     }

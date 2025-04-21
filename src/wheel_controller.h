@@ -15,7 +15,8 @@
 #include "enums/pairs_grouping_mode.h"
 #include "enums/drive_mode.h"
 #include "enums/joint_name.h"
-#include "enums/controller_name.h"
+#include "enums/wheel_pair_name.h"
+#include "enums/ray_name.h"
 
 /// \class Класс для управления скорстями групп колёсных пар робота из QML
 class WheelController : public QObject
@@ -77,7 +78,7 @@ private:
     explicit WheelController(std::shared_ptr<rclcpp::Node> parent_node, QObject* parent = nullptr);
     std::shared_ptr<rclcpp::Node> node_;
 
-    std::map<ControllerName::Name, rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr> pair_velocity_publishers_;
+    std::map<WheelPairName::Name, rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr> pair_velocity_publishers_;
     rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr joint_state_subscriber_;
 
     void createROSInterfaces();
@@ -90,10 +91,10 @@ private:
     int current_drive_mode_;            ///< Текущий привод
     int global_controllers_count_ = 0;  ///< Количество контроллеров в глобальном режиме
 
-    enum class ControlState {
-        GLOBAL = 0,
-        LOCAL = 1,
-        INDEPENDENT = 2
+    enum class WheelPairState {
+        Global = 0,
+        Local = 1,
+        Independent = 2
     };
 
     struct Joint {
@@ -101,13 +102,13 @@ private:
         double velocity;
     };
 
-    struct Controller {
-        ControllerName::Name name;
-        ControlState state;
+    struct Controller {  ///< Структура для хранения информации колёсной пары и луча
+        WheelPairName::Name wheel_pair_name;
+        RayName::Name ray_name;
+        WheelPairState state;
         Joint outer_joint;
         Joint inner_joint;
-        double ray_position;
-        double effort;
+        double ray_position;  ///< Позиция луча в метрах
     };
 
     std::vector<Controller> controllers_;   ///< Массив контроллеров колесных пар

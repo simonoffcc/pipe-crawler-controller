@@ -3,7 +3,7 @@ import QtQuick.Controls
 import QtQuick.Controls.Basic
 
 import WheelController
-import controllerName
+import wheelPairName
 import jointName
 import driveMode
 import pairsGroupingMode
@@ -17,7 +17,7 @@ Item {
     property bool isLocked: false
     property bool isSpeedPublishButtonOnLeft: false
 
-    property int controllerName: ControllerName.Unknown
+    property int wheelPairName: WheelPairName.Unknown
     property int outerJointName: JointName.Unknown
     property int innerJointName: JointName.Unknown
 
@@ -35,7 +35,7 @@ Item {
             let found = false;
             let controllers = WheelController.controllers;
             for (let i = 0; i < controllers.length; i++) {
-                if (controllers[i].name === root.controllerName) {
+                if (controllers[i].name === root.wheelPairName) {
                     found = true;
                     root.state = ["global", "local", "independent"][controllers[i].state];
                     outerJoint.telemetrySpeed = controllers[i].outerJoint.velocity.toFixed(outputPrecision) + "°/sec";
@@ -79,15 +79,15 @@ Item {
             let newState;
             if (root.state === "global") {
                 newState = "local";
-                WheelController.setControllerState(root.controllerName, 1);
+                WheelController.setControllerState(root.wheelPairName, 1);
             }
             else if (root.state === "local") {
                 newState = "independent";
-                WheelController.setControllerState(root.controllerName, 2);
+                WheelController.setControllerState(root.wheelPairName, 2);
             }
             else {
                 newState = "global";
-                WheelController.setControllerState(root.controllerName, 0);
+                WheelController.setControllerState(root.wheelPairName, 0);
             }
             outerJoint.clearSpeedInput();
             innerJoint.clearSpeedInput();
@@ -134,7 +134,7 @@ Item {
 
         onClicked: {
             if (root.state === "local" && outerJoint.jointSpeed !== "") {
-                WheelController.publishLocalSpeed(parseFloat(outerJoint.jointSpeed), root.controllerName);
+                WheelController.publishLocalSpeed(parseFloat(outerJoint.jointSpeed), root.wheelPairName);
                 outerJoint.clearSpeedInput();
                 innerJoint.clearSpeedInput();
             }
@@ -159,7 +159,7 @@ Item {
 
         onSpeedSubmitted: function(speedValue) {
             if (root.state === "independent") {
-                WheelController.publishIndependentSpeed(parseFloat(speedValue), root.controllerName, true);
+                WheelController.publishIndependentSpeed(parseFloat(speedValue), root.wheelPairName, true);
                 outerJoint.clearSpeedInput();
             }
         }
@@ -192,7 +192,7 @@ Item {
 
         onSpeedSubmitted: function(speedValue) {
             if (root.state === "independent") {
-                WheelController.publishIndependentSpeed(parseFloat(speedValue), root.controllerName, false);
+                WheelController.publishIndependentSpeed(parseFloat(speedValue), root.wheelPairName, false);
                 innerJoint.clearSpeedInput();
             }
         }
@@ -201,7 +201,7 @@ Item {
     Component.onCompleted: {
         let controllers = WheelController.controllers;
         for (let i = 0; i < controllers.length; i++) {
-            if (controllers[i].name === root.controllerName) {
+            if (controllers[i].name === root.wheelPairName) {
                 root.state = ["global", "local", "independent"][controllers[i].state];
                 outerJoint.telemetrySpeed = controllers[i].outerJoint.velocity.toFixed(outputPrecision) + "°/sec";
                 innerJoint.telemetrySpeed = controllers[i].innerJoint.velocity.toFixed(outputPrecision) + "°/sec";

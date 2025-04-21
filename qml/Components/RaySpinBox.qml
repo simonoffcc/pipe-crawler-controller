@@ -2,6 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Basic
 
+import rayName
+
 Row {
     id: root
 
