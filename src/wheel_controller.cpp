@@ -63,7 +63,7 @@ void WheelController::setPairsGroupingMode(int mode)
     }
 }
 
-void WheelController::setControllerState(int controller_name, int state)
+void WheelController::setWheelPairState(int controller_name, int state)
 {
     auto controller_enum = static_cast<WheelPairName::Name>(controller_name);
     auto state_enum = static_cast<WheelPairState>(state);

@@ -1,19 +1,13 @@
 import QtQuick
+import QtQuick.Shapes
 
 import Components
 import rayName
 
-/*
-тут будут собраны контроллеры для всех лучей с помощью:
-        - RayControl (телеметрия + слайдер)
-        - RaySpinBox (спинбокс + кнопка паблиш)
-        - простейшие линии схемы
-*/
-
 Item {
     id: root
 
-    property alias controlRadius: pathControl.radiusX
+    property int controlRadius: 125
 
     implicitWidth: 800
     implicitHeight: 800
@@ -21,7 +15,40 @@ Item {
     // implicitHeight: 910
 
     PathView {
-        id: circlePositioning
+        id: schemeLinesPositioning
+
+        anchors.fill: parent
+        interactive: false
+
+        model: 3
+        delegate: Rectangle {
+            width: 2
+            height: root.controlRadius
+            color: "black"
+            opacity: 0.3
+            antialiasing: true
+
+            property var angles: [120, 0, -120]
+            rotation: angles[index]
+        }
+
+        path: Path {
+            PathAngleArc {
+                id: pathSchemeLines
+
+                centerX: root.width / 2
+                centerY: root.height / 2
+                radiusX: root.controlRadius / 2
+                radiusY: root.controlRadius / 2
+                startAngle: 30
+                sweepAngle: -360
+            }
+        }
+    }
+
+    PathView {
+
+        id: controlsPositioning
         anchors.fill: parent
         interactive: false
 
@@ -42,10 +69,10 @@ Item {
             PathAngleArc {
                 id: pathControl
 
-                centerX: root.width/2
-                centerY: root.height/2
-                radiusX: 125
-                radiusY: radiusX
+                centerX: root.width / 2
+                centerY: root.height / 2
+                radiusX: root.controlRadius
+                radiusY: root.controlRadius
                 startAngle: 30
                 sweepAngle: -360
             }
@@ -53,7 +80,7 @@ Item {
     }
 
     PathView {
-        id: spinBoxPositioning
+        id: spinBoxesPositioning
         anchors.fill: parent
         interactive: false
 
@@ -68,9 +95,9 @@ Item {
             PathAngleArc {
                 id: pathSpinBox
 
-                centerX: root.width/2
-                centerY: root.height/2
-                radiusX: pathControl.radiusX + 115
+                centerX: root.width / 2
+                centerY: root.height / 2
+                radiusX: root.controlRadius + 115
                 radiusY: radiusX - 15
                 startAngle: -5
                 sweepAngle: -((startAngle * 3) + 270)
