@@ -107,7 +107,7 @@ Item {
 
                 anchors.right: parent.right
 
-                width: 20
+                width: 15
                 height: width
 
                 ShapePath {

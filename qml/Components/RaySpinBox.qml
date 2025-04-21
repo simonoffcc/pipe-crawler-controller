@@ -9,7 +9,7 @@ Row {
 
     property int commonRadidus: 4
     property int commonHeight: 30
-    property alias backgroundWidth: spinBoxBackground.width
+    property int backgroundWidth: 120
     property alias spinBoxValue: spinBox.value
 
     SpinBox {
@@ -97,7 +97,7 @@ Row {
         background: Rectangle {
             id: spinBoxBackground
 
-            implicitWidth: 120
+            implicitWidth: backgroundWidth
             border.color: "#bdbebf"
             radius: root.commonRadidus
         }
