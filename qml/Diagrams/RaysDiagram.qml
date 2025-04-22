@@ -56,12 +56,15 @@ Item {
             property var angles: [-120, 0, 120]
             property var pointerOnRight: [true, true, false]
             property var telemetryValues: [11, 22, 33] // телеметрия
-            // property var currentSliderValues: []
 
             rayName: rayNames[index]
             rotation: angles[index]
             isPointerOnRight: pointerOnRight[index]
             rayPositionValue: telemetryValues[index]
+
+            onMoved: {
+                spinBoxesPositioning.delegate.currentSliderValues[index] = spinBoxValue
+            }
         }
 
         path: Path {
@@ -86,11 +89,12 @@ Item {
         model: 3
         delegate: RaySpinBox {
             property var rayNames: [RayName.FrontLeft, RayName.FrontUp, RayName.FrontRight]
-            property var values: [11, 22, 33]
-            // property var currentSliderPositions: []
 
             rayName: rayNames[index]
-            spinBoxValue: values[index]
+
+            onValueModified: {
+                controlsPositioning.delegate.currentSliderPositions[index] = spinBoxValue
+            }
         }
 
         path: Path {

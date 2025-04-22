@@ -13,12 +13,11 @@ Row {
     property int backgroundWidth: 100
     property int commonHeight: 25
     property int commonRadidus: 4
-    property alias spinBoxValue: spinBox.value
+    property alias currentSpinBoxValue: spinBox.value
 
     SpinBox {
         id: spinBox
 
-        value: from
         from: 0
         to: 220
         stepSize: 1

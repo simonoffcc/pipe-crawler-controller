@@ -11,10 +11,11 @@ Item {
     property int rayName: RayName.Unknown
     property int backgroundWidth: 100
     property int backgroundHeight: 125
-    property int backgroundBorderWidth : 2
+    property int backgroundBorderWidth: 2
     property int commonRadius: 1
     property bool isPointerOnRight: true
 
+    property alias currentSliderValue: raySlider.value
     property int rayPositionValue: 55 // потом будет проперти, который будет передавать значение с телеметрии
     readonly property double maxRayPositionValue: 220
 
