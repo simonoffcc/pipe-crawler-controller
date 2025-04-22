@@ -8,12 +8,10 @@ Item {
     id: root
 
     property int controlsArcRadius: 125
-    property int spinBoxesArcRadius: controlsArcRadius + 115
+    property int spinBoxesArcRadius: controlsArcRadius + 100
 
-    implicitWidth: 800
-    implicitHeight: 800
-    // implicitWidth: 430
-    // implicitHeight: 910
+    implicitWidth: 670
+    implicitHeight: 450
 
     PathView {
         id: schemeLinesPositioning
@@ -38,7 +36,7 @@ Item {
                 id: pathSchemeLines
 
                 centerX: root.width / 2
-                centerY: root.height / 2
+                centerY: root.height / 1.7
                 radiusX: root.controlsArcRadius / 2
                 radiusY: root.controlsArcRadius / 2
                 startAngle: 30
@@ -71,7 +69,7 @@ Item {
                 id: pathControl
 
                 centerX: root.width / 2
-                centerY: root.height / 2
+                centerY: root.height / 1.7
                 radiusX: root.controlsArcRadius
                 radiusY: root.controlsArcRadius
                 startAngle: 150
@@ -96,10 +94,10 @@ Item {
         }
 
         path: Path {
-            PathPercent { value: 1/3 }
+            PathPercent { value: 1 / 3 }
             PathAngleArc {
                 centerX: root.width / 2
-                centerY: root.height / 2
+                centerY: root.height / 1.8
                 radiusX: root.spinBoxesArcRadius
                 radiusY: root.spinBoxesArcRadius - 15
                 startAngle: 180
