@@ -7,7 +7,8 @@ import rayName
 Item {
     id: root
 
-    property int controlRadius: 125
+    property int controlsArcRadius: 125
+    property int spinBoxesArcRadius: controlsArcRadius + 115
 
     implicitWidth: 800
     implicitHeight: 800
@@ -23,7 +24,7 @@ Item {
         model: 3
         delegate: Rectangle {
             width: 2
-            height: root.controlRadius
+            height: root.controlsArcRadius
             color: "black"
             opacity: 0.3
             antialiasing: true
@@ -38,8 +39,8 @@ Item {
 
                 centerX: root.width / 2
                 centerY: root.height / 2
-                radiusX: root.controlRadius / 2
-                radiusY: root.controlRadius / 2
+                radiusX: root.controlsArcRadius / 2
+                radiusY: root.controlsArcRadius / 2
                 startAngle: 30
                 sweepAngle: -360
             }
@@ -53,9 +54,9 @@ Item {
 
         model: 3
         delegate: RayControl {
-            property var rayNames: [RayName.FrontRight, RayName.FrontUp, RayName.FrontLeft]
-            property var angles: [120, 0, -120]
-            property var pointerOnRight: [false, true, true]
+            property var rayNames: [RayName.FrontLeft, RayName.FrontUp, RayName.FrontRight]
+            property var angles: [-120, 0, 120]
+            property var pointerOnRight: [true, true, false]
             property var telemetryValues: [11, 22, 33] // телеметрия
             // property var currentSliderValues: []
 
@@ -71,10 +72,10 @@ Item {
 
                 centerX: root.width / 2
                 centerY: root.height / 2
-                radiusX: root.controlRadius
-                radiusY: root.controlRadius
-                startAngle: 30
-                sweepAngle: -360
+                radiusX: root.controlsArcRadius
+                radiusY: root.controlsArcRadius
+                startAngle: 150
+                sweepAngle: 360
             }
         }
     }
@@ -86,7 +87,7 @@ Item {
 
         model: 3
         delegate: RaySpinBox {
-            property var rayNames: [RayName.FrontRight, RayName.FrontUp, RayName.FrontLeft]
+            property var rayNames: [RayName.FrontLeft, RayName.FrontUp, RayName.FrontRight]
             property var values: [11, 22, 33]
             // property var currentSliderPositions: []
 
@@ -95,15 +96,14 @@ Item {
         }
 
         path: Path {
+            PathPercent { value: 1/3 }
             PathAngleArc {
-                id: pathSpinBox
-
                 centerX: root.width / 2
                 centerY: root.height / 2
-                radiusX: root.controlRadius + 115
-                radiusY: radiusX - 15
-                startAngle: -5
-                sweepAngle: -((startAngle * 3) + 270)
+                radiusX: root.spinBoxesArcRadius
+                radiusY: root.spinBoxesArcRadius - 15
+                startAngle: 180
+                sweepAngle: 360
             }
         }
     }
