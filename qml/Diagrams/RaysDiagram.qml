@@ -55,13 +55,14 @@ Item {
         delegate: RayControl {
             property var rayNames: [RayName.FrontRight, RayName.FrontUp, RayName.FrontLeft]
             property var angles: [120, 0, -120]
-            property var pointers: [false, true, true]
-            property var values: [11, 22, 33]
+            property var pointerOnRight: [false, true, true]
+            property var telemetryValues: [11, 22, 33] // телеметрия
+            // property var currentSliderValues: []
 
             rayName: rayNames[index]
             rotation: angles[index]
-            isPointerOnRight: pointers[index]
-            rayPositionValue: values[index]
+            isPointerOnRight: pointerOnRight[index]
+            rayPositionValue: telemetryValues[index]
         }
 
         path: Path {
@@ -85,8 +86,11 @@ Item {
 
         model: 3
         delegate: RaySpinBox {
+            property var rayNames: [RayName.FrontRight, RayName.FrontUp, RayName.FrontLeft]
             property var values: [11, 22, 33]
+            // property var currentSliderPositions: []
 
+            rayName: rayNames[index]
             spinBoxValue: values[index]
         }
 

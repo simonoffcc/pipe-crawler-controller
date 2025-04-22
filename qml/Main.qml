@@ -10,57 +10,52 @@ import WheelController
 ApplicationWindow {
     id: root
     visible: true
-    // width: 900
-    // height: 1000
-    minimumWidth: diagramBackground.Layout.minimumWidth + controlsPanel.Layout.minimumWidth + mainLayout.spacing + mainLayout.anchors.margins * 2
-    minimumHeight: 1000
+    width: 1920
+    height: 1080
     visibility: Window.Maximized
     title: qsTr("Pipe Crawler Wheels Control")
 
     RowLayout {
         id: mainLayout
+
         anchors.fill: parent
         anchors.margins: 4
         spacing: 4
 
         Rectangle {
-            id: diagramBackground
+            id: wheelPairsBackground
 
-            visible: false
-
-            color: "lightgray"
+            Layout.preferredWidth: 750
+            Layout.minimumWidth: 720
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.minimumWidth: 720
-            Layout.preferredWidth: 750
+            color: "lightgray"
 
             WheelPairsDiagram {
-                id: robotDiagram
-
+                id: wheelPairsDiagram
                 anchors.centerIn: parent
-                isLocked: controlsLayout.isLocked
+                isLocked: drivingModesPanel.isLocked
             }
         }
 
         Rectangle {
-            id: robotRaysDiagram
+            id: raysBackground
 
+            Layout.preferredWidth: 750
+            Layout.minimumWidth: 720
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.minimumWidth: 500
-            Layout.preferredWidth: 500
             color: "lightgray"
 
             RaysDiagram {
-                id: raysDigram
-
+                id: raysDiagram
                 anchors.centerIn: parent
             }
 
         }
 
         ColumnLayout {
-            id: controlsPanel
+            id: controlPanel
 
             Layout.preferredWidth: 350
             Layout.minimumWidth: 350
@@ -69,11 +64,11 @@ ApplicationWindow {
             spacing: 4
 
             DrivingModesPanel {
-                id: controlsLayout
+                id: drivingModesPanel
 
-                Layout.fillWidth: true
                 Layout.minimumHeight: implicitHeight
                 Layout.preferredHeight: implicitHeight
+                Layout.fillWidth: true
             }
 
             LogPanel {

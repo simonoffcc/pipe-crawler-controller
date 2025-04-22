@@ -9,9 +9,10 @@ Row {
 
     spacing: 5
 
+    property int rayName: RayName.Unknown
+    property int backgroundWidth: 100
+    property int commonHeight: 25
     property int commonRadidus: 4
-    property int commonHeight: 30
-    property int backgroundWidth: 120
     property alias spinBoxValue: spinBox.value
 
     SpinBox {

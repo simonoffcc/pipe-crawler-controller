@@ -37,7 +37,7 @@ Rectangle {
     function syncSpeedWithPaired(speed) {
         if (isPaired && pairedJoint && root.state === "local" && root.isCustomMode) {
             pairedJoint.jointSpeed = speed;
-            pairedJoint.speedSubmitted(speed);
+            // pairedJoint.speedSubmitted(speed);  // вот эта строка не нужна скорее всего
         }
     }
 

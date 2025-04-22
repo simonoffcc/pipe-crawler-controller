@@ -79,15 +79,15 @@ Item {
             let newState;
             if (root.state === "global") {
                 newState = "local";
-                WheelController.setControllerState(root.wheelPairName, 1);
+                WheelController.setWheelPairState(root.wheelPairName, 1);
             }
             else if (root.state === "local") {
                 newState = "independent";
-                WheelController.setControllerState(root.wheelPairName, 2);
+                WheelController.setWheelPairState(root.wheelPairName, 2);
             }
             else {
                 newState = "global";
-                WheelController.setControllerState(root.wheelPairName, 0);
+                WheelController.setWheelPairState(root.wheelPairName, 0);
             }
             outerJoint.clearSpeedInput();
             innerJoint.clearSpeedInput();
