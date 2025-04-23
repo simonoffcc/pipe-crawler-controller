@@ -75,7 +75,6 @@ Item {
             }
 
             onSliderValueChanged: function(value) {
-
                 switch(index) {
                     case 0: root.value1 = value; break;
                     case 1: root.value2 = value; break;

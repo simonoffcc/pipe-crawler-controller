@@ -39,8 +39,8 @@ Row {
             TextInput {
                 id: input
                 anchors.fill: parent
-                text: spinBox.textFromValue(spinBox.value, spinBox.locale)
 
+                text: spinBox.textFromValue(spinBox.value, spinBox.locale)
                 font: spinBox.font
                 color: "black"
                 horizontalAlignment: Qt.AlignHCenter
@@ -50,12 +50,9 @@ Row {
                 validator: spinBox.validator
                 inputMethodHints: Qt.ImhFormattedNumbersOnly
 
-                onTextChanged: {
-                    if (text === "") return
-                    const val = parseInt(text)
-                    if (!isNaN(val) && val >= spinBox.from && val <= spinBox.to) {
-                        spinBox.value = val
-                    }
+                onTextEdited: {
+                    spinBox.value = parseInt(text, 10)
+                    root.spinBoxValueChanged(spinBox.value)
                 }
             }
         }
@@ -119,6 +116,10 @@ Row {
         hoverEnabled: true
 
         text: qsTr("Publish")
+        
+        onClicked: {
+            root.spinBoxValueChanged(spinBox.value)
+        }
 
         background: Rectangle {
             property color normalColor: "#ffffff"
