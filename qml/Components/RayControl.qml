@@ -22,6 +22,8 @@ Item {
     implicitWidth: rayIndicator.width
     implicitHeight: rayIndicator.height
 
+    signal sliderValueChanged(real value)
+
     Item {
         id: rayIndicator
 
@@ -74,6 +76,10 @@ Item {
         from: 0
         to: root.maxRayPositionValue
         stepSize: 5
+
+        onMoved: {
+            root.sliderValueChanged(value)
+        }
 
         background: Rectangle {
             id: slideBackground

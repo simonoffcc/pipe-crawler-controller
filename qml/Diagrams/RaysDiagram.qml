@@ -13,6 +13,11 @@ Item {
     implicitWidth: 670
     implicitHeight: 450
 
+    // Отдельные свойства для каждого значения для правильной реактивности
+    property real value1: 0
+    property real value2: 0
+    property real value3: 0
+
     PathView {
         id: schemeLinesPositioning
 
@@ -55,15 +60,29 @@ Item {
             property var rayNames: [RayName.FrontLeft, RayName.FrontUp, RayName.FrontRight]
             property var angles: [-120, 0, 120]
             property var pointerOnRight: [true, true, false]
-            property var telemetryValues: [11, 22, 33] // телеметрия
+            property var telemetryValues: [11, 22, 33]
 
             rayName: rayNames[index]
             rotation: angles[index]
             isPointerOnRight: pointerOnRight[index]
             rayPositionValue: telemetryValues[index]
 
-            onMoved: {
-                spinBoxesPositioning.delegate.currentSliderValues[index] = spinBoxValue
+            // Привязка к соответствующему свойству
+            currentSliderValue: {
+                switch(index) {
+                    case 0: return root.value1;
+                    case 1: return root.value2;
+                    case 2: return root.value3;
+                }
+            }
+
+            onSliderValueChanged: function(value) {
+                // Обновление соответствующего свойства
+                switch(index) {
+                    case 0: root.value1 = value; break;
+                    case 1: root.value2 = value; break;
+                    case 2: root.value3 = value; break;
+                }
             }
         }
 
@@ -91,9 +110,23 @@ Item {
             property var rayNames: [RayName.FrontLeft, RayName.FrontUp, RayName.FrontRight]
 
             rayName: rayNames[index]
+            
+            // Привязка к соответствующему свойству
+            currentSpinBoxValue: {
+                switch(index) {
+                    case 0: return root.value1;
+                    case 1: return root.value2;
+                    case 2: return root.value3;
+                }
+            }
 
-            onValueModified: {
-                controlsPositioning.delegate.currentSliderPositions[index] = spinBoxValue
+            onSpinBoxValueChanged: function(value) {
+                // Обновление соответствующего свойства
+                switch(index) {
+                    case 0: root.value1 = value; break;
+                    case 1: root.value2 = value; break;
+                    case 2: root.value3 = value; break;
+                }
             }
         }
 

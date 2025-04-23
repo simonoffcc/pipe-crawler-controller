@@ -15,6 +15,8 @@ Row {
     property int commonRadidus: 4
     property alias currentSpinBoxValue: spinBox.value
 
+    signal spinBoxValueChanged(real value)
+
     SpinBox {
         id: spinBox
 
@@ -25,6 +27,10 @@ Row {
 
         leftPadding: down.indicator ? down.indicator.width : 0
         rightPadding: up.indicator ? up.indicator.width : 0
+
+        onValueModified: {
+            root.spinBoxValueChanged(value)
+        }
 
         contentItem: Item {
             implicitWidth: input.implicitWidth
