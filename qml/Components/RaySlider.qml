@@ -87,11 +87,11 @@ Item {
 
             x: root.backgroundWidth / 2 - slideBackground.width / 2
             y: root.backgroundBorderWidth
-            width: root.backgroundWidth - 2 * root.backgroundBorderWidth
-            height: root.backgroundHeight - 2 * root.backgroundBorderWidth
+            width: root.backgroundWidth - (2 * root.backgroundBorderWidth)
+            height: root.backgroundHeight - (2 * root.backgroundBorderWidth)
             radius: root.commonRadius
             color: "#008080"
-            opacity: 0.5
+            opacity: 0.6
 
             Rectangle {
                 id: slideBackgroundNotUsed
@@ -106,7 +106,7 @@ Item {
         handle: Rectangle {
             id: handle
 
-            y: -raySlider.bottomPadding + raySlider.visualPosition * root.backgroundHeight
+            y: root.backgroundBorderWidth - raySlider.bottomPadding + raySlider.visualPosition * (root.backgroundHeight - 2 * root.backgroundBorderWidth)
             width: pointer.width + root.backgroundWidth
             height: pointer.height
 
