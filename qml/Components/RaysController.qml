@@ -49,7 +49,7 @@ Item {
     }
 
     Rectangle {
-        id: centerCircle
+        id: hintTitle
 
         x: root.width / 2 - width / 2
         y: root.height / 1.7 - height / 2

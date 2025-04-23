@@ -25,7 +25,7 @@ Item {
 
     SchemeLines {
         id: schemeLinesFront
-
+        title: "Front"
         isStraightUp: true
 
         anchors {
@@ -39,7 +39,7 @@ Item {
 
     SchemeLines {
         id: schemeLinesBack
-
+        title: "Back"
         isStraightUp: false
 
         anchors {
