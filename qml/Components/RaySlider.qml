@@ -13,10 +13,11 @@ Item {
     property int backgroundHeight: 125
     property int backgroundBorderWidth: 2
     property int commonRadius: 1
-    property bool isPointerOnRight: true
+    property bool pointerOnRight: true
+    property alias sliderVisible: raySlider.visible
 
     property alias currentSliderValue: raySlider.value
-    property int rayPositionValue: 55 // потом будет проперти, который будет передавать значение с телеметрии
+    property int rayPositionValue: 55 // потом будет проперти, которое будет отвечать за значение с телеметрии
     readonly property double maxRayPositionValue: 220
 
     implicitWidth: rayIndicator.width
@@ -29,8 +30,8 @@ Item {
 
         implicitWidth: root.backgroundWidth
         implicitHeight: root.backgroundHeight
-        anchors.left: root.isPointerOnRight ? parent.left : undefined
-        anchors.right: !root.isPointerOnRight ? parent.right : undefined
+        anchors.left: root.pointerOnRight ? parent.left : undefined
+        anchors.right: !root.pointerOnRight ? parent.right : undefined
 
         Rectangle {
             id: indicatorBackground
@@ -65,9 +66,9 @@ Item {
         implicitHeight: root.backgroundHeight
 
         transform: Scale {
-            xScale: root.isPointerOnRight ? 1 : -1
+            xScale: root.pointerOnRight ? 1 : -1
         }
-        anchors.left: root.isPointerOnRight ? parent.left : parent.right
+        anchors.left: root.pointerOnRight ? parent.left : parent.right
 
         topPadding: pointer.height / 2
         bottomPadding: pointer.height / 2

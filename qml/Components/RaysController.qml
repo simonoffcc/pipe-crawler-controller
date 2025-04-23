@@ -9,6 +9,7 @@ Item {
     property var rayNames: [RayName.Unknown, RayName.Unknown, RayName.Unknown]
     property var rayControllerValues: [0, 0, 0]
     property var telemetryValues: [0, 0, 0]
+    property bool controlsVisible: true
 
     property int controlsArcRadius: 125
     property int spinBoxesArcRadius: controlsArcRadius + 100
@@ -49,18 +50,19 @@ Item {
     }
 
     PathView {
-        id: controlsPositioning
+        id: slidersPositioning
         anchors.fill: parent
         interactive: false
 
         model: 3
         delegate: RaySlider {
             property var angles: [-120, 0, 120]
-            property var pointerOnRight: [true, true, false]
+            property var pointerOnRightValues: [true, true, false]
 
+            sliderVisible: root.controlsVisible
             rayName: root.rayNames[index]
             rotation: angles[index]
-            isPointerOnRight: pointerOnRight[index]
+            pointerOnRight: pointerOnRightValues[index]
             rayPositionValue: root.telemetryValues[index]
 
             currentSliderValue: root.rayControllerValues[index]
@@ -91,6 +93,7 @@ Item {
 
         model: 3
         delegate: RaySpinBox {
+            visible: root.controlsVisible
             rayName: root.rayNames[index]
 
             currentSpinBoxValue: root.rayControllerValues[index]

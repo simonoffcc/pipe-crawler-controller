@@ -50,6 +50,8 @@ ApplicationWindow {
             RaysDiagram {
                 id: raysDiagram
                 anchors.centerIn: parent
+
+                controlsVisible: raysControlPanel.controlsVisible
             }
 
         }
@@ -65,6 +67,14 @@ ApplicationWindow {
 
             DrivingModesPanel {
                 id: drivingModesPanel
+
+                Layout.minimumHeight: implicitHeight
+                Layout.preferredHeight: implicitHeight
+                Layout.fillWidth: true
+            }
+
+            RaysControlPanel {
+                id: raysControlPanel
 
                 Layout.minimumHeight: implicitHeight
                 Layout.preferredHeight: implicitHeight
