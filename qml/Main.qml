@@ -31,6 +31,17 @@ ApplicationWindow {
             Layout.fillHeight: true
             color: "lightgray"
 
+            Text {
+                anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.topMargin: 10
+                anchors.leftMargin: 10
+                font.pixelSize: 14
+                font.bold: true
+                color: "black"
+                text: qsTr("Wheel Pairs Diagram")
+            }
+
             WheelPairsDiagram {
                 id: wheelPairsDiagram
                 anchors.centerIn: parent
@@ -47,10 +58,20 @@ ApplicationWindow {
             Layout.fillHeight: true
             color: "lightgray"
 
+            Text {
+                anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.topMargin: 10
+                anchors.leftMargin: 10
+                font.pixelSize: 14
+                font.bold: true
+                color: "black"
+                text: qsTr("Rays Diagram")
+            }
+
             RaysDiagram {
                 id: raysDiagram
                 anchors.centerIn: parent
-
                 controlsVisible: raysControlPanel.controlsVisible
             }
 

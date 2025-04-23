@@ -25,7 +25,7 @@ Rectangle {
 
     radius: width / 2
     border.width: 4
-    color: "white"
+    color: "#f2f2f2"
 
     readonly property bool isCustomMode: WheelController.currentPairsGroupingMode === PairsGroupingMode.Custom &&
                                       WheelController.currentDriveMode === DriveMode.Custom
@@ -92,7 +92,7 @@ Rectangle {
             }
 
             background: Rectangle {
-                color: "white"
+                color: "#f2f2f2"
                 border.color: "black"
                 border.width: 1
                 height: 1
@@ -141,7 +141,7 @@ Rectangle {
             name: "global"
             PropertyChanges {
                 target: root
-                border.color: "green"
+                border.color: "#008080"
             }
             PropertyChanges {
                 target: speedInput
@@ -152,7 +152,7 @@ Rectangle {
             name: "local"
             PropertyChanges {
                 target: root
-                border.color: "black"
+                border.color: "#333333"
             }
             PropertyChanges {
                 target: speedInput
@@ -163,7 +163,7 @@ Rectangle {
             name: "independent"
             PropertyChanges {
                 target: root
-                border.color: "black"
+                border.color: "#333333"
             }
             PropertyChanges {
                 target: speedInput

@@ -18,7 +18,7 @@ Rectangle {
         onPaint: {
             var ctx = getContext("2d");
             ctx.clearRect(0, 0, root.width, root.height);
-            ctx.strokeStyle = "black";
+            ctx.strokeStyle = "#333333";
             ctx.lineWidth = root.width;
             ctx.setLineDash([root.border.width / 2, root.border.width / 2]);
             ctx.beginPath();
@@ -50,7 +50,7 @@ Rectangle {
             name: "global"
             PropertyChanges {
                 target: root
-                color: "green"
+                color: "#008080"
                 border.color: "transparent"
             }
             PropertyChanges {
@@ -62,7 +62,7 @@ Rectangle {
             name: "local"
             PropertyChanges {
                 target: root
-                color: "black"
+                color: "#333333"
                 border.color: "transparent"
             }
             PropertyChanges {

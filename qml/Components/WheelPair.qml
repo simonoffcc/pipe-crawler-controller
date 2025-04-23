@@ -99,8 +99,8 @@ Item {
         id: publishButton
         visible: root.isCustomMode && root.state === "local"
 
-        width: jointControlWidth * 0.6
-        height: jointControlWidth * 0.3
+        implicitWidth: 65
+        implicitHeight: 25
         hoverEnabled: true
 
         text: qsTr("Publish")

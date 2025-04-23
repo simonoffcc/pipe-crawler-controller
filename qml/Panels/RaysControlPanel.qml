@@ -18,7 +18,7 @@ Rectangle {
         spacing: 12
 
         Text {
-            id: controlsTitle
+            id: title
             Layout.fillWidth: true
             font.pixelSize: 14
             font.bold: true

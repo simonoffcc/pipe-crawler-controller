@@ -19,7 +19,7 @@ Item {
 
             capStyle: ShapePath.FlatCap
             strokeWidth: linesWidth
-            strokeColor: "black"
+            strokeColor: "#a6a6a6"
             fillColor: "transparent"
 
             startX: width / 2 - path.strokeWidth / 2; startY: path.strokeWidth

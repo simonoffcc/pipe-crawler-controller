@@ -27,8 +27,7 @@ Item {
         delegate: Rectangle {
             width: 2
             height: root.controlsArcRadius
-            color: "black"
-            opacity: 0.3
+            color: "#a6a6a6"
             antialiasing: true
 
             property var angles: [120, 0, -120]
