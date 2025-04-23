@@ -13,7 +13,6 @@ Item {
     implicitWidth: 670
     implicitHeight: 450
 
-    // Отдельные свойства для каждого значения для правильной реактивности
     property real value1: 0
     property real value2: 0
     property real value3: 0
@@ -67,7 +66,6 @@ Item {
             isPointerOnRight: pointerOnRight[index]
             rayPositionValue: telemetryValues[index]
 
-            // Привязка к соответствующему свойству
             currentSliderValue: {
                 switch(index) {
                     case 0: return root.value1;
@@ -77,7 +75,7 @@ Item {
             }
 
             onSliderValueChanged: function(value) {
-                // Обновление соответствующего свойства
+
                 switch(index) {
                     case 0: root.value1 = value; break;
                     case 1: root.value2 = value; break;
@@ -110,8 +108,7 @@ Item {
             property var rayNames: [RayName.FrontLeft, RayName.FrontUp, RayName.FrontRight]
 
             rayName: rayNames[index]
-            
-            // Привязка к соответствующему свойству
+
             currentSpinBoxValue: {
                 switch(index) {
                     case 0: return root.value1;
@@ -121,7 +118,6 @@ Item {
             }
 
             onSpinBoxValueChanged: function(value) {
-                // Обновление соответствующего свойства
                 switch(index) {
                     case 0: root.value1 = value; break;
                     case 1: root.value2 = value; break;
