@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Shapes
+import QtQuick.Layouts
 
 import Components
 import rayName
@@ -11,6 +12,7 @@ Column {
 
     RaysController {
         id: frontRaysController
+        title: "Front"
 
         controlsVisible: root.controlsVisible
         property var rayNames: [RayName.FrontLeft, RayName.FrontUp, RayName.FrontRight]
@@ -18,6 +20,7 @@ Column {
 
     RaysController {
         id: backRaysController
+        title: "Back"
 
         controlsVisible: root.controlsVisible
         property var rayNames: [RayName.BackLeft, RayName.BackUp, RayName.BackRight]

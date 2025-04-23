@@ -9,7 +9,7 @@ import driveMode
 Rectangle {
     id: root
     color: "lightgray"
-    implicitHeight: contentLayout.implicitHeight + 20
+    implicitHeight: contentLayout.implicitHeight + contentLayout.spacing + contentLayout.anchors.bottomMargin
     
     readonly property bool isCustomMode: WheelController.currentPairsGroupingMode === PairsGroupingMode.Custom &&
                                       WheelController.currentDriveMode === DriveMode.Custom

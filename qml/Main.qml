@@ -13,7 +13,7 @@ ApplicationWindow {
     width: 1920
     height: 1080
     visibility: Window.Maximized
-    title: qsTr("Pipe Crawler Wheels Control")
+    title: qsTr("Pipe Crawler Controller")
 
     RowLayout {
         id: mainLayout
@@ -66,7 +66,7 @@ ApplicationWindow {
                 font.pixelSize: 14
                 font.bold: true
                 color: "black"
-                text: qsTr("Rays Diagram")
+                text: qsTr("Ray Positions Diagram")
             }
 
             RaysDiagram {
