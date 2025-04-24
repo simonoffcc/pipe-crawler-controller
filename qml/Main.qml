@@ -5,8 +5,6 @@ import QtQuick.Controls
 import Diagrams
 import Panels
 
-import WheelController
-
 ApplicationWindow {
     id: root
     visible: true

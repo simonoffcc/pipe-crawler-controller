@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Basic
 
-import WheelController
+import RobotController
 
 Rectangle {
     id: root
@@ -22,7 +22,7 @@ Rectangle {
 
     function publishSpeed(text) {
         if (text !== "") {
-            WheelController.publishGlobalSpeed(parseFloat(text))
+            RobotController.publishGlobalSpeed(parseFloat(text))
             root.clearSpeedInput()
 
         }

@@ -1,7 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
-#include "wheel_controller.h"
+#include "robot_controller.h"
 
 class Guard {
     public:
@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 
     rclcpp::init(argc, argv);
     auto pipe_crawler = std::make_shared<rclcpp::Node>("pipe_crawler_controller");
-    WheelController::instance(pipe_crawler);
+    RobotController::instance(pipe_crawler);
 
     // Установка обработчика сигнала для SIGINT
     std::signal(SIGINT, [](int /*unused*/) {

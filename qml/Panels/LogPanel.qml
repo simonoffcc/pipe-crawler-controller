@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import WheelController
+import RobotController
 
 Rectangle {
     id: root
@@ -28,7 +28,7 @@ Rectangle {
 
             Button {
                 text: qsTr("Clear")
-                onClicked: WheelController.clearLogMessages()
+                onClicked: RobotController.clearLogMessages()
             }
         }
 
@@ -48,7 +48,7 @@ Rectangle {
                 verticalLayoutDirection: ListView.BottomToTop
                 spacing: 1
 
-                model: WheelController.logMessages
+                model: RobotController.logMessages
                 delegate: Rectangle {
                     width: ListView.view.width
                     height: messageText.contentHeight + 16

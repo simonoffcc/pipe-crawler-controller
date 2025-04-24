@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Basic
 
-import WheelController
+import RobotController
 import pairsGroupingMode
 import driveMode
 
@@ -27,8 +27,8 @@ Rectangle {
     border.width: 4
     color: "#f2f2f2"
 
-    readonly property bool isCustomMode: WheelController.currentPairsGroupingMode === PairsGroupingMode.Custom &&
-                                      WheelController.currentDriveMode === DriveMode.Custom
+    readonly property bool isCustomMode: RobotController.currentPairsGroupingMode === PairsGroupingMode.Custom &&
+                                      RobotController.currentDriveMode === DriveMode.Custom
 
     function clearSpeedInput() {
         speedInput.text = "";

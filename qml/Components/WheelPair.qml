@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Basic
 
-import WheelController
+import RobotController
 import wheelPairName
 import jointName
 import driveMode
@@ -24,17 +24,17 @@ Item {
     width: jointControlWidth
     height: jointControlWidth * 2.5
 
-    readonly property bool isCustomMode: WheelController.currentPairsGroupingMode === PairsGroupingMode.Custom &&
-                                      WheelController.currentDriveMode === DriveMode.Custom
+    readonly property bool isCustomMode: RobotController.currentPairsGroupingMode === PairsGroupingMode.Custom &&
+                                      RobotController.currentDriveMode === DriveMode.Custom
     readonly property int outputPrecision: 2
 
     function publishOnSpeedSubmitted(speed, isOuter) {
         if (root.state === "independent") {
-            WheelController.publishIndependentSpeed(parseFloat(speed), root.wheelPairName, isOuter);
+            RobotController.publishIndependentSpeed(parseFloat(speed), root.wheelPairName, isOuter);
             if (isOuter) { outerJoint.clearSpeedInput(); } else { innerJoint.clearSpeedInput(); }
         }
         else if (root.state === "local") {
-            WheelController.publishLocalSpeed(parseFloat(speed), root.wheelPairName);
+            RobotController.publishLocalSpeed(parseFloat(speed), root.wheelPairName);
             outerJoint.clearSpeedInput();
             innerJoint.clearSpeedInput();
         }
@@ -42,18 +42,18 @@ Item {
 
     function publishOnButtonPressed(speed) {
         if (root.state === "local" && speed !== "") {
-            WheelController.publishLocalSpeed(parseFloat(speed), root.wheelPairName);
+            RobotController.publishLocalSpeed(parseFloat(speed), root.wheelPairName);
             outerJoint.clearSpeedInput();
             innerJoint.clearSpeedInput();
         }
     }
 
     Connections {
-        target: WheelController
+        target: RobotController
 
         function onControllersChanged() {
             let found = false;
-            let controllers = WheelController.controllers;
+            let controllers = RobotController.controllers;
             for (let i = 0; i < controllers.length; i++) {
                 if (controllers[i].name === root.wheelPairName) {
                     found = true;
@@ -99,15 +99,15 @@ Item {
             let newState;
             if (root.state === "global") {
                 newState = "local";
-                WheelController.setWheelPairState(root.wheelPairName, 1);
+                RobotController.setWheelPairState(root.wheelPairName, 1);
             }
             else if (root.state === "local") {
                 newState = "independent";
-                WheelController.setWheelPairState(root.wheelPairName, 2);
+                RobotController.setWheelPairState(root.wheelPairName, 2);
             }
             else {
                 newState = "global";
-                WheelController.setWheelPairState(root.wheelPairName, 0);
+                RobotController.setWheelPairState(root.wheelPairName, 0);
             }
             outerJoint.clearSpeedInput();
             innerJoint.clearSpeedInput();
@@ -205,7 +205,7 @@ Item {
     }
 
     Component.onCompleted: {
-        let controllers = WheelController.controllers;
+        let controllers = RobotController.controllers;
         for (let i = 0; i < controllers.length; i++) {
             if (controllers[i].name === root.wheelPairName) {
                 root.state = ["global", "local", "independent"][controllers[i].state];

@@ -1,6 +1,6 @@
-#include "wheel_controller.h"
+#include "robot_controller.h"
 
-WheelController::WheelController(std::shared_ptr<rclcpp::Node> node, QObject* parent)
+RobotController::RobotController(std::shared_ptr<rclcpp::Node> node, QObject* parent)
     : QObject(parent)
     , node_(node)
     , current_pairs_grouping_mode_(PairsGroupingMode::AllPairs)
@@ -11,7 +11,7 @@ WheelController::WheelController(std::shared_ptr<rclcpp::Node> node, QObject* pa
     qmlRegisterUncreatableType<JointName>("jointName", 1, 0, "JointName", "Not creatable as it is an enum type.");
     qmlRegisterUncreatableType<WheelPairName>("wheelPairName", 1, 0, "WheelPairName", "Not creatable as it is an enum type.");
     qmlRegisterUncreatableType<RayName>("rayName", 1, 0, "RayName", "Not creatable as it is an enum type.");
-    qmlRegisterSingletonInstance<WheelController>("WheelController", 1, 0, "WheelController", this);
+    qmlRegisterSingletonInstance<RobotController>("RobotController", 1, 0, "RobotController", this);
 
     createROSInterfaces();
 
@@ -45,7 +45,7 @@ WheelController::WheelController(std::shared_ptr<rclcpp::Node> node, QObject* pa
     updateGlobalControllersCount();
 }
 
-void WheelController::setDriveMode(int mode)
+void RobotController::setDriveMode(int mode)
 {
     if (current_drive_mode_ != mode) {
         current_drive_mode_ = mode;
@@ -54,7 +54,7 @@ void WheelController::setDriveMode(int mode)
     }
 }
 
-void WheelController::setPairsGroupingMode(int mode)
+void RobotController::setPairsGroupingMode(int mode)
 {
     if (current_pairs_grouping_mode_ != mode) {
         current_pairs_grouping_mode_ = mode;
@@ -63,7 +63,7 @@ void WheelController::setPairsGroupingMode(int mode)
     }
 }
 
-void WheelController::setWheelPairState(int controller_name, int state)
+void RobotController::setWheelPairState(int controller_name, int state)
 {
     auto controller_enum = static_cast<WheelPairName::Name>(controller_name);
     auto state_enum = static_cast<WheelPairState>(state);
@@ -84,7 +84,7 @@ void WheelController::setWheelPairState(int controller_name, int state)
     }
 }
 
-void WheelController::updateActiveControllers()
+void RobotController::updateActiveControllers()
 {
     for (auto& controller : controllers_) {
         controller.state = WheelPairState::Local;
@@ -163,7 +163,7 @@ void WheelController::updateActiveControllers()
     emit controllersChanged();
 }
 
-void WheelController::createROSInterfaces()
+void RobotController::createROSInterfaces()
 {
     pair_velocity_publishers_.clear();
 
@@ -178,11 +178,11 @@ void WheelController::createROSInterfaces()
 
     joint_state_subscriber_ = node_->create_subscription<sensor_msgs::msg::JointState>(
         "/joint_states", 100,
-        std::bind(&WheelController::jointStateCallback, this, std::placeholders::_1)
+        std::bind(&RobotController::jointStateCallback, this, std::placeholders::_1)
     );
 }
 
-void WheelController::jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg)
+void RobotController::jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg)
 {
     bool speeds_changed = false;
 
@@ -214,7 +214,7 @@ void WheelController::jointStateCallback(const sensor_msgs::msg::JointState::Sha
     }
 }
 
-QVariantList WheelController::controllers() const
+QVariantList RobotController::controllers() const
 {
     QVariantList result;
     for (const auto& controller : controllers_) {
@@ -234,7 +234,7 @@ QVariantList WheelController::controllers() const
     return result;
 }
 
-void WheelController::addLogMessage(const QString& message) {
+void RobotController::addLogMessage(const QString& message) {
     log_messages_.prepend(message);
     while (log_messages_.size() > MAX_LOG_MESSAGES) {
         log_messages_.removeLast();
@@ -242,7 +242,7 @@ void WheelController::addLogMessage(const QString& message) {
     emit logMessagesChanged();
 }
 
-void WheelController::publishSpeed(rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr publisher, std_msgs::msg::Float64MultiArray msg) {
+void RobotController::publishSpeed(rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr publisher, std_msgs::msg::Float64MultiArray msg) {
     std::string topic_name = publisher->get_topic_name();
 
     if (publisher->get_subscription_count() > 0) {
@@ -260,7 +260,7 @@ void WheelController::publishSpeed(rclcpp::Publisher<std_msgs::msg::Float64Multi
     }
 }
 
-void WheelController::publishGlobalSpeed(double speed)
+void RobotController::publishGlobalSpeed(double speed)
 {
     if (global_controllers_count_ == 0) {
         addLogMessage(QString("Warning: Cannot publish global speed - no controllers in global mode."));
@@ -280,7 +280,7 @@ void WheelController::publishGlobalSpeed(double speed)
     }
 }
 
-void WheelController::publishLocalSpeed(double speed, int controller_name)
+void RobotController::publishLocalSpeed(double speed, int controller_name)
 {
 
     auto controller_enum = static_cast<WheelPairName::Name>(controller_name);
@@ -298,7 +298,7 @@ void WheelController::publishLocalSpeed(double speed, int controller_name)
     }
 }
 
-void WheelController::publishIndependentSpeed(double speed, int controller_name, bool is_outer_joint)
+void RobotController::publishIndependentSpeed(double speed, int controller_name, bool is_outer_joint)
 {
     auto controller_enum = static_cast<WheelPairName::Name>(controller_name);
     std_msgs::msg::Float64MultiArray msg;
@@ -319,7 +319,7 @@ void WheelController::publishIndependentSpeed(double speed, int controller_name,
     }
 }
 
-void WheelController::updateGlobalControllersCount()
+void RobotController::updateGlobalControllersCount()
 {
     global_controllers_count_ = 0;
     for (const auto& controller : controllers_) {
@@ -329,7 +329,7 @@ void WheelController::updateGlobalControllersCount()
     }
 }
 
-void WheelController::clearLogMessages()
+void RobotController::clearLogMessages()
 {
     log_messages_.clear();
     emit logMessagesChanged();

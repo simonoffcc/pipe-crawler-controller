@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 
-import WheelController
+import RobotController
 import pairsGroupingMode
 import driveMode
 
@@ -11,8 +11,8 @@ Rectangle {
     color: "lightgray"
     implicitHeight: contentLayout.implicitHeight + contentLayout.spacing + contentLayout.anchors.bottomMargin
     
-    readonly property bool isCustomMode: WheelController.currentPairsGroupingMode === PairsGroupingMode.Custom &&
-                                      WheelController.currentDriveMode === DriveMode.Custom
+    readonly property bool isCustomMode: RobotController.currentPairsGroupingMode === PairsGroupingMode.Custom &&
+                                      RobotController.currentDriveMode === DriveMode.Custom
 
     property bool isLocked: false
 
@@ -50,13 +50,13 @@ Rectangle {
             onActivated: {
                 if (currentValue === PairsGroupingMode.Custom) {
                     driveModes.currentIndex = 0;
-                    WheelController.setDriveMode(DriveMode.Custom);
+                    RobotController.setDriveMode(DriveMode.Custom);
                 }
                 else if (driveModes.currentValue === DriveMode.Custom) {
                     driveModes.currentIndex = 3;
-                    WheelController.setDriveMode(DriveMode.AllWheelDrive);
+                    RobotController.setDriveMode(DriveMode.AllWheelDrive);
                 }
-                WheelController.setPairsGroupingMode(currentValue);
+                RobotController.setPairsGroupingMode(currentValue);
             }
         }
         
@@ -80,13 +80,13 @@ Rectangle {
             onActivated: {
                 if (currentValue === DriveMode.Custom) {
                     pairGroupingModes.currentIndex = 0;
-                    WheelController.setPairsGroupingMode(PairsGroupingMode.Custom);
+                    RobotController.setPairsGroupingMode(PairsGroupingMode.Custom);
                 }
                 else if (pairGroupingModes.currentValue === PairsGroupingMode.Custom) {
                     pairGroupingModes.currentIndex = 1;
-                    WheelController.setPairsGroupingMode(PairsGroupingMode.AllPairs);
+                    RobotController.setPairsGroupingMode(PairsGroupingMode.AllPairs);
                 }
-                WheelController.setDriveMode(currentValue);
+                RobotController.setDriveMode(currentValue);
             }
         }
 

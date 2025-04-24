@@ -1,5 +1,5 @@
-#ifndef WHEEL_CONTROLLER_H
-#define WHEEL_CONTROLLER_H
+#ifndef ROBOT_CONTROLLER_H
+#define ROBOT_CONTROLLER_H
 
 #include <QObject>
 #include <QQmlEngine>
@@ -19,7 +19,7 @@
 #include "enums/ray_name.h"
 
 /// \class Класс для управления скорстями групп колёсных пар робота из QML
-class WheelController : public QObject
+class RobotController : public QObject
 {
     Q_OBJECT
 
@@ -36,19 +36,19 @@ class WheelController : public QObject
     Q_PROPERTY(QStringList logMessages READ logMessages NOTIFY logMessagesChanged)
 
 public:
-    WheelController(const WheelController &) = delete;
-    WheelController &operator=(const WheelController &) = delete;
-    WheelController(WheelController &&) = delete;
-    WheelController &operator=(WheelController &&) = delete;
-    ~WheelController() = default;
+    RobotController(const RobotController &) = delete;
+    RobotController &operator=(const RobotController &) = delete;
+    RobotController(RobotController &&) = delete;
+    RobotController &operator=(RobotController &&) = delete;
+    ~RobotController() = default;
 
-    static WheelController &instance(std::shared_ptr<rclcpp::Node> parent_ros_node = nullptr)
+    static RobotController &instance(std::shared_ptr<rclcpp::Node> parent_ros_node = nullptr)
     {
         static std::shared_ptr<rclcpp::Node> static_node;
         if (parent_ros_node) {
             static_node = parent_ros_node;
         }
-        static WheelController _instance(static_node);
+        static RobotController _instance(static_node);
         return _instance;
     }
 
@@ -75,7 +75,7 @@ signals:
     void logMessagesChanged();
 
 private:
-    explicit WheelController(std::shared_ptr<rclcpp::Node> parent_node, QObject* parent = nullptr);
+    explicit RobotController(std::shared_ptr<rclcpp::Node> parent_node, QObject* parent = nullptr);
     std::shared_ptr<rclcpp::Node> node_;
 
     std::map<WheelPairName::Name, rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr> pair_velocity_publishers_;
@@ -118,4 +118,4 @@ private:
     static const int MAX_LOG_MESSAGES = 100;
 };
 
-#endif // WHEEL_CONTROLLER_H
+#endif // ROBOT_CONTROLLER_H
