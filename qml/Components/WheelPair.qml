@@ -28,6 +28,26 @@ Item {
                                       WheelController.currentDriveMode === DriveMode.Custom
     readonly property int outputPrecision: 2
 
+    function publishOnSpeedSubmitted(speed, isOuter) {
+        if (root.state === "independent") {
+            WheelController.publishIndependentSpeed(parseFloat(speed), root.wheelPairName, isOuter);
+            if (isOuter) { outerJoint.clearSpeedInput(); } else { innerJoint.clearSpeedInput(); }
+        }
+        else if (root.state === "local") {
+            WheelController.publishLocalSpeed(parseFloat(speed), root.wheelPairName);
+            outerJoint.clearSpeedInput();
+            innerJoint.clearSpeedInput();
+        }
+    }
+
+    function publishOnButtonPressed(speed) {
+        if (root.state === "local" && speed !== "") {
+            WheelController.publishLocalSpeed(parseFloat(speed), root.wheelPairName);
+            outerJoint.clearSpeedInput();
+            innerJoint.clearSpeedInput();
+        }
+    }
+
     Connections {
         target: WheelController
 
@@ -125,19 +145,13 @@ Item {
             verticalAlignment: Text.AlignVCenter
         }
 
+        onClicked: root.publishOnButtonPressed(outerJoint.jointSpeed)
+
         Component.onCompleted: {
             anchors.leftMargin = jointControlWidth / 8
             anchors.rightMargin = jointControlWidth / 8
             anchors.verticalCenter = connectionLine.verticalCenter
             isSpeedPublishButtonOnLeft ? anchors.right = connectionLine.left : anchors.left = connectionLine.right
-        }
-
-        onClicked: {
-            if (root.state === "local" && outerJoint.jointSpeed !== "") {
-                WheelController.publishLocalSpeed(parseFloat(outerJoint.jointSpeed), root.wheelPairName);
-                outerJoint.clearSpeedInput();
-                innerJoint.clearSpeedInput();
-            }
         }
     }
 
@@ -152,16 +166,11 @@ Item {
         pairedJoint: innerJoint
         isLocked: root.isLocked
 
+        onSpeedSubmitted: function(speedValue) { root.publishOnSpeedSubmitted(speedValue, true) }
+
         Component.onCompleted: {
             anchors.horizontalCenter = parent.horizontalCenter
             isFront ? anchors.bottom = connectionLine.top : anchors.top = connectionLine.bottom
-        }
-
-        onSpeedSubmitted: function(speedValue) {
-            if (root.state === "independent") {
-                WheelController.publishIndependentSpeed(parseFloat(speedValue), root.wheelPairName, true);
-                outerJoint.clearSpeedInput();
-            }
         }
     }
 
@@ -185,16 +194,11 @@ Item {
         pairedJoint: outerJoint
         isLocked: root.isLocked
 
+        onSpeedSubmitted: function(speedValue) { root.publishOnSpeedSubmitted(speedValue, false) }
+
         Component.onCompleted: {
             anchors.horizontalCenter = parent.horizontalCenter
             !isFront ? anchors.bottom = connectionLine.top : anchors.top = connectionLine.bottom
-        }
-
-        onSpeedSubmitted: function(speedValue) {
-            if (root.state === "independent") {
-                WheelController.publishIndependentSpeed(parseFloat(speedValue), root.wheelPairName, false);
-                innerJoint.clearSpeedInput();
-            }
         }
     }
 

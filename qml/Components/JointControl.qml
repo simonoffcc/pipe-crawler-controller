@@ -85,6 +85,7 @@ Rectangle {
             height: 25
 
             verticalAlignment: TextInput.AlignVCenter
+            horizontalAlignment: TextInput.AlignHCenter
 
             validator: DoubleValidator {
                 notation: DoubleValidator.StandardNotation
@@ -111,25 +112,15 @@ Rectangle {
 
             Keys.onReturnPressed: {
                 if (text !== "") {
-                    if (root.state === "local") {
-                        WheelController.addLogMessage("Warning: In local mode, please use the 'Publish' button instead.");
-                    }
-                    else if (root.state === "independent") {
-                        speedInput.focus = false;
-                        root.speedSubmitted(text);
-                    }
+                    speedInput.focus = false;
+                    root.speedSubmitted(text);
                 }
             }
 
             Keys.onEnterPressed: {
                 if (text !== "") {
-                    if (root.state === "local") {
-                        WheelController.addLogMessage("Warning: In local mode, please use the 'Publish' button instead.");
-                    }
-                    else if (root.state === "independent") {
-                        speedInput.focus = false;
-                        root.speedSubmitted(text);
-                    }
+                    speedInput.focus = false;
+                    root.speedSubmitted(text);
                 }
             }
         }
