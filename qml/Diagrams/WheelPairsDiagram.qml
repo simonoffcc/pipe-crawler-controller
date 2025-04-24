@@ -57,8 +57,6 @@ Item {
         wheelPairName: WheelPairName.FrontLeft
         isFront: true
         isSpeedPublishButtonOnLeft: false
-        jointControlWidth: 100
-        elementStrokeWidth: 4
         outerJointName: JointName.FrontLeftOuter
         innerJointName: JointName.FrontLeftInner
         isLocked: root.isLocked
@@ -76,8 +74,6 @@ Item {
         wheelPairName: WheelPairName.FrontUp
         isFront: true
         isSpeedPublishButtonOnLeft: true
-        jointControlWidth: 100
-        elementStrokeWidth: 4
         outerJointName: JointName.FrontUpOuter
         innerJointName: JointName.FrontUpInner
         isLocked: root.isLocked
@@ -94,8 +90,6 @@ Item {
         wheelPairName: WheelPairName.FrontRight
         isFront: true
         isSpeedPublishButtonOnLeft: true
-        jointControlWidth: 100
-        elementStrokeWidth: 4
         outerJointName: JointName.FrontRightOuter
         innerJointName: JointName.FrontRightInner
         isLocked: root.isLocked
@@ -113,8 +107,6 @@ Item {
         wheelPairName: WheelPairName.BackLeft
         isFront: false
         isSpeedPublishButtonOnLeft: false
-        jointControlWidth: 100
-        elementStrokeWidth: 4
         outerJointName: JointName.BackLeftOuter
         innerJointName: JointName.BackLeftInner
         isLocked: root.isLocked
@@ -132,8 +124,6 @@ Item {
         wheelPairName: WheelPairName.BackUp
         isFront: false
         isSpeedPublishButtonOnLeft: false
-        jointControlWidth: 100
-        elementStrokeWidth: 4
         outerJointName: JointName.BackUpOuter
         innerJointName: JointName.BackUpInner
         isLocked: root.isLocked
@@ -149,9 +139,7 @@ Item {
 
         wheelPairName: WheelPairName.BackRight
         isFront: false
-        isSpeedPublishButtonOnLeft: true
-        jointControlWidth: 100
-        elementStrokeWidth: 4
+        isSpeedPublishButtonOnLeft: true       
         outerJointName: JointName.BackRightOuter
         innerJointName: JointName.BackRightInner
         isLocked: root.isLocked

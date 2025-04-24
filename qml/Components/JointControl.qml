@@ -64,7 +64,7 @@ Rectangle {
             id: telemetryText
 
             text: qsTr("0.0°/sec")
-            font.pixelSize: 14
+            font.pixelSize: 13
 
             horizontalAlignment: Text.AlignHCenter
             anchors.horizontalCenter: parent.horizontalCenter
@@ -84,7 +84,6 @@ Rectangle {
             width: root.width * 0.7
             height: 25
 
-            horizontalAlignment: TextInput.AlignHCenter
             verticalAlignment: TextInput.AlignVCenter
 
             validator: DoubleValidator {

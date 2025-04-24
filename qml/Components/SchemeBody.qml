@@ -7,16 +7,25 @@ import WheelController
 Rectangle {
     id: root
 
-    radius: 15
-    border.color: "gray"
-    border.width: 1
-    color: "#EEEEEE"
-
     width: 130
     height: 130
 
+    radius: 15
+    border.color: "gray"
+    border.width: 1
+    color: "#eeeeee"
+
     function clearSpeedInput() {
         inputField.text = "";
+        inputField.focus = false;
+    }
+
+    function publishSpeed(text) {
+        if (text !== "") {
+            WheelController.publishGlobalSpeed(parseFloat(text))
+            root.clearSpeedInput()
+
+        }
     }
 
     Column {
@@ -30,7 +39,7 @@ Rectangle {
 
             width: parent.width
             color: "black"
-            placeholderText: "dq: 1.0°/sec"
+            placeholderText: qsTr("dq: 1.0°/sec")
             placeholderTextColor: "gray"
             horizontalAlignment: TextInput.AlignHCenter
             font.pixelSize: 14
@@ -52,6 +61,9 @@ Rectangle {
                     right: parent.right
                 }
             }
+
+            Keys.onReturnPressed: root.publishSpeed(inputField.text)
+            Keys.onEnterPressed: root.publishSpeed(inputField.text)
         }
 
         Button {
@@ -62,11 +74,7 @@ Rectangle {
 
             text: qsTr("Publish")
 
-            onClicked: {
-                if (inputField.text !== "") {
-                    WheelController.publishGlobalSpeed(parseFloat(inputField.text))
-                }
-            }
+            onClicked: root.publishSpeed(inputField.text)
 
             background: Rectangle {
                 property color normalColor: "#4CAF50"
