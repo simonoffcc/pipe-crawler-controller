@@ -10,7 +10,7 @@ Item {
     property var rayControllerValues: [0, 0, 0]
     property var telemetryValues: [0, 0, 0]
     property bool controlsVisible: true
-    property alias title: title.text
+    property alias title: directionHint.hintText
 
     property int controlsArcRadius: 125
     property int spinBoxesArcRadius: controlsArcRadius + 100
@@ -48,25 +48,11 @@ Item {
         }
     }
 
-    Rectangle {
-        id: hintTitle
-
+    DirectionHint {
+        id: directionHint
         x: root.width / 2 - width / 2
         y: root.height / 1.7 - height / 2
-        implicitWidth: title.width + title.font.pixelSize
-        implicitHeight: title.height + title.font.pixelSize
-        radius: 7
-        color: "lightgray"
-        border.color: "#a6a6a6"
-
-        Text {
-            id: title
-            anchors.centerIn: parent
-            font.bold: true
-            font.pixelSize: 13
-            color: "#666666"
-            text: qsTr("undefined")
-        }
+        hintText: qsTr("undefined")
     }
 
     PathView {
