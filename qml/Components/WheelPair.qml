@@ -4,6 +4,7 @@ import QtQuick.Controls.Basic
 
 import RobotController
 import wheelPairName
+import wheelPairState
 import jointName
 import driveMode
 import pairsGroupingMode
@@ -99,15 +100,15 @@ Item {
             let newState;
             if (root.state === "global") {
                 newState = "local";
-                RobotController.setWheelPairState(root.wheelPairName, 1);
+                RobotController.setWheelPairState(root.wheelPairName, WheelPairState.Local);
             }
             else if (root.state === "local") {
                 newState = "independent";
-                RobotController.setWheelPairState(root.wheelPairName, 2);
+                RobotController.setWheelPairState(root.wheelPairName, WheelPairState.Independent);
             }
             else {
                 newState = "global";
-                RobotController.setWheelPairState(root.wheelPairName, 0);
+                RobotController.setWheelPairState(root.wheelPairName, WheelPairState.Global);
             }
             outerJoint.clearSpeedInput();
             innerJoint.clearSpeedInput();

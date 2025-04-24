@@ -10,6 +10,7 @@ RobotController::RobotController(std::shared_ptr<rclcpp::Node> node, QObject* pa
     qmlRegisterUncreatableType<DriveMode>("driveMode", 1, 0, "DriveMode", "Not creatable as it is an enum type.");
     qmlRegisterUncreatableType<JointName>("jointName", 1, 0, "JointName", "Not creatable as it is an enum type.");
     qmlRegisterUncreatableType<WheelPairName>("wheelPairName", 1, 0, "WheelPairName", "Not creatable as it is an enum type.");
+    qmlRegisterUncreatableType<WheelPairState>("wheelPairState", 1, 0, "WheelPairState", "Not creatable as it is an enum type.");
     qmlRegisterUncreatableType<RayName>("rayName", 1, 0, "RayName", "Not creatable as it is an enum type.");
     qmlRegisterSingletonInstance<RobotController>("RobotController", 1, 0, "RobotController", this);
 
@@ -66,7 +67,7 @@ void RobotController::setPairsGroupingMode(int mode)
 void RobotController::setWheelPairState(int controller_name, int state)
 {
     auto controller_enum = static_cast<WheelPairName::Name>(controller_name);
-    auto state_enum = static_cast<WheelPairState>(state);
+    auto state_enum = static_cast<WheelPairState::State>(state);
 
     for (auto& controller : controllers_) {
         if (controller.wheel_pair_name == controller_enum) {

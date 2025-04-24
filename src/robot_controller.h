@@ -16,6 +16,7 @@
 #include "enums/drive_mode.h"
 #include "enums/joint_name.h"
 #include "enums/wheel_pair_name.h"
+#include "enums/wheel_pair_state.h"
 #include "enums/ray_name.h"
 
 /// \class Класс для управления скорстями групп колёсных пар робота из QML
@@ -91,12 +92,6 @@ private:
     int current_drive_mode_;            ///< Текущий привод
     int global_controllers_count_ = 0;  ///< Количество контроллеров в глобальном режиме
 
-    enum class WheelPairState {
-        Global = 0,
-        Local = 1,
-        Independent = 2
-    };
-
     struct Joint {
         JointName::Name name;
         double velocity;
@@ -105,7 +100,7 @@ private:
     struct Controller {  ///< Структура для хранения информации колёсной пары и луча
         WheelPairName::Name wheel_pair_name;
         RayName::Name ray_name;
-        WheelPairState state;
+        WheelPairState::State state;
         Joint outer_joint;
         Joint inner_joint;
         double ray_position;  ///< Позиция луча в метрах
