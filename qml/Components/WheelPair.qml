@@ -119,7 +119,7 @@ Item {
         id: publishButton
         visible: root.isCustomMode && root.state === "local"
 
-        implicitWidth: 65
+        implicitWidth: 60
         implicitHeight: 25
         hoverEnabled: true
 
@@ -130,16 +130,18 @@ Item {
             property color hoveredColor: "#333333"
             property color pressedColor: "#666666"
 
-            radius: 7
+            radius: 4
             color: publishButton.pressed ? pressedColor :
                    publishButton.hovered ? hoveredColor : normalColor
+
+            border.color: enabled ? "#97999b" : "#bdbebf"
         }
 
         contentItem: Text {
             anchors.fill: parent
 
             text: publishButton.text
-            font.pixelSize: 14
+            font.pixelSize: 12
             color: "white"
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter

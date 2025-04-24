@@ -77,9 +77,9 @@ Rectangle {
             onClicked: root.publishSpeed(inputField.text)
 
             background: Rectangle {
-                property color normalColor: "#4CAF50"
-                property color hoveredColor: "#45A049"
-                property color pressedColor: "#3D8B40"
+                property color normalColor: "#008080"
+                property color hoveredColor: "#00cccc"
+                property color pressedColor: "#1affff"
 
                 radius: 5
                 color: publishButton.pressed ? pressedColor :

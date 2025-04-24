@@ -10,7 +10,7 @@ Rectangle {
     rotation: -parent.rotation
     implicitWidth: text.width + text.font.pixelSize
     implicitHeight: text.height + text.font.pixelSize
-    radius: 7
+    radius: 9
     color: "lightgray"
     border.color: "#a6a6a6"
 

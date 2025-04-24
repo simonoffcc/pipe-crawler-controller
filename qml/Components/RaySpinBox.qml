@@ -116,10 +116,6 @@ Row {
         hoverEnabled: true
 
         text: qsTr("Publish")
-        
-        onClicked: {
-            root.spinBoxValueChanged(spinBox.value)
-        }
 
         background: Rectangle {
             property color normalColor: "#ffffff"
@@ -141,6 +137,10 @@ Row {
             color: "black"
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
+        }
+
+        onClicked: {
+            root.spinBoxValueChanged(spinBox.value)
         }
     }
 }

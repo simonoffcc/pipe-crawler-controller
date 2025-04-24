@@ -6,8 +6,8 @@ import WheelController
 
 Rectangle {
     id: root
+
     color: "lightgray"
-    property alias model: logView.model
 
     ColumnLayout {
         anchors.fill: parent
@@ -16,7 +16,6 @@ Rectangle {
 
         RowLayout {
             Layout.fillWidth: true
-            spacing: 8
 
             Text {
                 id: title
@@ -49,6 +48,7 @@ Rectangle {
                 verticalLayoutDirection: ListView.BottomToTop
                 spacing: 1
 
+                model: WheelController.logMessages
                 delegate: Rectangle {
                     width: ListView.view.width
                     height: messageText.contentHeight + 16

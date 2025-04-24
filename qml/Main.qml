@@ -19,7 +19,7 @@ ApplicationWindow {
         id: mainLayout
 
         anchors.fill: parent
-        anchors.margins: 4
+        anchors.margins: 0
         spacing: 4
 
         Rectangle {
@@ -107,7 +107,6 @@ ApplicationWindow {
 
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                model: WheelController.logMessages
             }
         }
     }
