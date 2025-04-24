@@ -18,7 +18,7 @@ Item {
     property bool isLocked: false
     property bool isSpeedPublishButtonOnLeft: false
 
-    property int wheelPairName: WheelsControllerState.Unknown
+    property int wheelPairName: WheelsControllerName.Unknown
     property int outerJointName: WheelJointName.Unknown
     property int innerJointName: WheelJointName.Unknown
 
@@ -100,15 +100,15 @@ Item {
             let newState;
             if (root.state === "global") {
                 newState = "local";
-                RobotController.setWheelPairState(root.wheelPairName, WheelsControllerState.Local);
+                RobotController.setWheelsControllerState(root.wheelPairName, WheelsControllerState.Local);
             }
             else if (root.state === "local") {
                 newState = "independent";
-                RobotController.setWheelPairState(root.wheelPairName, WheelsControllerState.Independent);
+                RobotController.setWheelsControllerState(root.wheelPairName, WheelsControllerState.Independent);
             }
             else {
                 newState = "global";
-                RobotController.setWheelPairState(root.wheelPairName, WheelsControllerState.Global);
+                RobotController.setWheelsControllerState(root.wheelPairName, WheelsControllerState.Global);
             }
             outerJoint.clearSpeedInput();
             innerJoint.clearSpeedInput();

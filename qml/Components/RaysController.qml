@@ -1,14 +1,15 @@
 import QtQuick
 import QtQuick.Shapes
 
+import RobotController
 import rayName
 
 Item {
     id: root
 
     property var rayNames: [RayName.Unknown, RayName.Unknown, RayName.Unknown]
-    property var rayControllerValues: [0, 0, 0]
-    property var telemetryValues: [0, 0, 0]
+    property var rayControlValues: [0, 0, 0]
+    property var rayTelemetryValues: [0, 0, 0]
     property bool controlsVisible: true
     property alias title: directionHint.hintText
 
@@ -17,6 +18,35 @@ Item {
 
     implicitWidth: 670
     implicitHeight: 450
+
+    Connections {
+        target: RobotController
+
+        function onControllersChanged() {
+            var controllers = RobotController.controllers;
+            root.updateTelemetryValues(controllers);
+        }
+    }
+
+    function metersToMillimeters(meters) {
+        return Math.round(meters * 1000);
+    }
+
+    function millimetersToMeters(mm) {
+        return mm / 1000.0;
+    }
+
+    function updateTelemetryValues(controllers) {
+        var newValues = rayTelemetryValues.slice();
+        for (var i = 0; i < rayNames.length; i++) {
+            for (var j = 0; j < controllers.length; j++) {
+                if (controllers[j].rayName === rayNames[i]) {
+                    newValues[i] = metersToMillimeters(controllers[j].rayPosition);
+                }
+            }
+        }
+        rayTelemetryValues = newValues;
+    }
 
     PathView {
         id: schemeLinesPositioning
@@ -69,9 +99,9 @@ Item {
             rayName: root.rayNames[index]
             rotation: angles[index]
             pointerOnRight: pointerOnRightValues[index]
-            rayPositionValue: root.telemetryValues[index]
+            rayPositionValue: root.rayTelemetryValues[index]
 
-            currentSliderValue: root.rayControllerValues[index]
+            currentSliderValue: root.rayControlValues[index]
 
             onSliderValueChanged: function(value) {
                 updateRayValue(index, value);
@@ -102,7 +132,7 @@ Item {
             visible: root.controlsVisible
             rayName: root.rayNames[index]
 
-            currentSpinBoxValue: root.rayControllerValues[index]
+            currentSpinBoxValue: root.rayControlValues[index]
 
             onSpinBoxValueChanged: function(value) {
                 updateRayValue(index, value);
@@ -123,8 +153,8 @@ Item {
     }
 
     function updateRayValue(index, value) {
-        var newValues = rayControllerValues.slice();
+        var newValues = rayControlValues.slice();
         newValues[index] = value;
-        rayControllerValues = newValues;
+        rayControlValues = newValues;
     }
 }

@@ -67,7 +67,8 @@ public slots:
     void publishGlobalSpeed(double speed);
     void publishLocalSpeed(double speed, int controller_name);
     void publishIndependentSpeed(double speed, int controller_name, bool is_outer_joint);
-    void setWheelPairState(int controller_name, int state);
+    // void publishRayPosition(double position, int ray_name);
+    void setWheelsControllerState(int controller_name, int state);
 
 signals:
     void controllersChanged();
@@ -80,6 +81,7 @@ private:
     std::shared_ptr<rclcpp::Node> node_;
 
     std::map<WheelsControllerName::Name, rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr> pair_velocity_publishers_;
+    std::map<RayName::Name, rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr> ray_position_publishers_;
     rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr joint_state_subscriber_;
 
     void createROSInterfaces();

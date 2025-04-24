@@ -64,7 +64,7 @@ void RobotController::setPairsGroupingMode(int mode)
     }
 }
 
-void RobotController::setWheelPairState(int controller_name, int state)
+void RobotController::setWheelsControllerState(int controller_name, int state)
 {
     auto controller_enum = static_cast<WheelsControllerName::Name>(controller_name);
     auto state_enum = static_cast<WheelsControllerState::State>(state);
@@ -167,6 +167,7 @@ void RobotController::updateActiveControllers()
 void RobotController::createROSInterfaces()
 {
     pair_velocity_publishers_.clear();
+    ray_position_publishers_.clear();
 
     for (int i = 0; i < 6; ++i) {
         auto controller_enum = static_cast<WheelsControllerName::Name>(i);
@@ -175,6 +176,15 @@ void RobotController::createROSInterfaces()
         auto publisher = node_->create_publisher<std_msgs::msg::Float64MultiArray>(
             "/" + controller_name + "/commands", 100);
         pair_velocity_publishers_[controller_enum] = publisher;
+    }
+
+    for (int i = 0; i < 6; ++i) {
+        auto ray_enum = static_cast<RayName::Name>(i);
+        std::string ray_controller_name = RayName::toControllerString(ray_enum);
+
+        auto publisher = node_->create_publisher<std_msgs::msg::Float64MultiArray>(
+            "/" + ray_controller_name + "/commands", 100);
+        ray_position_publishers_[ray_enum] = publisher;
     }
 
     joint_state_subscriber_ = node_->create_subscription<sensor_msgs::msg::JointState>(
@@ -186,19 +196,21 @@ void RobotController::createROSInterfaces()
 void RobotController::jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg)
 {
     bool speeds_changed = false;
+    bool positions_changed = false;
 
     for (size_t i = 0; i < msg->name.size(); i++) {
         const std::string& joint_name = msg->name[i];
         const double velocity = msg->velocity[i];
+        const double position = msg->position[i];
 
-        auto joint_enum = WheelJointName::fromString(joint_name);
-        if (joint_enum != WheelJointName::Unknown) {
+        auto wheel_joint_enum = WheelJointName::fromString(joint_name);
+        if (wheel_joint_enum != WheelJointName::Unknown) {
             for (auto& controller : controllers_) {
                 Joint* target_joint = nullptr;
 
-                if (controller.outer_joint.name == joint_enum) {
+                if (controller.outer_joint.name == wheel_joint_enum) {
                     target_joint = &controller.outer_joint;
-                } else if (controller.inner_joint.name == joint_enum) {
+                } else if (controller.inner_joint.name == wheel_joint_enum) {
                     target_joint = &controller.inner_joint;
                 }
 
@@ -208,9 +220,19 @@ void RobotController::jointStateCallback(const sensor_msgs::msg::JointState::Sha
                 }
             }
         }
+
+        auto ray_enum = RayName::fromJointString(joint_name);
+        if (ray_enum != RayName::Unknown) {
+            for (auto& controller : controllers_) {
+                if (controller.ray_name == ray_enum && std::abs(controller.ray_position - position) > velocity_step) {
+                    controller.ray_position = position;
+                    positions_changed = true;
+                }
+            }
+        }
     }
 
-    if (speeds_changed) {
+    if (speeds_changed || positions_changed) {
         emit controllersChanged();
     }
 }
@@ -230,6 +252,8 @@ QVariantList RobotController::controllers() const
             {"name", static_cast<int>(controller.inner_joint.name)},
             {"velocity", qRadiansToDegrees(controller.inner_joint.velocity)}
         };
+        controllerMap["rayName"] = static_cast<int>(controller.ray_name);
+        controllerMap["rayPosition"] = controller.ray_position;
         result.append(controllerMap);
     }
     return result;
@@ -318,6 +342,32 @@ void RobotController::publishIndependentSpeed(double speed, int controller_name,
         }
     }
 }
+
+// void RobotController::publishRayPosition(double position, int ray_name)
+// {
+//     auto ray_enum = static_cast<RayName::Name>(ray_name);
+//     std_msgs::msg::Float64MultiArray msg;
+//     msg.data = {position};
+
+//     if (ray_position_publishers_.find(ray_enum) != ray_position_publishers_.end()) {
+//         auto publisher = ray_position_publishers_[ray_enum];
+//         std::string topic_name = publisher->get_topic_name();
+
+//         if (publisher->get_subscription_count() > 0) {
+//             publisher->publish(msg);
+//             QString logMsg = QString("Publishing ray position %1 m to %2")
+//                             .arg(position, 0, 'f', 3)
+//                             .arg(QString::fromStdString(topic_name));
+//             addLogMessage(logMsg);
+//         }
+//         else {
+//             QString logMsg = QString("Failed publishing ray position %1 m to %2: There are no subscribers for this topic.")
+//                             .arg(position, 0, 'f', 3)
+//                             .arg(QString::fromStdString(topic_name));
+//             addLogMessage(logMsg);
+//         }
+//     }
+// }
 
 void RobotController::updateGlobalControllersCount()
 {

@@ -4,6 +4,7 @@ import QtQuick.Layouts
 
 import Components
 import rayName
+import RobotController
 
 Column {
     id: root
@@ -13,16 +14,14 @@ Column {
     RaysController {
         id: frontRaysController
         title: "Front"
-
         controlsVisible: root.controlsVisible
-        property var rayNames: [RayName.FrontLeft, RayName.FrontUp, RayName.FrontRight]
+        rayNames: [RayName.FrontLeft, RayName.FrontUp, RayName.FrontRight]
     }
 
     RaysController {
         id: backRaysController
         title: "Back"
-
         controlsVisible: root.controlsVisible
-        property var rayNames: [RayName.BackLeft, RayName.BackUp, RayName.BackRight]
+        rayNames: [RayName.BackLeft, RayName.BackUp, RayName.BackRight]
     }
 }
