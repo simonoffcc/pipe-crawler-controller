@@ -18,7 +18,7 @@ public:
     };
     Q_ENUM(Name)
 
-    static std::string toString(Name name) {
+    static std::string toControllerString(Name name) {
         switch (name) {
         case Name::FrontLeft: return "front_left_ray_pos_controller";
         case Name::FrontUp: return "front_up_ray_pos_controller";
@@ -30,7 +30,17 @@ public:
         }
     }
 
-    static Name fromString(const std::string& name) {
+    static Name fromJointString(const std::string& name) {
+        if (name == "front_left_ray_joint") return Name::FrontLeft;
+        if (name == "front_up_ray_joint") return Name::FrontUp;
+        if (name == "front_right_ray_joint") return Name::FrontRight;
+        if (name == "back_left_ray_joint") return Name::BackLeft;
+        if (name == "back_up_ray_joint") return Name::BackUp;
+        if (name == "back_right_ray_joint") return Name::BackRight;
+        return Name::Unknown;
+    }
+
+    static Name fromControllerString(const std::string& name) {
         if (name == "front_left_ray_pos_controller") return Name::FrontLeft;
         if (name == "front_up_ray_pos_controller") return Name::FrontUp;
         if (name == "front_right_ray_pos_controller") return Name::FrontRight;
@@ -38,6 +48,18 @@ public:
         if (name == "back_up_ray_pos_controller") return Name::BackUp;
         if (name == "back_right_ray_pos_controller") return Name::BackRight;
         return Name::Unknown;
+    }
+
+    static std::string toJointString(Name name) {
+        switch (name) {
+        case Name::FrontLeft: return "front_left_ray_joint";
+        case Name::FrontUp: return "front_up_ray_joint";
+        case Name::FrontRight: return "front_right_ray_joint";
+        case Name::BackLeft: return "back_left_ray_joint";
+        case Name::BackUp: return "back_up_ray_joint";
+        case Name::BackRight: return "back_right_ray_joint";
+        default: return "unknown";
+        }
     }
 };
 

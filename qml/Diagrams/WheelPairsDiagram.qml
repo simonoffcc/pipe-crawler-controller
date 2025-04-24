@@ -3,8 +3,8 @@ import QtQuick.Controls
 
 import Components
 
-import wheelPairName
-import jointName
+import wheelsControllerName
+import wheelJointName
 
 Item {
     id: root
@@ -54,11 +54,11 @@ Item {
     WheelPair {
         id: front_left
 
-        wheelPairName: WheelPairName.FrontLeft
+        wheelPairName: WheelsControllerName.FrontLeft
         isFront: true
         isSpeedPublishButtonOnLeft: false
-        outerJointName: JointName.FrontLeftOuter
-        innerJointName: JointName.FrontLeftInner
+        outerJointName: WheelJointName.FrontLeftOuter
+        innerJointName: WheelJointName.FrontLeftInner
         isLocked: root.isLocked
 
         anchors {
@@ -71,11 +71,11 @@ Item {
     WheelPair {
         id: front_up
 
-        wheelPairName: WheelPairName.FrontUp
+        wheelPairName: WheelsControllerName.FrontUp
         isFront: true
         isSpeedPublishButtonOnLeft: true
-        outerJointName: JointName.FrontUpOuter
-        innerJointName: JointName.FrontUpInner
+        outerJointName: WheelJointName.FrontUpOuter
+        innerJointName: WheelJointName.FrontUpInner
         isLocked: root.isLocked
 
         anchors {
@@ -87,11 +87,11 @@ Item {
     WheelPair {
         id: front_right
 
-        wheelPairName: WheelPairName.FrontRight
+        wheelPairName: WheelsControllerName.FrontRight
         isFront: true
         isSpeedPublishButtonOnLeft: true
-        outerJointName: JointName.FrontRightOuter
-        innerJointName: JointName.FrontRightInner
+        outerJointName: WheelJointName.FrontRightOuter
+        innerJointName: WheelJointName.FrontRightInner
         isLocked: root.isLocked
 
         anchors {
@@ -104,11 +104,11 @@ Item {
     WheelPair {
         id: back_left
 
-        wheelPairName: WheelPairName.BackLeft
+        wheelPairName: WheelsControllerName.BackLeft
         isFront: false
         isSpeedPublishButtonOnLeft: false
-        outerJointName: JointName.BackLeftOuter
-        innerJointName: JointName.BackLeftInner
+        outerJointName: WheelJointName.BackLeftOuter
+        innerJointName: WheelJointName.BackLeftInner
         isLocked: root.isLocked
 
         anchors {
@@ -121,11 +121,11 @@ Item {
     WheelPair {
         id: back_up
 
-        wheelPairName: WheelPairName.BackUp
+        wheelPairName: WheelsControllerName.BackUp
         isFront: false
         isSpeedPublishButtonOnLeft: false
-        outerJointName: JointName.BackUpOuter
-        innerJointName: JointName.BackUpInner
+        outerJointName: WheelJointName.BackUpOuter
+        innerJointName: WheelJointName.BackUpInner
         isLocked: root.isLocked
 
         anchors {
@@ -137,11 +137,11 @@ Item {
     WheelPair {
         id: back_right
 
-        wheelPairName: WheelPairName.BackRight
+        wheelPairName: WheelsControllerName.BackRight
         isFront: false
         isSpeedPublishButtonOnLeft: true       
-        outerJointName: JointName.BackRightOuter
-        innerJointName: JointName.BackRightInner
+        outerJointName: WheelJointName.BackRightOuter
+        innerJointName: WheelJointName.BackRightInner
         isLocked: root.isLocked
 
         anchors {

@@ -8,9 +8,9 @@ RobotController::RobotController(std::shared_ptr<rclcpp::Node> node, QObject* pa
 {
     qmlRegisterUncreatableType<PairsGroupingMode>("pairsGroupingMode", 1, 0, "PairsGroupingMode", "Not creatable as it is an enum type.");
     qmlRegisterUncreatableType<DriveMode>("driveMode", 1, 0, "DriveMode", "Not creatable as it is an enum type.");
-    qmlRegisterUncreatableType<JointName>("jointName", 1, 0, "JointName", "Not creatable as it is an enum type.");
-    qmlRegisterUncreatableType<WheelPairName>("wheelPairName", 1, 0, "WheelPairName", "Not creatable as it is an enum type.");
-    qmlRegisterUncreatableType<WheelPairState>("wheelPairState", 1, 0, "WheelPairState", "Not creatable as it is an enum type.");
+    qmlRegisterUncreatableType<WheelJointName>("wheelJointName", 1, 0, "WheelJointName", "Not creatable as it is an enum type.");
+    qmlRegisterUncreatableType<WheelsControllerName>("wheelsControllerName", 1, 0, "WheelsControllerName", "Not creatable as it is an enum type.");
+    qmlRegisterUncreatableType<WheelsControllerState>("wheelsControllerState", 1, 0, "WheelsControllerState", "Not creatable as it is an enum type.");
     qmlRegisterUncreatableType<RayName>("rayName", 1, 0, "RayName", "Not creatable as it is an enum type.");
     qmlRegisterSingletonInstance<RobotController>("RobotController", 1, 0, "RobotController", this);
 
@@ -18,28 +18,28 @@ RobotController::RobotController(std::shared_ptr<rclcpp::Node> node, QObject* pa
 
     controllers_ = {
         {
-         WheelPairName::FrontLeft, RayName::FrontLeft, WheelPairState::Global,
-         {JointName::FrontLeftOuter, 0.0}, {JointName::FrontLeftInner, 0.0}, 0.0
+         WheelsControllerName::FrontLeft, RayName::FrontLeft, WheelsControllerState::Global,
+         {WheelJointName::FrontLeftOuter, 0.0}, {WheelJointName::FrontLeftInner, 0.0}, 0.0
         },
         {
-         WheelPairName::FrontUp, RayName::FrontUp, WheelPairState::Global,
-         {JointName::FrontUpOuter, 0.0}, {JointName::FrontUpInner, 0.0}, 0.0
+         WheelsControllerName::FrontUp, RayName::FrontUp, WheelsControllerState::Global,
+         {WheelJointName::FrontUpOuter, 0.0}, {WheelJointName::FrontUpInner, 0.0}, 0.0
         },
         {
-         WheelPairName::FrontRight, RayName::FrontRight, WheelPairState::Global,
-         {JointName::FrontRightOuter, 0.0}, {JointName::FrontRightInner, 0.0}, 0.0
+         WheelsControllerName::FrontRight, RayName::FrontRight, WheelsControllerState::Global,
+         {WheelJointName::FrontRightOuter, 0.0}, {WheelJointName::FrontRightInner, 0.0}, 0.0
         },
         {
-         WheelPairName::BackLeft, RayName::BackLeft, WheelPairState::Global,
-         {JointName::BackLeftOuter, 0.0}, {JointName::BackLeftInner, 0.0}, 0.0
+         WheelsControllerName::BackLeft, RayName::BackLeft, WheelsControllerState::Global,
+         {WheelJointName::BackLeftOuter, 0.0}, {WheelJointName::BackLeftInner, 0.0}, 0.0
         },
         {
-         WheelPairName::BackUp, RayName::BackUp, WheelPairState::Global,
-         {JointName::BackUpOuter, 0.0}, {JointName::BackUpInner, 0.0}, 0.0
+         WheelsControllerName::BackUp, RayName::BackUp, WheelsControllerState::Global,
+         {WheelJointName::BackUpOuter, 0.0}, {WheelJointName::BackUpInner, 0.0}, 0.0
         },
         {
-         WheelPairName::BackRight, RayName::BackRight, WheelPairState::Global,
-         {JointName::BackRightOuter, 0.0}, {JointName::BackRightInner, 0.0}, 0.0
+         WheelsControllerName::BackRight, RayName::BackRight, WheelsControllerState::Global,
+         {WheelJointName::BackRightOuter, 0.0}, {WheelJointName::BackRightInner, 0.0}, 0.0
         }
     };
 
@@ -66,13 +66,13 @@ void RobotController::setPairsGroupingMode(int mode)
 
 void RobotController::setWheelPairState(int controller_name, int state)
 {
-    auto controller_enum = static_cast<WheelPairName::Name>(controller_name);
-    auto state_enum = static_cast<WheelPairState::State>(state);
+    auto controller_enum = static_cast<WheelsControllerName::Name>(controller_name);
+    auto state_enum = static_cast<WheelsControllerState::State>(state);
 
     for (auto& controller : controllers_) {
         if (controller.wheel_pair_name == controller_enum) {
-            bool wasGlobal = controller.state == WheelPairState::Global;
-            bool willBeGlobal = state_enum == WheelPairState::Global;
+            bool wasGlobal = controller.state == WheelsControllerState::Global;
+            bool willBeGlobal = state_enum == WheelsControllerState::Global;
 
             if (wasGlobal != willBeGlobal) {
                 global_controllers_count_ += willBeGlobal ? 1 : -1;
@@ -88,7 +88,7 @@ void RobotController::setWheelPairState(int controller_name, int state)
 void RobotController::updateActiveControllers()
 {
     for (auto& controller : controllers_) {
-        controller.state = WheelPairState::Local;
+        controller.state = WheelsControllerState::Local;
     }
 
     global_controllers_count_ = 0;
@@ -97,17 +97,17 @@ void RobotController::updateActiveControllers()
         switch (current_drive_mode_) {
             case DriveMode::AllWheelDrive:
                 for (auto& controller : controllers_) {
-                    controller.state = WheelPairState::Global;
+                    controller.state = WheelsControllerState::Global;
                 }
                 global_controllers_count_ = controllers_.size();
                 break;
 
             case DriveMode::FrontDrive:
                 for (auto& controller : controllers_) {
-                    if (controller.wheel_pair_name == WheelPairName::FrontLeft ||
-                        controller.wheel_pair_name == WheelPairName::FrontUp ||
-                        controller.wheel_pair_name == WheelPairName::FrontRight) {
-                        controller.state = WheelPairState::Global;
+                    if (controller.wheel_pair_name == WheelsControllerName::FrontLeft ||
+                        controller.wheel_pair_name == WheelsControllerName::FrontUp ||
+                        controller.wheel_pair_name == WheelsControllerName::FrontRight) {
+                        controller.state = WheelsControllerState::Global;
                         global_controllers_count_++;
                     }
                 }
@@ -115,10 +115,10 @@ void RobotController::updateActiveControllers()
 
             case DriveMode::RearDrive:
                 for (auto& controller : controllers_) {
-                    if (controller.wheel_pair_name == WheelPairName::BackLeft ||
-                        controller.wheel_pair_name == WheelPairName::BackUp ||
-                        controller.wheel_pair_name == WheelPairName::BackRight) {
-                        controller.state = WheelPairState::Global;
+                    if (controller.wheel_pair_name == WheelsControllerName::BackLeft ||
+                        controller.wheel_pair_name == WheelsControllerName::BackUp ||
+                        controller.wheel_pair_name == WheelsControllerName::BackRight) {
+                        controller.state = WheelsControllerState::Global;
                         global_controllers_count_++;
                     }
                 }
@@ -129,11 +129,11 @@ void RobotController::updateActiveControllers()
         switch (current_drive_mode_) {
             case DriveMode::AllWheelDrive:
                 for (auto& controller : controllers_) {
-                    if (controller.wheel_pair_name == WheelPairName::FrontLeft ||
-                        controller.wheel_pair_name == WheelPairName::FrontRight ||
-                        controller.wheel_pair_name == WheelPairName::BackLeft ||
-                        controller.wheel_pair_name == WheelPairName::BackRight) {
-                        controller.state = WheelPairState::Global;
+                    if (controller.wheel_pair_name == WheelsControllerName::FrontLeft ||
+                        controller.wheel_pair_name == WheelsControllerName::FrontRight ||
+                        controller.wheel_pair_name == WheelsControllerName::BackLeft ||
+                        controller.wheel_pair_name == WheelsControllerName::BackRight) {
+                        controller.state = WheelsControllerState::Global;
                         global_controllers_count_++;
                     }
                 }
@@ -141,9 +141,9 @@ void RobotController::updateActiveControllers()
 
             case DriveMode::FrontDrive:
                 for (auto& controller : controllers_) {
-                    if (controller.wheel_pair_name == WheelPairName::FrontLeft ||
-                        controller.wheel_pair_name == WheelPairName::FrontRight) {
-                        controller.state = WheelPairState::Global;
+                    if (controller.wheel_pair_name == WheelsControllerName::FrontLeft ||
+                        controller.wheel_pair_name == WheelsControllerName::FrontRight) {
+                        controller.state = WheelsControllerState::Global;
                         global_controllers_count_++;
                     }
                 }
@@ -151,9 +151,9 @@ void RobotController::updateActiveControllers()
 
             case DriveMode::RearDrive:
                 for (auto& controller : controllers_) {
-                    if (controller.wheel_pair_name == WheelPairName::BackLeft ||
-                        controller.wheel_pair_name == WheelPairName::BackRight) {
-                        controller.state = WheelPairState::Global;
+                    if (controller.wheel_pair_name == WheelsControllerName::BackLeft ||
+                        controller.wheel_pair_name == WheelsControllerName::BackRight) {
+                        controller.state = WheelsControllerState::Global;
                         global_controllers_count_++;
                     }
                 }
@@ -169,8 +169,8 @@ void RobotController::createROSInterfaces()
     pair_velocity_publishers_.clear();
 
     for (int i = 0; i < 6; ++i) {
-        auto controller_enum = static_cast<WheelPairName::Name>(i);
-        std::string controller_name = WheelPairName::toString(controller_enum);
+        auto controller_enum = static_cast<WheelsControllerName::Name>(i);
+        std::string controller_name = WheelsControllerName::toString(controller_enum);
 
         auto publisher = node_->create_publisher<std_msgs::msg::Float64MultiArray>(
             "/" + controller_name + "/commands", 100);
@@ -191,8 +191,8 @@ void RobotController::jointStateCallback(const sensor_msgs::msg::JointState::Sha
         const std::string& joint_name = msg->name[i];
         const double velocity = msg->velocity[i];
 
-        auto joint_enum = JointName::fromString(joint_name);
-        if (joint_enum != JointName::Unknown) {
+        auto joint_enum = WheelJointName::fromString(joint_name);
+        if (joint_enum != WheelJointName::Unknown) {
             for (auto& controller : controllers_) {
                 Joint* target_joint = nullptr;
 
@@ -273,7 +273,7 @@ void RobotController::publishGlobalSpeed(double speed)
     msg.data = {speed_in_radians, speed_in_radians};
 
     for (const auto& controller : controllers_) {
-        if (controller.state == WheelPairState::Global) {
+        if (controller.state == WheelsControllerState::Global) {
             if (pair_velocity_publishers_.find(controller.wheel_pair_name) != pair_velocity_publishers_.end()) {
                 publishSpeed(pair_velocity_publishers_[controller.wheel_pair_name], msg);
             }
@@ -283,14 +283,13 @@ void RobotController::publishGlobalSpeed(double speed)
 
 void RobotController::publishLocalSpeed(double speed, int controller_name)
 {
-
-    auto controller_enum = static_cast<WheelPairName::Name>(controller_name);
+    auto controller_enum = static_cast<WheelsControllerName::Name>(controller_name);
     std_msgs::msg::Float64MultiArray msg;
     double speed_in_radians = qDegreesToRadians(speed);
     msg.data = {speed_in_radians, speed_in_radians};
 
     for (auto& controller : controllers_) {
-        if (controller.wheel_pair_name == controller_enum && controller.state == WheelPairState::Local) {
+        if (controller.wheel_pair_name == controller_enum && controller.state == WheelsControllerState::Local) {
             if (pair_velocity_publishers_.find(controller.wheel_pair_name) != pair_velocity_publishers_.end()) {
                 publishSpeed(pair_velocity_publishers_[controller.wheel_pair_name], msg);
             }
@@ -301,12 +300,12 @@ void RobotController::publishLocalSpeed(double speed, int controller_name)
 
 void RobotController::publishIndependentSpeed(double speed, int controller_name, bool is_outer_joint)
 {
-    auto controller_enum = static_cast<WheelPairName::Name>(controller_name);
+    auto controller_enum = static_cast<WheelsControllerName::Name>(controller_name);
     std_msgs::msg::Float64MultiArray msg;
     double speed_in_radians = qDegreesToRadians(speed);
 
     for (auto& controller : controllers_) {
-        if (controller.wheel_pair_name == controller_enum && controller.state == WheelPairState::Independent) {
+        if (controller.wheel_pair_name == controller_enum && controller.state == WheelsControllerState::Independent) {
             double outer_speed = is_outer_joint ? speed_in_radians : controller.outer_joint.velocity;
             double inner_speed = is_outer_joint ? controller.inner_joint.velocity : speed_in_radians;
 
@@ -324,7 +323,7 @@ void RobotController::updateGlobalControllersCount()
 {
     global_controllers_count_ = 0;
     for (const auto& controller : controllers_) {
-        if (controller.state == WheelPairState::Global) {
+        if (controller.state == WheelsControllerState::Global) {
             global_controllers_count_++;
         }
     }

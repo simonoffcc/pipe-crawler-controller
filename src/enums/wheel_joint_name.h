@@ -1,10 +1,10 @@
-#ifndef JOINT_NAME_H
-#define JOINT_NAME_H
+#ifndef WHEEL_JOINT_NAME_H
+#define WHEEL_JOINT_NAME_H
 
 #include <QObject>
 #include <string>
 
-class JointName {
+class WheelJointName {
     Q_GADGET
 public:
     enum Name {
@@ -59,4 +59,4 @@ public:
     }
 };
 
-#endif // JOINT_NAME_H
+#endif // WHEEL_JOINT_NAME_H

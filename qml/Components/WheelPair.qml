@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtQuick.Controls.Basic
 
 import RobotController
-import wheelPairName
-import wheelPairState
-import jointName
+import wheelsControllerName
+import wheelsControllerState
+import wheelJointName
 import driveMode
 import pairsGroupingMode
 
@@ -18,9 +18,9 @@ Item {
     property bool isLocked: false
     property bool isSpeedPublishButtonOnLeft: false
 
-    property int wheelPairName: WheelPairName.Unknown
-    property int outerJointName: JointName.Unknown
-    property int innerJointName: JointName.Unknown
+    property int wheelPairName: WheelsControllerState.Unknown
+    property int outerJointName: WheelJointName.Unknown
+    property int innerJointName: WheelJointName.Unknown
 
     width: jointControlWidth
     height: jointControlWidth * 2.5
@@ -100,15 +100,15 @@ Item {
             let newState;
             if (root.state === "global") {
                 newState = "local";
-                RobotController.setWheelPairState(root.wheelPairName, WheelPairState.Local);
+                RobotController.setWheelPairState(root.wheelPairName, WheelsControllerState.Local);
             }
             else if (root.state === "local") {
                 newState = "independent";
-                RobotController.setWheelPairState(root.wheelPairName, WheelPairState.Independent);
+                RobotController.setWheelPairState(root.wheelPairName, WheelsControllerState.Independent);
             }
             else {
                 newState = "global";
-                RobotController.setWheelPairState(root.wheelPairName, WheelPairState.Global);
+                RobotController.setWheelPairState(root.wheelPairName, WheelsControllerState.Global);
             }
             outerJoint.clearSpeedInput();
             innerJoint.clearSpeedInput();

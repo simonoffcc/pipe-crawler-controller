@@ -1,9 +1,9 @@
-#ifndef WHEEL_PAIR_STATE_H
-#define WHEEL_PAIR_STATE_H
+#ifndef WHEELS_CONTROLLER_STATE_H
+#define WHEELS_CONTROLLER_STATE_H
 
 #include <QObject>
 
-class WheelPairState {
+class WheelsControllerState {
     Q_GADGET
 public:
     enum State {
@@ -14,4 +14,4 @@ public:
     Q_ENUM(State)
 };
 
-#endif // WHEEL_PAIR_STATE_H
+#endif // WHEELS_CONTROLLER_STATE_H

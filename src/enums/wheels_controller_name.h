@@ -1,10 +1,10 @@
-#ifndef WHEEL_PAIR_NAME_H
-#define WHEEL_PAIR_NAME_H
+#ifndef WHEELS_CONTROLLER_NAME_H
+#define WHEELS_CONTROLLER_NAME_H
 
 #include <QObject>
 #include <string>
 
-class WheelPairName {
+class WheelsControllerName {
     Q_GADGET
 public:
     enum Name {
@@ -41,4 +41,4 @@ public:
     }
 };
 
-#endif // WHEEL_PAIR_NAME_H
+#endif // WHEELS_CONTROLLER_NAME_H
