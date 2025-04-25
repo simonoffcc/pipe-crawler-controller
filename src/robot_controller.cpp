@@ -195,13 +195,25 @@ void RobotController::createROSInterfaces()
 
 void RobotController::jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg)
 {
+    if (!msg) return;
+    
     bool speeds_changed = false;
     bool positions_changed = false;
 
     for (size_t i = 0; i < msg->name.size(); i++) {
         const std::string& joint_name = msg->name[i];
-        const double velocity = msg->velocity[i];
-        const double position = msg->position[i];
+        
+        // Safely get velocity if available
+        double velocity = 0.0;
+        if (!msg->velocity.empty() && i < msg->velocity.size()) {
+            velocity = msg->velocity[i];
+        }
+        
+        // Safely get position if available
+        double position = 0.0;
+        if (!msg->position.empty() && i < msg->position.size()) {
+            position = msg->position[i];
+        }
 
         auto wheel_joint_enum = WheelJointName::fromString(joint_name);
         if (wheel_joint_enum != WheelJointName::Unknown) {
@@ -217,6 +229,7 @@ void RobotController::jointStateCallback(const sensor_msgs::msg::JointState::Sha
                 if (target_joint && std::abs(target_joint->velocity - velocity) > velocity_step) {
                     target_joint->velocity = velocity;
                     speeds_changed = true;
+                    break;
                 }
             }
         }
@@ -224,9 +237,13 @@ void RobotController::jointStateCallback(const sensor_msgs::msg::JointState::Sha
         auto ray_enum = RayName::fromJointString(joint_name);
         if (ray_enum != RayName::Unknown) {
             for (auto& controller : controllers_) {
-                if (controller.ray_name == ray_enum && std::abs(controller.ray_position - position) > velocity_step) {
+                // Validate position value
+                if (controller.ray_name == ray_enum && 
+                    position >= 0.0 && position <= 0.22 && 
+                    std::abs(controller.ray_position - position) > 0.001) {
                     controller.ray_position = position;
                     positions_changed = true;
+                    break;
                 }
             }
         }

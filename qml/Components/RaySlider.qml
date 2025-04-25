@@ -9,50 +9,57 @@ Item {
     id: root
 
     property int rayName: RayName.Unknown
+    property int rayPositionValue: 0
+    property alias currentSliderValue: raySlider.value
+
+    property bool pointerOnRight: true
+    property alias sliderVisible: raySlider.visible
+    readonly property double maxRayPositionValue: 220
+
     property int backgroundWidth: 100
     property int backgroundHeight: 125
     property int backgroundBorderWidth: 2
     property int commonRadius: 1
-    property bool pointerOnRight: true
-    property alias sliderVisible: raySlider.visible
-
-    property alias currentSliderValue: raySlider.value
-    property int rayPositionValue: 55 // потом будет проперти, которое будет отвечать за значение с телеметрии
-    readonly property double maxRayPositionValue: 220
 
     implicitWidth: rayIndicator.width
     implicitHeight: rayIndicator.height
 
     signal sliderValueChanged(real value)
 
-    Item {
+    ProgressBar {
         id: rayIndicator
 
-        implicitWidth: root.backgroundWidth
-        implicitHeight: root.backgroundHeight
-        anchors.left: root.pointerOnRight ? parent.left : undefined
-        anchors.right: !root.pointerOnRight ? parent.right : undefined
+        value: {
+            if (root.rayPositionValue < 0) return 0;
+            if (root.rayPositionValue > root.maxRayPositionValue) return root.maxRayPositionValue;
+            return root.rayPositionValue;
+        }
+        from: 0
+        to: root.maxRayPositionValue
+        padding: root.backgroundBorderWidth
 
-        Rectangle {
+        background: Rectangle {
             id: indicatorBackground
-
-            anchors.fill: parent
-            color: "#bdbebf"
+            implicitWidth: root.backgroundWidth
+            implicitHeight: root.backgroundHeight
             border.color: "#97999b"
             border.width: root.backgroundBorderWidth
+            color: "#bdbebf"
             radius: root.commonRadius
+        }
+
+        contentItem: Item {
+            id: indicatorInUse
+
+            rotation: 180
+            implicitWidth: root.backgroundWidth - (2 * root.backgroundBorderWidth)
+            implicitHeight: root.backgroundHeight - (2 * root.backgroundBorderWidth)
+            x: root.backgroundBorderWidth
+            y: root.backgroundBorderWidth
 
             Rectangle {
-                id: indicatorBackgroundNotUsed
-
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                    bottom: parent.bottom
-                    margins: root.backgroundBorderWidth
-                }
-
-                height: root.rayPositionValue / root.maxRayPositionValue * parent.height
+                width: parent.width
+                height: rayIndicator.visualPosition * parent.height
                 radius: root.commonRadius
                 color: "#008080"
             }
@@ -91,7 +98,7 @@ Item {
             height: root.backgroundHeight - (2 * root.backgroundBorderWidth)
             radius: root.commonRadius
             color: "#008080"
-            opacity: 0.6
+            opacity: 0.5
 
             Rectangle {
                 id: slideBackgroundNotUsed

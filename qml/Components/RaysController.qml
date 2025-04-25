@@ -41,7 +41,12 @@ Item {
         for (var i = 0; i < rayNames.length; i++) {
             for (var j = 0; j < controllers.length; j++) {
                 if (controllers[j].rayName === rayNames[i]) {
-                    newValues[i] = metersToMillimeters(controllers[j].rayPosition);
+                    let position = parseFloat(controllers[j].rayPosition);
+                    if (!isNaN(position) && position >= 0 && position <= 0.22) {
+                        newValues[i] = metersToMillimeters(position);
+                    } else {
+                        newValues[i] = 0;
+                    }
                 }
             }
         }
