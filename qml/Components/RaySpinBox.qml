@@ -16,6 +16,7 @@ Row {
     property alias currentSpinBoxValue: spinBox.value
 
     signal spinBoxValueChanged(real value)
+    signal publishButtonClicked()
 
     SpinBox {
         id: spinBox
@@ -140,7 +141,7 @@ Row {
         }
 
         onClicked: {
-            root.spinBoxValueChanged(spinBox.value)
+            root.publishButtonClicked();
         }
     }
 }

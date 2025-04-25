@@ -357,31 +357,31 @@ void RobotController::publishIndependentSpeed(double speed, int controller_name,
     }
 }
 
-// void RobotController::publishRayPosition(double position, int ray_name)
-// {
-//     auto ray_enum = static_cast<RayName::Name>(ray_name);
-//     std_msgs::msg::Float64MultiArray msg;
-//     msg.data = {position};
+void RobotController::publishRayPosition(double position, int ray_name)
+{
+    auto ray_enum = static_cast<RayName::Name>(ray_name);
+    std_msgs::msg::Float64MultiArray msg;
+    msg.data = {position};
 
-//     if (ray_position_publishers_.find(ray_enum) != ray_position_publishers_.end()) {
-//         auto publisher = ray_position_publishers_[ray_enum];
-//         std::string topic_name = publisher->get_topic_name();
+    if (ray_position_publishers_.find(ray_enum) != ray_position_publishers_.end()) {
+        auto publisher = ray_position_publishers_[ray_enum];
+        std::string topic_name = publisher->get_topic_name();
 
-//         if (publisher->get_subscription_count() > 0) {
-//             publisher->publish(msg);
-//             QString logMsg = QString("Publishing ray position %1 m to %2")
-//                             .arg(position, 0, 'f', 3)
-//                             .arg(QString::fromStdString(topic_name));
-//             addLogMessage(logMsg);
-//         }
-//         else {
-//             QString logMsg = QString("Failed publishing ray position %1 m to %2: There are no subscribers for this topic.")
-//                             .arg(position, 0, 'f', 3)
-//                             .arg(QString::fromStdString(topic_name));
-//             addLogMessage(logMsg);
-//         }
-//     }
-// }
+        if (publisher->get_subscription_count() > 0) {
+            publisher->publish(msg);
+            QString logMsg = QString("Publishing ray position %1 m to %2")
+                            .arg(position, 0, 'f', 3)
+                            .arg(QString::fromStdString(topic_name));
+            addLogMessage(logMsg);
+        }
+        else {
+            QString logMsg = QString("Failed publishing ray position %1 m to %2: There are no subscribers for this topic.")
+                            .arg(position, 0, 'f', 3)
+                            .arg(QString::fromStdString(topic_name));
+            addLogMessage(logMsg);
+        }
+    }
+}
 
 void RobotController::updateGlobalControllersCount()
 {

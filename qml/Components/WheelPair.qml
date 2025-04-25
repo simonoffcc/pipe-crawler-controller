@@ -182,7 +182,7 @@ Item {
 
         anchors.centerIn: parent
 
-        height: jointControlWidth / 2
+        height: jointControlWidth / 2.5
         width: elementStrokeWidth
     }
 

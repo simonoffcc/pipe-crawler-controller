@@ -67,7 +67,7 @@ public slots:
     void publishGlobalSpeed(double speed);
     void publishLocalSpeed(double speed, int controller_name);
     void publishIndependentSpeed(double speed, int controller_name, bool is_outer_joint);
-    // void publishRayPosition(double position, int ray_name);
+    void publishRayPosition(double position, int ray_name);
     void setWheelsControllerState(int controller_name, int state);
 
 signals:

@@ -19,40 +19,6 @@ Item {
     implicitWidth: 670
     implicitHeight: 450
 
-    Connections {
-        target: RobotController
-
-        function onControllersChanged() {
-            var controllers = RobotController.controllers;
-            root.updateTelemetryValues(controllers);
-        }
-    }
-
-    function metersToMillimeters(meters) {
-        return Math.round(meters * 1000);
-    }
-
-    function millimetersToMeters(mm) {
-        return mm / 1000.0;
-    }
-
-    function updateTelemetryValues(controllers) {
-        var newValues = rayTelemetryValues.slice();
-        for (var i = 0; i < rayNames.length; i++) {
-            for (var j = 0; j < controllers.length; j++) {
-                if (controllers[j].rayName === rayNames[i]) {
-                    let position = parseFloat(controllers[j].rayPosition);
-                    if (!isNaN(position) && position >= 0 && position <= 0.22) {
-                        newValues[i] = metersToMillimeters(position);
-                    } else {
-                        newValues[i] = 0;
-                    }
-                }
-            }
-        }
-        rayTelemetryValues = newValues;
-    }
-
     PathView {
         id: schemeLinesPositioning
 
@@ -109,7 +75,7 @@ Item {
             currentSliderValue: root.rayControlValues[index]
 
             onSliderValueChanged: function(value) {
-                updateRayValue(index, value);
+                syncControlsValues(index, value);
             }
         }
 
@@ -140,7 +106,13 @@ Item {
             currentSpinBoxValue: root.rayControlValues[index]
 
             onSpinBoxValueChanged: function(value) {
-                updateRayValue(index, value);
+                syncControlsValues(index, value);
+            }
+
+            onPublishButtonClicked: {
+                RobotController.publishRayPosition(
+                    millimetersToMeters(root.rayControlValues[index]), root.rayNames[index]
+                );
             }
         }
 
@@ -157,9 +129,47 @@ Item {
         }
     }
 
-    function updateRayValue(index, value) {
+    Connections {
+        target: RobotController
+
+        function onControllersChanged() {
+            var controllers = RobotController.controllers;
+            root.updateTelemetryValues(controllers);
+        }
+    }
+
+    function syncControlsValues(index, value) {
         var newValues = rayControlValues.slice();
         newValues[index] = value;
         rayControlValues = newValues;
+    }
+
+    function metersToMillimeters(meters) {
+        return Math.round(meters * 1000);
+    }
+
+    function millimetersToMeters(mm) {
+        return mm / 1000.0;
+    }
+
+    function updateTelemetryValues(controllers) {
+        var newValues = rayTelemetryValues.slice();
+        for (var i = 0; i < rayNames.length; i++) {
+            for (var j = 0; j < controllers.length; j++) {
+                if (controllers[j].rayName === rayNames[i]) {
+                    let position = parseFloat(controllers[j].rayPosition);
+                    if (!isNaN(position) && position >= 0 && position <= 0.22) {
+                        newValues[i] = metersToMillimeters(position);
+                    } else {
+                        newValues[i] = 0;
+                    }
+                }
+            }
+        }
+        rayTelemetryValues = newValues;
+    }
+
+    function onPublishButtonClicked() {
+        RobotController.publishRayPosition(millimetersToMeters(value), root.rayNames[index]);
     }
 }
