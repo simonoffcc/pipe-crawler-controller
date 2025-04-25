@@ -286,13 +286,13 @@ void RobotController::publishSpeed(rclcpp::Publisher<std_msgs::msg::Float64Multi
 
     if (publisher->get_subscription_count() > 0) {
         publisher->publish(msg);
-        QString logMsg = QString("Publishing speed %1 rad/s to %2")
+        QString logMsg = QString("Published speed %1 rad/s to %2")
                         .arg(msg.data.at(0), 0, 'f', 2)
                         .arg(QString::fromStdString(topic_name));
         addLogMessage(logMsg);
     }
     else {
-        QString logMsg = QString("Failed publishing speed %1 rad/s to %2: There are no subscribers for this topic.")
+        QString logMsg = QString("Failed to publish speed %1 rad/s to %2: There are no subscribers for this topic.")
                         .arg(msg.data.at(0), 0, 'f', 2)
                         .arg(QString::fromStdString(topic_name));
         addLogMessage(logMsg);
@@ -369,13 +369,13 @@ void RobotController::publishRayPosition(double position, int ray_name)
 
         if (publisher->get_subscription_count() > 0) {
             publisher->publish(msg);
-            QString logMsg = QString("Publishing ray position %1 m to %2")
+            QString logMsg = QString("Published ray position %1 m to %2")
                             .arg(position, 0, 'f', 3)
                             .arg(QString::fromStdString(topic_name));
             addLogMessage(logMsg);
         }
         else {
-            QString logMsg = QString("Failed publishing ray position %1 m to %2: There are no subscribers for this topic.")
+            QString logMsg = QString("Failed to publish ray position %1 m to %2: There are no subscribers for this topic.")
                             .arg(position, 0, 'f', 3)
                             .arg(QString::fromStdString(topic_name));
             addLogMessage(logMsg);
