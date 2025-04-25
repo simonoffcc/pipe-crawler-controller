@@ -100,16 +100,17 @@ private:
     };
 
     struct Controller {  ///< Структура для хранения информации колёсной пары и луча
-        WheelsControllerName::Name wheel_pair_name;
-        RayName::Name ray_name;
-        WheelsControllerState::State state;
-        Joint outer_joint;
-        Joint inner_joint;
-        double ray_position;  ///< Позиция луча в метрах
+        WheelsControllerName::Name wheel_pair_name; ///< Название колёсного контроллера
+        RayName::Name ray_name; ///< Название луча
+        WheelsControllerState::State state;         ///< Состояние колёсного контроллера
+        Joint outer_joint;      ///< Внешнее колесо
+        Joint inner_joint;      ///< Внутреннее колесо
+        double ray_position;    ///< Позиция луча в метрах
     };
 
     std::vector<Controller> controllers_;   ///< Массив контроллеров колесных пар
-    double velocity_step = 0.001;  ///< шаг для сравнения текущей и предыдущей скорости шарниров в радианах
+    double velocity_step = 0.001;           ///< Шаг для сравнения текущей и предыдущей скорости шарниров в радианах
+    double ray_position_step = 0.001;       ///< Шаг для сравнения текущей и предыдущей скорости шарниров в метрах
 
     QStringList log_messages_;
     static const int MAX_LOG_MESSAGES = 100;

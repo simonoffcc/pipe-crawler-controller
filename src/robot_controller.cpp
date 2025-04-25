@@ -203,13 +203,11 @@ void RobotController::jointStateCallback(const sensor_msgs::msg::JointState::Sha
     for (size_t i = 0; i < msg->name.size(); i++) {
         const std::string& joint_name = msg->name[i];
         
-        // Safely get velocity if available
         double velocity = 0.0;
         if (!msg->velocity.empty() && i < msg->velocity.size()) {
             velocity = msg->velocity[i];
         }
-        
-        // Safely get position if available
+
         double position = 0.0;
         if (!msg->position.empty() && i < msg->position.size()) {
             position = msg->position[i];
@@ -237,10 +235,9 @@ void RobotController::jointStateCallback(const sensor_msgs::msg::JointState::Sha
         auto ray_enum = RayName::fromJointString(joint_name);
         if (ray_enum != RayName::Unknown) {
             for (auto& controller : controllers_) {
-                // Validate position value
                 if (controller.ray_name == ray_enum && 
                     position >= 0.0 && position <= 0.22 && 
-                    std::abs(controller.ray_position - position) > 0.001) {
+                    std::abs(controller.ray_position - position) > ray_position_step) {
                     controller.ray_position = position;
                     positions_changed = true;
                     break;
