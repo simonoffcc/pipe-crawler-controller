@@ -18,29 +18,35 @@ RobotController::RobotController(std::shared_ptr<rclcpp::Node> node, QObject* pa
 
     controllers_ = {
         {
-         WheelsControllerName::FrontLeft, RayName::FrontLeft, WheelsControllerState::Global,
-         {WheelJointName::FrontLeftOuter, 0.0}, {WheelJointName::FrontLeftInner, 0.0}, 0.0
+            WheelsControllerName::FrontLeft, WheelsControllerState::Global,
+            {WheelJointName::FrontLeftOuter, 0.0, 0.0}, {WheelJointName::FrontLeftInner, 0.0, 0.0},
+            RayName::FrontLeft, 0.0, 0.0, 0.0
         },
         {
-         WheelsControllerName::FrontUp, RayName::FrontUp, WheelsControllerState::Global,
-         {WheelJointName::FrontUpOuter, 0.0}, {WheelJointName::FrontUpInner, 0.0}, 0.0
+            WheelsControllerName::FrontUp, WheelsControllerState::Global,
+            {WheelJointName::FrontUpOuter, 0.0, 0.0}, {WheelJointName::FrontUpInner, 0.0, 0.0},
+            RayName::FrontUp, 0.0, 0.0, 0.0
         },
         {
-         WheelsControllerName::FrontRight, RayName::FrontRight, WheelsControllerState::Global,
-         {WheelJointName::FrontRightOuter, 0.0}, {WheelJointName::FrontRightInner, 0.0}, 0.0
+            WheelsControllerName::FrontRight, WheelsControllerState::Global,
+            {WheelJointName::FrontRightOuter, 0.0, 0.0}, {WheelJointName::FrontRightInner, 0.0, 0.0},
+            RayName::FrontRight, 0.0, 0.0, 0.0
         },
         {
-         WheelsControllerName::BackLeft, RayName::BackLeft, WheelsControllerState::Global,
-         {WheelJointName::BackLeftOuter, 0.0}, {WheelJointName::BackLeftInner, 0.0}, 0.0
+            WheelsControllerName::BackLeft, WheelsControllerState::Global,
+            {WheelJointName::BackLeftOuter, 0.0, 0.0}, {WheelJointName::BackLeftInner, 0.0, 0.0},
+            RayName::BackLeft, 0.0, 0.0, 0.0
         },
         {
-         WheelsControllerName::BackUp, RayName::BackUp, WheelsControllerState::Global,
-         {WheelJointName::BackUpOuter, 0.0}, {WheelJointName::BackUpInner, 0.0}, 0.0
+            WheelsControllerName::BackUp, WheelsControllerState::Global,
+            {WheelJointName::BackUpOuter, 0.0, 0.0}, {WheelJointName::BackUpInner, 0.0, 0.0},
+            RayName::BackUp, 0.0, 0.0, 0.0
         },
         {
-         WheelsControllerName::BackRight, RayName::BackRight, WheelsControllerState::Global,
-         {WheelJointName::BackRightOuter, 0.0}, {WheelJointName::BackRightInner, 0.0}, 0.0
-        }
+            WheelsControllerName::BackRight, WheelsControllerState::Global,
+            {WheelJointName::BackRightOuter, 0.0, 0.0}, {WheelJointName::BackRightInner, 0.0, 0.0},
+            RayName::BackRight, 0.0, 0.0, 0.0
+        },
     };
 
     updateGlobalControllersCount();
