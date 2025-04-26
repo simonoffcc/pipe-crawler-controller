@@ -201,20 +201,21 @@ void RobotController::createROSInterfaces()
 
     joint_state_subscriber_ = node_->create_subscription<sensor_msgs::msg::JointState>(
         "/joint_states", 100,
-        std::bind(&RobotController::jointStateCallback, this, std::placeholders::_1)
+        std::bind(&RobotController::jointStatesCallback, this, std::placeholders::_1)
     );
 }
 
-void RobotController::jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg)
+void RobotController::jointStatesCallback(const sensor_msgs::msg::JointState::SharedPtr msg)
 {
     if (!msg) return;
-    
-    bool speeds_changed = false;
+
+    bool velocities_changed = false;
+    bool efforts_changed = false;
     bool positions_changed = false;
 
     for (size_t i = 0; i < msg->name.size(); i++) {
         const std::string& joint_name = msg->name[i];
-        
+
         double velocity = 0.0;
         if (!msg->velocity.empty() && i < msg->velocity.size()) {
             velocity = msg->velocity[i];
@@ -223,6 +224,11 @@ void RobotController::jointStateCallback(const sensor_msgs::msg::JointState::Sha
         double position = 0.0;
         if (!msg->position.empty() && i < msg->position.size()) {
             position = msg->position[i];
+        }
+
+        double effort = 0.0;
+        if (!msg->effort.empty() && i < msg->effort.size()) {
+            effort = msg->effort[i];
         }
 
         auto wheel_joint_enum = WheelJointName::fromString(joint_name);
@@ -238,7 +244,15 @@ void RobotController::jointStateCallback(const sensor_msgs::msg::JointState::Sha
 
                 if (target_wheel_joint && std::abs(target_wheel_joint->velocity - velocity) > velocity_step) {
                     target_wheel_joint->velocity = velocity;
-                    speeds_changed = true;
+                    velocities_changed = true;
+                }
+
+                if (target_wheel_joint && std::abs(target_wheel_joint->effort - effort) > effort_step) {
+                    target_wheel_joint->effort = effort;
+                    efforts_changed = true;
+                }
+
+                if (target_wheel_joint) {
                     break;
                 }
             }
@@ -247,18 +261,23 @@ void RobotController::jointStateCallback(const sensor_msgs::msg::JointState::Sha
         auto ray_enum = RayName::fromJointString(joint_name);
         if (ray_enum != RayName::Unknown) {
             for (auto& controller : controllers_) {
-                if (controller.ray_joint.name == ray_enum && 
-                    position >= 0.0 && position <= 0.22 && 
-                    std::abs(controller.ray_joint.position - position) > ray_position_step) {
-                    controller.ray_joint.position = position;
-                    positions_changed = true;
+                if (controller.ray_joint.name == ray_enum) {
+                    if (std::abs(controller.ray_joint.position - position) > ray_position_step) {
+                        controller.ray_joint.position = position;
+                        positions_changed = true;
+                    }
+
+                    if (std::abs(controller.ray_joint.velocity - velocity) > velocity_step) {
+                        controller.ray_joint.velocity = velocity;
+                        velocities_changed = true;
+                    }
                     break;
                 }
             }
         }
     }
 
-    if (speeds_changed || positions_changed) {
+    if (velocities_changed || positions_changed || efforts_changed) {
         emit controllersChanged();
     }
 }

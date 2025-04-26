@@ -85,7 +85,7 @@ private:
     rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr joint_state_subscriber_;
 
     void createROSInterfaces();
-    void jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg);
+    void jointStatesCallback(const sensor_msgs::msg::JointState::SharedPtr msg);
     void updateActiveControllers();
     void updateGlobalControllersCount();
     void publishSpeed(rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr, std_msgs::msg::Float64MultiArray msg);
@@ -111,6 +111,7 @@ private:
 
     std::vector<Controller> controllers_;   ///< Массив контроллеров колесных пар
     double velocity_step = 0.001;           ///< Шаг для сравнения текущей и предыдущей скорости шарниров в радианах
+    double effort_step = 0.1;
     double ray_position_step = 0.001;       ///< Шаг для сравнения текущей и предыдущей скорости шарниров в метрах
 
     QStringList log_messages_;

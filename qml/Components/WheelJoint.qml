@@ -3,14 +3,16 @@ import QtQuick.Controls
 import QtQuick.Controls.Basic
 
 import RobotController
+import wheelJointName
 import pairsGroupingMode
 import driveMode
 
 Rectangle {
     id: root
 
-    property int jointName
-    property alias telemetrySpeed: telemetryText.text
+    property int jointName: WheelJointName.Unknown
+    property alias telemetrySpeed: telemetrySpeed.text
+    property alias telemetryEffort: telemetryEffort.text
     property alias jointSpeed: speedInput.text
     property bool isPaired: false
     property var pairedJoint: null
@@ -20,8 +22,8 @@ Rectangle {
 
     state: "global"
 
-    width: 100
-    height: width
+    implicitWidth: 100
+    implicitHeight: implicitWidth
 
     radius: width / 2
     border.width: 4
@@ -32,34 +34,42 @@ Rectangle {
 
     Column {
         anchors.centerIn: parent
-        spacing: 5
+        spacing: 6
 
         Text {
-            id: telemetryText
+            id: telemetryEffort
 
-            text: qsTr("0.0°/sec")
-            font.pixelSize: 13
-
-            horizontalAlignment: Text.AlignHCenter
             anchors.horizontalCenter: parent.horizontalCenter
 
+            text: qsTr("0.0 H")
+            font.pixelSize: 12
             color: "black"
+            horizontalAlignment: Text.AlignHCenter
+        }
+
+        Text {
+            id: telemetrySpeed
+
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            text: qsTr("0.0°/sec")
+            font.pixelSize: 12
+            color: "black"
+            horizontalAlignment: Text.AlignHCenter
         }
 
         TextField {
             id: speedInput
             visible: root.isCustomMode && root.state !== "global"
 
+            width: root.width * 0.7
+            height: 25
+            anchors.horizontalCenter: parent.horizontalCenter
+
             color: "black"
             placeholderText: qsTr("dq: 1.0°/sec")
             placeholderTextColor: "gray"
             font.pixelSize: 11
-
-            width: root.width * 0.7
-            height: 25
-
-            verticalAlignment: TextInput.AlignVCenter
-            horizontalAlignment: TextInput.AlignHCenter
 
             validator: DoubleValidator {
                 notation: DoubleValidator.StandardNotation

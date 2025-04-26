@@ -14,7 +14,7 @@ import pairsGroupingMode
 Item {
     id: root
 
-    property int jointControlWidth: 110
+    property int jointControlWidth: 115
     property int elementStrokeWidth: 4
     property bool isFront: true
     property bool isLocked: false
@@ -29,7 +29,6 @@ Item {
 
     readonly property bool isCustomMode: RobotController.currentPairsGroupingMode === PairsGroupingMode.Custom &&
                                       RobotController.currentDriveMode === DriveMode.Custom
-    readonly property int outputPrecision: 2
 
     MouseArea {
         id: clickArea
@@ -178,8 +177,10 @@ Item {
                 if (controllers[i].name === root.wheelPairName) {
                     found = true;
                     root.state = ["global", "local", "independent"][controllers[i].state];
-                    outerJoint.telemetrySpeed = controllers[i].outerJoint.velocity.toFixed(outputPrecision) + "°/sec";
-                    innerJoint.telemetrySpeed = controllers[i].innerJoint.velocity.toFixed(outputPrecision) + "°/sec";
+                    outerJoint.telemetrySpeed = controllers[i].outerJoint.velocity.toFixed(2) + "°/sec";
+                    innerJoint.telemetrySpeed = controllers[i].innerJoint.velocity.toFixed(2) + "°/sec";
+                    outerJoint.telemetryEffort = controllers[i].outerJoint.effort.toFixed(1) + " H";
+                    innerJoint.telemetryEffort = controllers[i].innerJoint.effort.toFixed(1) + " H";
                     break;
                 }
             }
@@ -187,6 +188,8 @@ Item {
                 root.state = "independent";
                 outerJoint.telemetrySpeed = "0.0°/sec";
                 innerJoint.telemetrySpeed = "0.0°/sec";
+                outerJoint.telemetryEffort = "0.0 H";
+                innerJoint.telemetryEffort = "0.0 H";
             }
         }
 
@@ -212,8 +215,10 @@ Item {
         for (let i = 0; i < controllers.length; i++) {
             if (controllers[i].name === root.wheelPairName) {
                 root.state = ["global", "local", "independent"][controllers[i].state];
-                outerJoint.telemetrySpeed = controllers[i].outerJoint.velocity.toFixed(outputPrecision) + "°/sec";
-                innerJoint.telemetrySpeed = controllers[i].innerJoint.velocity.toFixed(outputPrecision) + "°/sec";
+                outerJoint.telemetrySpeed = controllers[i].outerJoint.velocity.toFixed(2) + "°/sec";
+                innerJoint.telemetrySpeed = controllers[i].innerJoint.velocity.toFixed(2) + "°/sec";
+                outerJoint.telemetryEffort = controllers[i].outerJoint.effort.toFixed(1) + " H";
+                innerJoint.telemetryEffort = controllers[i].innerJoint.effort.toFixed(1) + " H";
                 break;
             }
         }
