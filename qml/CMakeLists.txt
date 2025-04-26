@@ -1,4 +1,5 @@
 add_subdirectory(Components)
+add_subdirectory(Controllers)
 add_subdirectory(Diagrams)
 add_subdirectory(Panels)
 
@@ -9,8 +10,10 @@ qt_add_qml_module(main_module
         QML_FILES Main.qml
         OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/qml/MainModule"
 )
+
 target_link_libraries(main_module PUBLIC
     componentsplugin
+    controllersplugin
     diagramsplugin
     panelsplugin
 )

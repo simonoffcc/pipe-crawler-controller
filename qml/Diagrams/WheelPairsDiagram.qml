@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 
 import Components
+import Controllers
 
 import wheelsControllerName
 import wheelJointName
@@ -55,7 +56,7 @@ Item {
         }
     }
 
-    WheelPair {
+    WheelPairController {
         id: front_left
 
         wheelPairName: WheelsControllerName.FrontLeft
@@ -72,7 +73,7 @@ Item {
         }
     }
 
-    WheelPair {
+    WheelPairController {
         id: front_up
 
         wheelPairName: WheelsControllerName.FrontUp
@@ -88,7 +89,7 @@ Item {
         }
     }
 
-    WheelPair {
+    WheelPairController {
         id: front_right
 
         wheelPairName: WheelsControllerName.FrontRight
@@ -105,7 +106,7 @@ Item {
         }
     }
 
-    WheelPair {
+    WheelPairController {
         id: back_left
 
         wheelPairName: WheelsControllerName.BackLeft
@@ -122,7 +123,7 @@ Item {
         }
     }
 
-    WheelPair {
+    WheelPairController {
         id: back_up
 
         wheelPairName: WheelsControllerName.BackUp
@@ -139,7 +140,7 @@ Item {
         }
     }
 
-    WheelPair {
+    WheelPairController {
         id: back_right
 
         wheelPairName: WheelsControllerName.BackRight

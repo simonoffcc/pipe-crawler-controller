@@ -95,20 +95,18 @@ private:
     int global_controllers_count_ = 0;  ///< Количество контроллеров в глобальном режиме
 
     struct Joint {
-        WheelJointName::Name name;
+        int name;
+        double position;
         double velocity;
         double effort;
     };
 
-    struct Controller {  ///< Структура для хранения информации колёсной пары и луча
-        WheelsControllerName::Name wheel_pair_name; ///< Название колёсного контроллера
-        WheelsControllerState::State state;         ///< Состояние колёсного контроллера
-        Joint outer_joint;      ///< Внешнее колесо
-        Joint inner_joint;      ///< Внутреннее колесо
-        RayName::Name ray_name; ///< Название луча
-        double ray_position;    ///< Позиция луча в метрах
-        double ray_velocity;    ///< Скорость луча в метрах
-        double ray_effort;      ///< Усилия луча в ньютонах
+    struct Controller {
+        int wheels_controller_name;
+        int wheels_controller_state;
+        Joint outer_joint;
+        Joint inner_joint;
+        Joint ray_joint;
     };
 
     std::vector<Controller> controllers_;   ///< Массив контроллеров колесных пар

@@ -1,6 +1,8 @@
 import QtQuick
 import QtQuick.Shapes
 
+import Components
+
 import RobotController
 import rayName
 
@@ -156,12 +158,12 @@ Item {
         var newValues = rayTelemetryValues.slice();
         for (var i = 0; i < rayNames.length; i++) {
             for (var j = 0; j < controllers.length; j++) {
-                if (controllers[j].rayName === rayNames[i]) {
-                    let position = parseFloat(controllers[j].rayPosition);
+                if (controllers[j].rayJoint.name === rayNames[i]) {
+                    let position = parseFloat(controllers[j].rayJoint.position);
                     if (!isNaN(position) && position >= 0 && position <= 0.22) {
                         newValues[i] = metersToMillimeters(position);
                     } else {
-                        newValues[i] = 0;
+                        newValues[i] = -1;
                     }
                 }
             }

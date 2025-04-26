@@ -2,9 +2,10 @@ import QtQuick
 import QtQuick.Shapes
 import QtQuick.Layouts
 
-import Components
-import rayName
+import Controllers
+
 import RobotController
+import rayName
 
 Column {
     id: root

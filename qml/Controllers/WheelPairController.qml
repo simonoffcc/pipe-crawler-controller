@@ -2,6 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Basic
 
+import Components
+
 import RobotController
 import wheelsControllerName
 import wheelsControllerState
@@ -12,7 +14,7 @@ import pairsGroupingMode
 Item {
     id: root
 
-    property int jointControlWidth: 100
+    property int jointControlWidth: 110
     property int elementStrokeWidth: 4
     property bool isFront: true
     property bool isLocked: false
@@ -22,8 +24,8 @@ Item {
     property int outerJointName: WheelJointName.Unknown
     property int innerJointName: WheelJointName.Unknown
 
-    width: jointControlWidth
-    height: jointControlWidth * 2.5
+    implicitWidth: jointControlWidth
+    implicitHeight: jointControlWidth * 2.5
 
     readonly property bool isCustomMode: RobotController.currentPairsGroupingMode === PairsGroupingMode.Custom &&
                                       RobotController.currentDriveMode === DriveMode.Custom
@@ -92,19 +94,19 @@ Item {
         onClicked: root.publishOnButtonPressed(outerJoint.jointSpeed)
 
         Component.onCompleted: {
-            anchors.leftMargin = jointControlWidth / 8
-            anchors.rightMargin = jointControlWidth / 8
+            anchors.leftMargin = root.jointControlWidth / 8
+            anchors.rightMargin = root.jointControlWidth / 8
             anchors.verticalCenter = connectionLine.verticalCenter
             speedPublishButtonOnLeft ? anchors.right = connectionLine.left : anchors.left = connectionLine.right
         }
     }
 
-    JointControl {
+    WheelJoint {
         id: outerJoint
 
-        width: jointControlWidth
+        width: root.jointControlWidth
         height: width
-        border.width: elementStrokeWidth
+        border.width: root.elementStrokeWidth
         jointName: root.outerJointName
         isPaired: true
         pairedJoint: innerJoint
@@ -123,16 +125,16 @@ Item {
 
         anchors.centerIn: parent
 
-        height: jointControlWidth / 2.5
-        width: elementStrokeWidth
+        height: root.jointControlWidth / 2.5
+        width: root.elementStrokeWidth
     }
 
-    JointControl {
+    WheelJoint {
         id: innerJoint
 
-        width: jointControlWidth
+        width: root.jointControlWidth
         height: width
-        border.width: elementStrokeWidth
+        border.width: root.elementStrokeWidth
         jointName: root.innerJointName
         isPaired: true
         pairedJoint: outerJoint
