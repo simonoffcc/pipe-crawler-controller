@@ -7,8 +7,8 @@ import RobotController
 Rectangle {
     id: root
 
-    width: 130
-    height: 130
+    implicitWidth: 130
+    implicitHeight: 130
 
     radius: 15
     border.color: "gray"

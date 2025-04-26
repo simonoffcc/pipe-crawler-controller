@@ -30,9 +30,9 @@ Rectangle {
 
     MouseArea {
         enabled: false
+        visible: false
 
         anchors.fill: parent
-        propagateComposedEvents: true
 
         onClicked: {
             if (root.state === "global") {

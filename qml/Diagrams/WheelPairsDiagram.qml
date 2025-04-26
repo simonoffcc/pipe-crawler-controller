@@ -12,6 +12,10 @@ Item {
     implicitWidth: 430
     implicitHeight: 910
 
+    property int schemeBodyWidth: 150
+    property int schemeBodyHeight: schemeBodyWidth
+    property int schemeLinesWidth: 390
+    property int schemeLinesHeight: 250
     property bool isLocked: false
 
     SchemeBody {
@@ -19,8 +23,8 @@ Item {
 
         anchors.centerIn: parent
 
-        width: 130
-        height: 130
+        implicitWidth: schemeBodyWidth
+        implicitHeight: schemeBodyHeight
     }
 
     SchemeLines {
@@ -28,13 +32,13 @@ Item {
         title: "Front"
         isStraightUp: true
 
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-            bottom: schemeBody.top
-        }
+        width: schemeLinesWidth
+        height: schemeLinesHeight
 
-        width: schemeBody.width * 3
-        height: schemeBody.height * 2
+        Component.onCompleted: {
+            anchors.horizontalCenter = parent.horizontalCenter
+            anchors.bottom = schemeBody.top
+        }
     }
 
     SchemeLines {
@@ -42,29 +46,29 @@ Item {
         title: "Back"
         isStraightUp: false
 
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-            top: schemeBody.bottom
-        }
+        width: schemeLinesWidth
+        height: schemeLinesHeight
 
-        width: schemeBody.width * 3
-        height: schemeBody.height * 2
+        Component.onCompleted: {
+            anchors.horizontalCenter = parent.horizontalCenter
+            anchors.top = schemeBody.bottom
+        }
     }
 
     WheelPair {
         id: front_left
 
         wheelPairName: WheelsControllerName.FrontLeft
-        isFront: true
-        isSpeedPublishButtonOnLeft: false
         outerJointName: WheelJointName.FrontLeftOuter
         innerJointName: WheelJointName.FrontLeftInner
+        speedPublishButtonOnLeft: false
         isLocked: root.isLocked
+        isFront: true
 
-        anchors {
-            horizontalCenter: schemeLinesFront.left
-            verticalCenter: schemeLinesFront.verticalCenter
-            verticalCenterOffset: schemeLinesFront.height / 6
+        Component.onCompleted: {
+            anchors.horizontalCenter = schemeLinesFront.left
+            anchors.verticalCenter = schemeLinesFront.verticalCenter
+            anchors.verticalCenterOffset = schemeLinesFront.height / 6
         }
     }
 
@@ -72,15 +76,15 @@ Item {
         id: front_up
 
         wheelPairName: WheelsControllerName.FrontUp
-        isFront: true
-        isSpeedPublishButtonOnLeft: true
         outerJointName: WheelJointName.FrontUpOuter
         innerJointName: WheelJointName.FrontUpInner
+        speedPublishButtonOnLeft: true
         isLocked: root.isLocked
+        isFront: true
 
-        anchors {
-            horizontalCenter: schemeLinesFront.horizontalCenter
-            verticalCenter: schemeLinesFront.top
+        Component.onCompleted: {
+            anchors.horizontalCenter = schemeLinesFront.horizontalCenter
+            anchors.verticalCenter = schemeLinesFront.top
         }
     }
 
@@ -88,16 +92,16 @@ Item {
         id: front_right
 
         wheelPairName: WheelsControllerName.FrontRight
-        isFront: true
-        isSpeedPublishButtonOnLeft: true
         outerJointName: WheelJointName.FrontRightOuter
         innerJointName: WheelJointName.FrontRightInner
+        speedPublishButtonOnLeft: true
         isLocked: root.isLocked
+        isFront: true
 
-        anchors {
-            horizontalCenter: schemeLinesFront.right
-            verticalCenter: schemeLinesFront.verticalCenter
-            verticalCenterOffset: schemeLinesFront.height / 6
+        Component.onCompleted: {
+            anchors.horizontalCenter = schemeLinesFront.right
+            anchors.verticalCenter = schemeLinesFront.verticalCenter
+            anchors.verticalCenterOffset = schemeLinesFront.height / 6
         }
     }
 
@@ -105,16 +109,16 @@ Item {
         id: back_left
 
         wheelPairName: WheelsControllerName.BackLeft
-        isFront: false
-        isSpeedPublishButtonOnLeft: false
         outerJointName: WheelJointName.BackLeftOuter
         innerJointName: WheelJointName.BackLeftInner
+        speedPublishButtonOnLeft: false
         isLocked: root.isLocked
+        isFront: false
 
-        anchors {
-            horizontalCenter: schemeLinesBack.left
-            verticalCenter: schemeLinesBack.verticalCenter
-            verticalCenterOffset: schemeLinesBack.height / -6
+        Component.onCompleted: {
+            anchors.horizontalCenter = schemeLinesBack.left
+            anchors.verticalCenter = schemeLinesBack.verticalCenter
+            anchors.verticalCenterOffset = schemeLinesBack.height / -6
         }
     }
 
@@ -122,15 +126,16 @@ Item {
         id: back_up
 
         wheelPairName: WheelsControllerName.BackUp
-        isFront: false
-        isSpeedPublishButtonOnLeft: false
         outerJointName: WheelJointName.BackUpOuter
         innerJointName: WheelJointName.BackUpInner
+        speedPublishButtonOnLeft: false
         isLocked: root.isLocked
+        isFront: false
 
-        anchors {
-            horizontalCenter: schemeLinesBack.horizontalCenter
-            verticalCenter: schemeLinesBack.bottom
+
+        Component.onCompleted: {
+            anchors.horizontalCenter = schemeLinesBack.horizontalCenter
+            anchors.verticalCenter = schemeLinesBack.bottom
         }
     }
 
@@ -138,16 +143,17 @@ Item {
         id: back_right
 
         wheelPairName: WheelsControllerName.BackRight
-        isFront: false
-        isSpeedPublishButtonOnLeft: true       
         outerJointName: WheelJointName.BackRightOuter
         innerJointName: WheelJointName.BackRightInner
+        speedPublishButtonOnLeft: true
         isLocked: root.isLocked
+        isFront: false
 
-        anchors {
-            horizontalCenter: schemeLinesBack.right
-            verticalCenter: schemeLinesBack.verticalCenter
-            verticalCenterOffset: schemeLinesBack.height / -6
+        Component.onCompleted: {
+            anchors.horizontalCenter = schemeLinesBack.right
+            anchors.verticalCenter = schemeLinesBack.verticalCenter
+            anchors.verticalCenterOffset = schemeLinesBack.height / -6
         }
     }
 }
+

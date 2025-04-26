@@ -16,7 +16,7 @@ Item {
     property int elementStrokeWidth: 4
     property bool isFront: true
     property bool isLocked: false
-    property bool isSpeedPublishButtonOnLeft: false
+    property bool speedPublishButtonOnLeft: false
 
     property int wheelPairName: WheelsControllerName.Unknown
     property int outerJointName: WheelJointName.Unknown
@@ -28,65 +28,6 @@ Item {
     readonly property bool isCustomMode: RobotController.currentPairsGroupingMode === PairsGroupingMode.Custom &&
                                       RobotController.currentDriveMode === DriveMode.Custom
     readonly property int outputPrecision: 2
-
-    function publishOnSpeedSubmitted(speed, isOuter) {
-        if (root.state === "independent") {
-            RobotController.publishIndependentSpeed(parseFloat(speed), root.wheelPairName, isOuter);
-            if (isOuter) { outerJoint.clearSpeedInput(); } else { innerJoint.clearSpeedInput(); }
-        }
-        else if (root.state === "local") {
-            RobotController.publishLocalSpeed(parseFloat(speed), root.wheelPairName);
-            outerJoint.clearSpeedInput();
-            innerJoint.clearSpeedInput();
-        }
-    }
-
-    function publishOnButtonPressed(speed) {
-        if (root.state === "local" && speed !== "") {
-            RobotController.publishLocalSpeed(parseFloat(speed), root.wheelPairName);
-            outerJoint.clearSpeedInput();
-            innerJoint.clearSpeedInput();
-        }
-    }
-
-    Connections {
-        target: RobotController
-
-        function onControllersChanged() {
-            let found = false;
-            let controllers = RobotController.controllers;
-            for (let i = 0; i < controllers.length; i++) {
-                if (controllers[i].name === root.wheelPairName) {
-                    found = true;
-                    root.state = ["global", "local", "independent"][controllers[i].state];
-                    outerJoint.telemetrySpeed = controllers[i].outerJoint.velocity.toFixed(outputPrecision) + "°/sec";
-                    innerJoint.telemetrySpeed = controllers[i].innerJoint.velocity.toFixed(outputPrecision) + "°/sec";
-                    break;
-                }
-            }
-            if (!found) {
-                root.state = "independent";
-                outerJoint.telemetrySpeed = "0.0°/sec";
-                innerJoint.telemetrySpeed = "0.0°/sec";
-            }
-        }
-
-        function onDriveModeChanged() {
-            if (!isCustomMode) {
-                root.state = "global";
-            }
-            outerJoint.clearSpeedInput();
-            innerJoint.clearSpeedInput();
-        }
-
-        function onPairsGroupingModeChanged() {
-            if (!isCustomMode) {
-                root.state = "global";
-            }
-            outerJoint.clearSpeedInput();
-            innerJoint.clearSpeedInput();
-        }
-    }
 
     MouseArea {
         id: clickArea
@@ -154,7 +95,7 @@ Item {
             anchors.leftMargin = jointControlWidth / 8
             anchors.rightMargin = jointControlWidth / 8
             anchors.verticalCenter = connectionLine.verticalCenter
-            isSpeedPublishButtonOnLeft ? anchors.right = connectionLine.left : anchors.left = connectionLine.right
+            speedPublishButtonOnLeft ? anchors.right = connectionLine.left : anchors.left = connectionLine.right
         }
     }
 
@@ -202,6 +143,65 @@ Item {
         Component.onCompleted: {
             anchors.horizontalCenter = parent.horizontalCenter
             !isFront ? anchors.bottom = connectionLine.top : anchors.top = connectionLine.bottom
+        }
+    }
+
+    function publishOnSpeedSubmitted(speed, isOuter) {
+        if (root.state === "independent") {
+            RobotController.publishIndependentSpeed(parseFloat(speed), root.wheelPairName, isOuter);
+            if (isOuter) { outerJoint.clearSpeedInput(); } else { innerJoint.clearSpeedInput(); }
+        }
+        else if (root.state === "local") {
+            RobotController.publishLocalSpeed(parseFloat(speed), root.wheelPairName);
+            outerJoint.clearSpeedInput();
+            innerJoint.clearSpeedInput();
+        }
+    }
+
+    function publishOnButtonPressed(speed) {
+        if (root.state === "local" && speed !== "") {
+            RobotController.publishLocalSpeed(parseFloat(speed), root.wheelPairName);
+            outerJoint.clearSpeedInput();
+            innerJoint.clearSpeedInput();
+        }
+    }
+
+    Connections {
+        target: RobotController
+
+        function onControllersChanged() {
+            let found = false;
+            let controllers = RobotController.controllers;
+            for (let i = 0; i < controllers.length; i++) {
+                if (controllers[i].name === root.wheelPairName) {
+                    found = true;
+                    root.state = ["global", "local", "independent"][controllers[i].state];
+                    outerJoint.telemetrySpeed = controllers[i].outerJoint.velocity.toFixed(outputPrecision) + "°/sec";
+                    innerJoint.telemetrySpeed = controllers[i].innerJoint.velocity.toFixed(outputPrecision) + "°/sec";
+                    break;
+                }
+            }
+            if (!found) {
+                root.state = "independent";
+                outerJoint.telemetrySpeed = "0.0°/sec";
+                innerJoint.telemetrySpeed = "0.0°/sec";
+            }
+        }
+
+        function onDriveModeChanged() {
+            if (!isCustomMode) {
+                root.state = "global";
+            }
+            outerJoint.clearSpeedInput();
+            innerJoint.clearSpeedInput();
+        }
+
+        function onPairsGroupingModeChanged() {
+            if (!isCustomMode) {
+                root.state = "global";
+            }
+            outerJoint.clearSpeedInput();
+            innerJoint.clearSpeedInput();
         }
     }
 

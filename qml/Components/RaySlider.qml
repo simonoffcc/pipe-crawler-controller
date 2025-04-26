@@ -116,7 +116,6 @@ Item {
             y: root.backgroundBorderWidth - raySlider.bottomPadding + raySlider.visualPosition * (root.backgroundHeight - 2 * root.backgroundBorderWidth)
             width: pointer.width + root.backgroundWidth
             height: pointer.height
-
             color: "transparent"
 
             Shape {

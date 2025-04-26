@@ -30,31 +30,6 @@ Rectangle {
     readonly property bool isCustomMode: RobotController.currentPairsGroupingMode === PairsGroupingMode.Custom &&
                                       RobotController.currentDriveMode === DriveMode.Custom
 
-    function clearSpeedInput() {
-        speedInput.text = "";
-    }
-
-    function syncSpeedWithPaired(speed) {
-        if (isPaired && pairedJoint && root.state === "local" && root.isCustomMode) {
-            pairedJoint.jointSpeed = speed;
-        }
-    }
-
-    MouseArea {
-        enabled: false
-
-        cursorShape: (root.isCustomMode && !root.isLocked) ? Qt.PointingHandCursor : Qt.ArrowCursor
-
-        anchors.fill: parent
-        propagateComposedEvents: true
-
-        onClicked: {
-            if (root.state === "global") { root.state = "local"; }
-            else if (root.state === "local") { root.state = "independent"; }
-            else { root.state = "global"; }
-        }
-    }
-
     Column {
         anchors.centerIn: parent
         spacing: 5
@@ -122,6 +97,30 @@ Rectangle {
                     root.speedSubmitted(text);
                 }
             }
+        }
+    }
+
+    MouseArea {
+        enabled: false
+        visible: false
+
+        anchors.fill: parent
+
+        onClicked: {
+            if (root.state === "global") { root.state = "local"; }
+            else if (root.state === "local") { root.state = "independent"; }
+            else { root.state = "global"; }
+        }
+    }
+
+
+    function clearSpeedInput() {
+        speedInput.text = "";
+    }
+
+    function syncSpeedWithPaired(speed) {
+        if (isPaired && pairedJoint && root.state === "local" && root.isCustomMode) {
+            pairedJoint.jointSpeed = speed;
         }
     }
 
