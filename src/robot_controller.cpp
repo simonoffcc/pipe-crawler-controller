@@ -3,8 +3,6 @@
 RobotController::RobotController(std::shared_ptr<rclcpp::Node> node, QObject* parent)
     : QObject(parent)
     , node_(node)
-    , current_pairs_grouping_mode_(PairsGroupingMode::AllPairs)
-    , current_drive_mode_(DriveMode::AllWheelDrive)
 {
     qmlRegisterUncreatableType<PairsGroupingMode>("pairsGroupingMode", 1, 0, "PairsGroupingMode", "Not creatable as it is an enum type.");
     qmlRegisterUncreatableType<DriveMode>("driveMode", 1, 0, "DriveMode", "Not creatable as it is an enum type.");
@@ -55,7 +53,8 @@ RobotController::RobotController(std::shared_ptr<rclcpp::Node> node, QObject* pa
         },
     };
 
-    updateGlobalControllersCount();
+    setPairsGroupingMode(PairsGroupingMode::AllPairs);
+    setDriveMode(DriveMode::FullDrive);
 }
 
 void RobotController::setDriveMode(int mode)
@@ -107,7 +106,7 @@ void RobotController::updateActiveControllers()
 
     if (current_pairs_grouping_mode_ == PairsGroupingMode::AllPairs) {
         switch (current_drive_mode_) {
-            case DriveMode::AllWheelDrive:
+            case DriveMode::FullDrive:
                 for (auto& controller : controllers_) {
                     controller.wheels_controller_state = WheelsControllerState::Global;
                 }
@@ -137,9 +136,9 @@ void RobotController::updateActiveControllers()
                 break;
         }
     }
-    else if (current_pairs_grouping_mode_ == PairsGroupingMode::LeftRight) {
+    else if (current_pairs_grouping_mode_ == PairsGroupingMode::LeftRightPairs) {
         switch (current_drive_mode_) {
-            case DriveMode::AllWheelDrive:
+            case DriveMode::FullDrive:
                 for (auto& controller : controllers_) {
                     if (controller.wheels_controller_name == WheelsControllerName::FrontLeft ||
                         controller.wheels_controller_name == WheelsControllerName::FrontRight ||

@@ -9,7 +9,7 @@ class PairsGroupingMode {
 public:
     enum Mode {
         Custom = 0,      ///< Кастомный пресет (все другие способы управления состояниями колёсных пар)
-        LeftRight = 1,   ///< Левые и правые пары (4 пары)
+        LeftRightPairs = 1,   ///< Левые и правые пары (4 пары)
         AllPairs = 2     ///< Все пары (6 пар)
     };
     Q_ENUM(Mode)

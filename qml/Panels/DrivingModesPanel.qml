@@ -10,7 +10,7 @@ Rectangle {
     id: root
     color: "lightgray"
     implicitHeight: contentLayout.implicitHeight + contentLayout.spacing + contentLayout.anchors.bottomMargin
-    
+
     readonly property bool isCustomMode: RobotController.currentPairsGroupingMode === PairsGroupingMode.Custom &&
                                       RobotController.currentDriveMode === DriveMode.Custom
 
@@ -30,43 +30,43 @@ Rectangle {
             color: "black"
             text: qsTr("Pair Grouping/Driving modes")
         }
-        
+
         ComboBox {
-            id: pairGroupingModes
+            id: pairsGroupingMode
             Layout.fillWidth: true
             Layout.preferredHeight: 32
-            
+
             implicitContentWidthPolicy: ComboBox.WidestText
-            currentIndex: 1
+            currentIndex: RobotController.currentPairsGroupingMode
             displayText: "Grouping: " + currentText
             textRole: "text"
             valueRole: "value"
             model: [
                 { value: PairsGroupingMode.Custom, text: qsTr("Custom") },
-                { value: PairsGroupingMode.AllPairs, text: qsTr("All cross pairs") },
-                { value: PairsGroupingMode.LeftRight, text: qsTr("Left-Right wheel pairs") }
+                { value: PairsGroupingMode.LeftRightPairs, text: qsTr("Left-Right wheel pairs") },
+                { value: PairsGroupingMode.AllPairs, text: qsTr("All cross pairs") }
             ]
 
             onActivated: {
                 if (currentValue === PairsGroupingMode.Custom) {
-                    driveModes.currentIndex = 0;
+                    driveMode.currentIndex = findIndexByValue(driveMode, DriveMode.Custom);
                     RobotController.setDriveMode(DriveMode.Custom);
                 }
-                else if (driveModes.currentValue === DriveMode.Custom) {
-                    driveModes.currentIndex = 3;
-                    RobotController.setDriveMode(DriveMode.AllWheelDrive);
+                else if (driveMode.currentValue === DriveMode.Custom) {
+                    driveMode.currentIndex = findIndexByValue(driveMode, DriveMode.FullDrive);
+                    RobotController.setDriveMode(DriveMode.FullDrive);
                 }
                 RobotController.setPairsGroupingMode(currentValue);
             }
         }
-        
+
         ComboBox {
-            id: driveModes
+            id: driveMode
             Layout.fillWidth: true
             Layout.preferredHeight: 32
-            
+
             implicitContentWidthPolicy: ComboBox.WidestText
-            currentIndex: 3
+            currentIndex: findIndexByValue(driveMode, RobotController.currentDriveMode)
             displayText: "Drive mode: " + currentText
             textRole: "text"
             valueRole: "value"
@@ -74,16 +74,16 @@ Rectangle {
                 { value: DriveMode.Custom, text: qsTr("Custom") },
                 { value: DriveMode.FrontDrive, text: qsTr("Front-drive") },
                 { value: DriveMode.RearDrive, text: qsTr("Rear-drive") },
-                { value: DriveMode.AllWheelDrive, text: qsTr("Full-drive") }
+                { value: DriveMode.FullDrive, text: qsTr("Full-drive") }
             ]
 
             onActivated: {
                 if (currentValue === DriveMode.Custom) {
-                    pairGroupingModes.currentIndex = 0;
+                    pairsGroupingMode.currentIndex = findIndexByValue(pairsGroupingMode, PairsGroupingMode.Custom);
                     RobotController.setPairsGroupingMode(PairsGroupingMode.Custom);
                 }
-                else if (pairGroupingModes.currentValue === PairsGroupingMode.Custom) {
-                    pairGroupingModes.currentIndex = 1;
+                else if (pairsGroupingMode.currentValue === PairsGroupingMode.Custom) {
+                    pairsGroupingMode.currentIndex = findIndexByValue(pairsGroupingMode, PairsGroupingMode.AllPairs);
                     RobotController.setPairsGroupingMode(PairsGroupingMode.AllPairs);
                 }
                 RobotController.setDriveMode(currentValue);
@@ -116,4 +116,14 @@ Rectangle {
             }
         }
     }
+
+    function findIndexByValue(comboBox, value) {
+        for (let i = 0; i < comboBox.model.length; i++) {
+            if (comboBox.model[i].value === value) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
 }
