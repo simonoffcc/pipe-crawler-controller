@@ -14,10 +14,7 @@ ApplicationWindow {
     visibility: Window.Maximized
     title: qsTr("Pipe Crawler Controller")
 
-    minimumWidth: 1400
-    minimumHeight: 950
-
-    property bool isLandscape: Screen.desktopAvailableWidth > Screen.desktopAvailableHeight
+    property bool isLandscape: mainLayout.width > mainLayout.height
 
     GridLayout {
         id: mainLayout
@@ -29,6 +26,8 @@ ApplicationWindow {
         Rectangle {
             id: wheelPairsBackground
 
+            Layout.row: 0
+            Layout.column: 0
             Layout.preferredWidth: wheelPairsDiagram.width + 10
             Layout.minimumWidth: wheelPairsDiagram.width
             Layout.fillWidth: true
@@ -56,6 +55,8 @@ ApplicationWindow {
         Rectangle {
             id: raysBackground
 
+            Layout.row: root.isLandscape ? 0 : 1
+            Layout.column: root.isLandscape ? 1 : 0
             Layout.preferredWidth: raysDiagram.width + 10
             Layout.minimumWidth: raysDiagram.width
             Layout.fillWidth: true
@@ -83,6 +84,8 @@ ApplicationWindow {
         ColumnLayout {
             id: controlPanel
 
+            Layout.row: 0
+            Layout.column: root.isLandscape ? 2 : 1
             Layout.rowSpan: isLandscape ? 1 : 2
             Layout.preferredWidth: 350
             Layout.minimumWidth: 350
