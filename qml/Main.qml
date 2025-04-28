@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Window
 import QtQuick.Layouts
 import QtQuick.Controls
 
@@ -13,12 +14,17 @@ ApplicationWindow {
     visibility: Window.Maximized
     title: qsTr("Pipe Crawler Controller")
 
-    RowLayout {
+    minimumWidth: 1400
+    minimumHeight: 950
+
+    property bool isLandscape: Screen.desktopAvailableWidth > Screen.desktopAvailableHeight
+
+    GridLayout {
         id: mainLayout
 
         anchors.fill: parent
-        anchors.margins: 0
-        spacing: 4
+        columns: isLandscape ? 3 : 2
+        rows: isLandscape ? 1 : 2
 
         Rectangle {
             id: wheelPairsBackground
@@ -72,12 +78,12 @@ ApplicationWindow {
                 anchors.centerIn: parent
                 controlsVisible: raysControlPanel.controlsVisible
             }
-
         }
 
         ColumnLayout {
             id: controlPanel
 
+            Layout.rowSpan: isLandscape ? 1 : 2
             Layout.preferredWidth: 350
             Layout.minimumWidth: 350
             Layout.maximumWidth: 350
@@ -87,8 +93,8 @@ ApplicationWindow {
             DrivingModesPanel {
                 id: drivingModesPanel
 
-                Layout.minimumHeight: height
-                Layout.preferredHeight: height
+                Layout.minimumHeight: implicitHeight
+                Layout.preferredHeight: implicitHeight
                 Layout.fillWidth: true
             }
 
@@ -107,6 +113,15 @@ ApplicationWindow {
                 Layout.fillHeight: true
             }
         }
+    }
+
+    background: Rectangle {
+        color: "white"
+    }
+
+    Shortcut {
+        sequences: ["Ctrl+Q"]
+        onActivated: Qt.quit()
     }
 
     menuBar: MenuBar {
