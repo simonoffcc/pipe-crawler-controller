@@ -13,7 +13,7 @@ Rectangle {
     property int jointName: WheelJointName.Unknown
     property double telemetrySpeedValue: 0.0
     property double telemetryEffortValue: 0.0
-    property alias jointSpeed: speedInput.text
+    property alias jointSpeedInput: speedInput.text
     property bool isPaired: false
     property var pairedJoint: null
     property bool isLocked: false
@@ -70,6 +70,7 @@ Rectangle {
             placeholderText: qsTr("dq: 1.0°/sec")
             placeholderTextColor: "gray"
             font.pixelSize: 13
+            horizontalAlignment: Text.AlignHCenter
 
             validator: DoubleValidator {
                 notation: DoubleValidator.StandardNotation
@@ -94,19 +95,16 @@ Rectangle {
                 }
             }
 
-            Keys.onReturnPressed: {
+            function emitInputText() {
                 if (text !== "") {
                     speedInput.focus = false;
                     root.speedSubmitted(text);
                 }
             }
 
-            Keys.onEnterPressed: {
-                if (text !== "") {
-                    speedInput.focus = false;
-                    root.speedSubmitted(text);
-                }
-            }
+            Keys.onReturnPressed: emitInputText()
+
+            Keys.onEnterPressed: emitInputText()
         }
     }
 
@@ -130,7 +128,7 @@ Rectangle {
 
     function syncSpeedWithPaired(speed) {
         if (isPaired && pairedJoint && root.state === "local" && root.isCustomMode) {
-            pairedJoint.jointSpeed = speed;
+            pairedJoint.jointSpeedInput = speed;
         }
     }
 

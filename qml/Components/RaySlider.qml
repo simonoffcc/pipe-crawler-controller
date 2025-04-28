@@ -22,14 +22,15 @@ Item {
     property int backgroundBorderWidth: 2
     property int commonRadius: 1
 
-    implicitWidth: rayIndicator.width
-    implicitHeight: rayIndicator.height
+    implicitWidth: rayIndicator.width + pointer.width
+    implicitHeight: rayIndicator.height + (handle.height / 2)
 
     signal sliderValueChanged(real value)
 
     ProgressBar {
         id: rayIndicator
 
+        x: !pointerOnRight ? pointer.width : 0
         value: {
             if (root.rayPositionValue < 0) return 0;
             if (root.rayPositionValue > root.maxRayPositionValue) return root.maxRayPositionValue;

@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Shapes
 import QtQuick.Controls
 
 Rectangle {
@@ -6,8 +7,8 @@ Rectangle {
 
     state: "global"
 
-    width: 5
-    height: 50
+    implicitWidth: 5
+    implicitHeight: 50
 
     Canvas {
         id: dashedLine
@@ -27,6 +28,22 @@ Rectangle {
             ctx.stroke();
         }
     }
+
+    // Shape {
+    //     id: dashedLineShape
+    //     anchors.fill: parent
+    //     visible: false
+
+    //     ShapePath {
+    //         fillColor: "transparent"
+    //         strokeColor: "#333333"
+    //         strokeWidth: root.width
+    //         strokeStyle: ShapePath.DashLine
+    //         dashPattern: [ 2, 3 ]
+    //         startX: root.width / 2; startY: 0
+    //         PathLine { x: root.width / 2; y: root.height}
+    //     }
+    // }
 
     MouseArea {
         enabled: false

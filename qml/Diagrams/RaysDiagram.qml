@@ -14,14 +14,14 @@ Column {
 
     RaysController {
         id: frontRaysController
-        title: "Front"
+        title: qsTr("Front")
         controlsVisible: root.controlsVisible
         rayNames: [RayName.FrontLeft, RayName.FrontUp, RayName.FrontRight]
     }
 
     RaysController {
         id: backRaysController
-        title: "Back"
+        title: qsTr("Back")
         controlsVisible: root.controlsVisible
         rayNames: [RayName.BackLeft, RayName.BackUp, RayName.BackRight]
     }
