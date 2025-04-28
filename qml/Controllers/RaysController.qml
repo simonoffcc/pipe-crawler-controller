@@ -11,7 +11,8 @@ Item {
 
     property var rayNames: [RayName.Unknown, RayName.Unknown, RayName.Unknown]
     property var rayControlValues: [0, 0, 0]
-    property var rayTelemetryValues: [0, 0, 0]
+    property var rayTelemetryPositionValues: [0, 0, 0]
+    property var rayTelemetrySpeedValues: [0, 0, 0]
     property bool controlsVisible: true
     property alias title: directionHint.hintText
 
@@ -72,7 +73,8 @@ Item {
             rayName: root.rayNames[index]
             rotation: angles[index]
             pointerOnRight: pointerOnRightValues[index]
-            rayPositionValue: root.rayTelemetryValues[index]
+            rayPositionValue: root.rayTelemetryPositionValues[index]
+            raySpeedValue: root.rayTelemetrySpeedValues[index]
 
             currentSliderValue: root.rayControlValues[index]
 
@@ -136,7 +138,8 @@ Item {
 
         function onControllersChanged() {
             var controllers = RobotController.controllers;
-            root.updateTelemetryValues(controllers);
+            root.updateRayTelemetryPositionValues(controllers);
+            root.updateRayTelemetrySpeedValues(controllers);
         }
     }
 
@@ -154,8 +157,8 @@ Item {
         return mm / 1000.0;
     }
 
-    function updateTelemetryValues(controllers) {
-        var newValues = rayTelemetryValues.slice();
+    function updateRayTelemetryPositionValues(controllers) {
+        var newValues = rayTelemetryPositionValues.slice();
         for (var i = 0; i < rayNames.length; i++) {
             for (var j = 0; j < controllers.length; j++) {
                 if (controllers[j].rayJoint.name === rayNames[i]) {
@@ -168,7 +171,24 @@ Item {
                 }
             }
         }
-        rayTelemetryValues = newValues;
+        root.rayTelemetryPositionValues = newValues;
+    }
+
+    function updateRayTelemetrySpeedValues(controllers) {
+        var newValues = rayTelemetrySpeedValues.slice();
+        for (var i = 0; i < rayNames.length; i++) {
+            for (var j = 0; j < controllers.length; j++) {
+                if (controllers[j].rayJoint.name === rayNames[i]) {
+                    let velocity = parseFloat(controllers[j].rayJoint.velocity);
+                    if (!isNaN(velocity) && velocity >= 0 && velocity <= 0.22) {
+                        newValues[i] = metersToMillimeters(velocity);
+                    } else {
+                        newValues[i] = -1;
+                    }
+                }
+            }
+        }
+        root.rayTelemetrySpeedValues = newValues;
     }
 
     function onPublishButtonClicked() {

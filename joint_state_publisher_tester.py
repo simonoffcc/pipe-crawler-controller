@@ -43,13 +43,15 @@ def main():
             msg.header.stamp = node.get_clock().now().to_msg()
             
             ray_positions = [random.uniform(0.0, 0.22) for _ in range(6)]
+
+            ray_velocities = [random.uniform(0.0, 0.22) for _ in range(6)]
             
             wheel_velocities = [random.uniform(-150.0, 150.0) for _ in range(12)]
 
             wheel_efforts = [random.uniform(0, 100) for _ in range(12)]
             
             msg.position = ray_positions + [0.0] * 12
-            msg.velocity = [0.0] * 6 + wheel_velocities
+            msg.velocity = ray_velocities + wheel_velocities
             msg.effort = [0.0] * 6 + wheel_efforts
             
             publisher.publish(msg)
@@ -66,9 +68,13 @@ def main():
             for name, pos in zip(ray_joints, ray_positions):
                 node.get_logger().info(f'{name}: {pos:.3f}')
 
+            node.get_logger().info("Ray velocities (m/s):")
+            for name, vel in zip(ray_joints, ray_velocities):
+                node.get_logger().info(f'{name}: {vel:.3f}')
+
             node.get_logger().info('---')
             
-            time.sleep(0.01)
+            time.sleep(0.5)
     except KeyboardInterrupt:
         pass
 

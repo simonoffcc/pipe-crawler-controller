@@ -10,13 +10,14 @@ Item {
 
     property int rayName: RayName.Unknown
     property int rayPositionValue: 0
+    property int raySpeedValue: 0
     property alias currentSliderValue: raySlider.value
 
     property bool pointerOnRight: true
     property alias sliderVisible: raySlider.visible
     readonly property double maxRayPositionValue: 220
 
-    property int backgroundWidth: 100
+    property int backgroundWidth: 110
     property int backgroundHeight: 125
     property int backgroundBorderWidth: 2
     property int commonRadius: 1
@@ -98,7 +99,7 @@ Item {
             height: root.backgroundHeight - (2 * root.backgroundBorderWidth)
             radius: root.commonRadius
             color: "#008080"
-            opacity: 0.5
+            opacity: 0.6
 
             Rectangle {
                 id: slideBackgroundNotUsed
@@ -107,6 +108,7 @@ Item {
                 height: raySlider.visualPosition * slideBackground.height
                 radius: root.commonRadius
                 color: "#bdbebf"
+                opacity: 0.5
             }
         }
 
@@ -143,26 +145,57 @@ Item {
     }
 
     Rectangle {
-        id: telemetryText
+        id: telemetryTexts
 
         rotation: -root.rotation
 
         anchors.centerIn: rayIndicator
 
-        implicitWidth: text.width * 1.5
-        implicitHeight: text.height * 1.5
+        implicitWidth: root.backgroundWidth * 0.85
+        implicitHeight: root.backgroundHeight * 0.5
 
         radius: 10
         color: "white"
         border.color: "#97999b"
 
-        Text {
-            id: text
+        Column {
+            id: telemetryPositioning
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
+            anchors.rightMargin: 7
 
-            anchors.centerIn: parent
-            text: root.rayPositionValue + qsTr(" mm")
-            font.pixelSize: 14
-            color: "black"
+            spacing: 2
+
+            Text {
+                id: telemetryEffort
+                anchors.right: parent.right
+                // пока что не используется
+
+                text: qsTr("0.0 H")
+                font.pixelSize: 13
+                color: "black"
+                horizontalAlignment: Text.AlignHCenter
+            }
+
+            Text {
+                id: telemetryPosition
+                anchors.right: parent.right
+
+                text: root.rayPositionValue + qsTr(" mm")
+                font.pixelSize: 13
+                color: "black"
+                horizontalAlignment: Text.AlignHCenter
+            }
+
+            Text {
+                id: telemetrySpeed
+                anchors.right: parent.right
+
+                text: root.raySpeedValue + qsTr(" mm/sec")
+                font.pixelSize: 13
+                color: "black"
+                horizontalAlignment: Text.AlignHCenter
+            }
         }
     }
 }
