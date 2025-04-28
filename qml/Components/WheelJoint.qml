@@ -11,8 +11,8 @@ Rectangle {
     id: root
 
     property int jointName: WheelJointName.Unknown
-    property alias telemetrySpeed: telemetrySpeed.text
-    property alias telemetryEffort: telemetryEffort.text
+    property double telemetrySpeedValue: 0.0
+    property double telemetryEffortValue: 0.0
     property alias jointSpeed: speedInput.text
     property bool isPaired: false
     property var pairedJoint: null
@@ -41,8 +41,8 @@ Rectangle {
 
             anchors.horizontalCenter: parent.horizontalCenter
 
-            text: qsTr("0.0 H")
-            font.pixelSize: 12
+            text: root.telemetryEffortValue + qsTr(" H")
+            font.pixelSize: 13
             color: "black"
             horizontalAlignment: Text.AlignHCenter
         }
@@ -52,8 +52,8 @@ Rectangle {
 
             anchors.horizontalCenter: parent.horizontalCenter
 
-            text: qsTr("0.0°/sec")
-            font.pixelSize: 12
+            text: root.telemetrySpeedValue + qsTr("°/sec")
+            font.pixelSize: 13
             color: "black"
             horizontalAlignment: Text.AlignHCenter
         }
@@ -69,7 +69,7 @@ Rectangle {
             color: "black"
             placeholderText: qsTr("dq: 1.0°/sec")
             placeholderTextColor: "gray"
-            font.pixelSize: 11
+            font.pixelSize: 13
 
             validator: DoubleValidator {
                 notation: DoubleValidator.StandardNotation

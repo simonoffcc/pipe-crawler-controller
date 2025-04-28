@@ -23,8 +23,8 @@ ApplicationWindow {
         Rectangle {
             id: wheelPairsBackground
 
-            Layout.preferredWidth: 750
-            Layout.minimumWidth: 720
+            Layout.preferredWidth: wheelPairsDiagram.width + 10
+            Layout.minimumWidth: wheelPairsDiagram.width
             Layout.fillWidth: true
             Layout.fillHeight: true
             color: "lightgray"
@@ -50,8 +50,8 @@ ApplicationWindow {
         Rectangle {
             id: raysBackground
 
-            Layout.preferredWidth: 750
-            Layout.minimumWidth: 720
+            Layout.preferredWidth: raysDiagram.width + 10
+            Layout.minimumWidth: raysDiagram.width
             Layout.fillWidth: true
             Layout.fillHeight: true
             color: "lightgray"
@@ -80,23 +80,23 @@ ApplicationWindow {
 
             Layout.preferredWidth: 350
             Layout.minimumWidth: 350
-            Layout.maximumWidth: 400
+            Layout.maximumWidth: 350
             Layout.fillHeight: true
             spacing: 4
 
             DrivingModesPanel {
                 id: drivingModesPanel
 
-                Layout.minimumHeight: implicitHeight
-                Layout.preferredHeight: implicitHeight
+                Layout.minimumHeight: height
+                Layout.preferredHeight: height
                 Layout.fillWidth: true
             }
 
             RaysControlPanel {
                 id: raysControlPanel
 
-                Layout.minimumHeight: implicitHeight
-                Layout.preferredHeight: implicitHeight
+                Layout.minimumHeight: height
+                Layout.preferredHeight: height
                 Layout.fillWidth: true
             }
 

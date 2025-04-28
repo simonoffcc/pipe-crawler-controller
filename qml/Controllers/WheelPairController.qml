@@ -14,7 +14,8 @@ import pairsGroupingMode
 Item {
     id: root
 
-    property int jointControlWidth: 115
+    property int wheelJointWidth: 115
+    property int pairConnectionHeight: wheelJointWidth / 2.5
     property int elementStrokeWidth: 4
     property bool isFront: true
     property bool isLocked: false
@@ -24,8 +25,8 @@ Item {
     property int outerJointName: WheelJointName.Unknown
     property int innerJointName: WheelJointName.Unknown
 
-    implicitWidth: jointControlWidth
-    implicitHeight: jointControlWidth * 2.5
+    implicitWidth: wheelJointWidth
+    implicitHeight: 2 * wheelJointWidth + pairConnectionHeight
 
     readonly property bool isCustomMode: RobotController.currentPairsGroupingMode === PairsGroupingMode.Custom &&
                                       RobotController.currentDriveMode === DriveMode.Custom
@@ -93,8 +94,8 @@ Item {
         onClicked: root.publishOnButtonPressed(outerJoint.jointSpeed)
 
         Component.onCompleted: {
-            anchors.leftMargin = root.jointControlWidth / 8
-            anchors.rightMargin = root.jointControlWidth / 8
+            anchors.leftMargin = root.wheelJointWidth / 8
+            anchors.rightMargin = root.wheelJointWidth / 8
             anchors.verticalCenter = connectionLine.verticalCenter
             speedPublishButtonOnLeft ? anchors.right = connectionLine.left : anchors.left = connectionLine.right
         }
@@ -103,7 +104,7 @@ Item {
     WheelJoint {
         id: outerJoint
 
-        width: root.jointControlWidth
+        width: root.wheelJointWidth
         height: width
         border.width: root.elementStrokeWidth
         jointName: root.outerJointName
@@ -124,14 +125,14 @@ Item {
 
         anchors.centerIn: parent
 
-        height: root.jointControlWidth / 2.5
+        height: root.pairConnectionHeight
         width: root.elementStrokeWidth
     }
 
     WheelJoint {
         id: innerJoint
 
-        width: root.jointControlWidth
+        width: root.wheelJointWidth
         height: width
         border.width: root.elementStrokeWidth
         jointName: root.innerJointName
@@ -177,19 +178,12 @@ Item {
                 if (controllers[i].name === root.wheelPairName) {
                     found = true;
                     root.state = ["global", "local", "independent"][controllers[i].state];
-                    outerJoint.telemetrySpeed = controllers[i].outerJoint.velocity.toFixed(2) + "°/sec";
-                    innerJoint.telemetrySpeed = controllers[i].innerJoint.velocity.toFixed(2) + "°/sec";
-                    outerJoint.telemetryEffort = controllers[i].outerJoint.effort.toFixed(1) + " H";
-                    innerJoint.telemetryEffort = controllers[i].innerJoint.effort.toFixed(1) + " H";
+                    outerJoint.telemetrySpeedValue = controllers[i].outerJoint.velocity.toFixed(2);
+                    innerJoint.telemetrySpeedValue = controllers[i].innerJoint.velocity.toFixed(2);
+                    outerJoint.telemetryEffortValue = controllers[i].outerJoint.effort.toFixed(1);
+                    innerJoint.telemetryEffortValue = controllers[i].innerJoint.effort.toFixed(1);
                     break;
                 }
-            }
-            if (!found) {
-                root.state = "independent";
-                outerJoint.telemetrySpeed = "0.0°/sec";
-                innerJoint.telemetrySpeed = "0.0°/sec";
-                outerJoint.telemetryEffort = "0.0 H";
-                innerJoint.telemetryEffort = "0.0 H";
             }
         }
 
@@ -215,10 +209,10 @@ Item {
         for (let i = 0; i < controllers.length; i++) {
             if (controllers[i].name === root.wheelPairName) {
                 root.state = ["global", "local", "independent"][controllers[i].state];
-                outerJoint.telemetrySpeed = controllers[i].outerJoint.velocity.toFixed(2) + "°/sec";
-                innerJoint.telemetrySpeed = controllers[i].innerJoint.velocity.toFixed(2) + "°/sec";
-                outerJoint.telemetryEffort = controllers[i].outerJoint.effort.toFixed(1) + " H";
-                innerJoint.telemetryEffort = controllers[i].innerJoint.effort.toFixed(1) + " H";
+                outerJoint.telemetrySpeedValue = controllers[i].outerJoint.velocity.toFixed(2);
+                innerJoint.telemetrySpeedValue = controllers[i].innerJoint.velocity.toFixed(2);
+                outerJoint.telemetryEffortValue = controllers[i].outerJoint.effort.toFixed(1);
+                innerJoint.telemetryEffortValue = controllers[i].innerJoint.effort.toFixed(1);
                 break;
             }
         }

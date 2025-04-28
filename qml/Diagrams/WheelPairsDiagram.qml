@@ -10,8 +10,8 @@ import wheelJointName
 Item {
     id: root
 
-    implicitWidth: 430
-    implicitHeight: 910
+    implicitWidth: schemeLinesWidth + frontLeftPair.width
+    implicitHeight: schemeLinesHeight + schemeBodyHeight + (frontUpPair.width / 2)
 
     property int schemeBodyWidth: 150
     property int schemeBodyHeight: schemeBodyWidth
@@ -57,7 +57,7 @@ Item {
     }
 
     WheelPairController {
-        id: front_left
+        id: frontLeftPair
 
         wheelPairName: WheelsControllerName.FrontLeft
         outerJointName: WheelJointName.FrontLeftOuter
@@ -74,7 +74,7 @@ Item {
     }
 
     WheelPairController {
-        id: front_up
+        id: frontUpPair
 
         wheelPairName: WheelsControllerName.FrontUp
         outerJointName: WheelJointName.FrontUpOuter
@@ -90,7 +90,7 @@ Item {
     }
 
     WheelPairController {
-        id: front_right
+        id: frontRightPair
 
         wheelPairName: WheelsControllerName.FrontRight
         outerJointName: WheelJointName.FrontRightOuter
@@ -107,7 +107,7 @@ Item {
     }
 
     WheelPairController {
-        id: back_left
+        id: backLeftPair
 
         wheelPairName: WheelsControllerName.BackLeft
         outerJointName: WheelJointName.BackLeftOuter
@@ -124,7 +124,7 @@ Item {
     }
 
     WheelPairController {
-        id: back_up
+        id: backUpPair
 
         wheelPairName: WheelsControllerName.BackUp
         outerJointName: WheelJointName.BackUpOuter
@@ -141,7 +141,7 @@ Item {
     }
 
     WheelPairController {
-        id: back_right
+        id: backRightPair
 
         wheelPairName: WheelsControllerName.BackRight
         outerJointName: WheelJointName.BackRightOuter
