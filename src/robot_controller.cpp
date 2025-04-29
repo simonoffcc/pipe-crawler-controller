@@ -82,13 +82,6 @@ void RobotController::setWheelsControllerState(int controller_name, int state)
 
     for (auto& controller : controllers_) {
         if (controller.wheels_controller_name == controller_enum) {
-            bool wasGlobal = controller.wheels_controller_state == WheelsControllerState::Global;
-            bool willBeGlobal = state_enum == WheelsControllerState::Global;
-
-            if (wasGlobal != willBeGlobal) {
-                global_controllers_count_ += willBeGlobal ? 1 : -1;
-            }
-
             controller.wheels_controller_state = state_enum;
             emit controllersChanged();
             break;
@@ -102,15 +95,12 @@ void RobotController::updateActiveControllers()
         controller.wheels_controller_state = WheelsControllerState::Local;
     }
 
-    global_controllers_count_ = 0;
-
     if (current_pairs_grouping_mode_ == PairsGroupingMode::AllPairs) {
         switch (current_drive_mode_) {
             case DriveMode::FullDrive:
                 for (auto& controller : controllers_) {
                     controller.wheels_controller_state = WheelsControllerState::Global;
                 }
-                global_controllers_count_ = controllers_.size();
                 break;
 
             case DriveMode::FrontDrive:
@@ -119,7 +109,6 @@ void RobotController::updateActiveControllers()
                         controller.wheels_controller_name == WheelsControllerName::FrontUp ||
                         controller.wheels_controller_name == WheelsControllerName::FrontRight) {
                         controller.wheels_controller_state = WheelsControllerState::Global;
-                        global_controllers_count_++;
                     }
                 }
                 break;
@@ -130,7 +119,6 @@ void RobotController::updateActiveControllers()
                         controller.wheels_controller_name == WheelsControllerName::BackUp ||
                         controller.wheels_controller_name == WheelsControllerName::BackRight) {
                         controller.wheels_controller_state = WheelsControllerState::Global;
-                        global_controllers_count_++;
                     }
                 }
                 break;
@@ -145,7 +133,6 @@ void RobotController::updateActiveControllers()
                         controller.wheels_controller_name == WheelsControllerName::BackLeft ||
                         controller.wheels_controller_name == WheelsControllerName::BackRight) {
                         controller.wheels_controller_state = WheelsControllerState::Global;
-                        global_controllers_count_++;
                     }
                 }
                 break;
@@ -155,7 +142,6 @@ void RobotController::updateActiveControllers()
                     if (controller.wheels_controller_name == WheelsControllerName::FrontLeft ||
                         controller.wheels_controller_name == WheelsControllerName::FrontRight) {
                         controller.wheels_controller_state = WheelsControllerState::Global;
-                        global_controllers_count_++;
                     }
                 }
                 break;
@@ -165,7 +151,6 @@ void RobotController::updateActiveControllers()
                     if (controller.wheels_controller_name == WheelsControllerName::BackLeft ||
                         controller.wheels_controller_name == WheelsControllerName::BackRight) {
                         controller.wheels_controller_state = WheelsControllerState::Global;
-                        global_controllers_count_++;
                     }
                 }
                 break;
@@ -339,11 +324,6 @@ void RobotController::publishSpeed(rclcpp::Publisher<std_msgs::msg::Float64Multi
 
 void RobotController::publishGlobalSpeed(double speed)
 {
-    if (global_controllers_count_ == 0) {
-        addLogMessage(QString("Warning: Cannot publish global speed - no controllers in global mode."));
-        return;
-    }
-
     std_msgs::msg::Float64MultiArray msg;
     double speed_in_radians = qDegreesToRadians(speed);
     msg.data = {speed_in_radians, speed_in_radians};
@@ -417,16 +397,6 @@ void RobotController::publishRayPosition(double position, int ray_name)
                             .arg(position, 0, 'f', 3)
                             .arg(QString::fromStdString(topic_name));
             addLogMessage(logMsg);
-        }
-    }
-}
-
-void RobotController::updateGlobalControllersCount()
-{
-    global_controllers_count_ = 0;
-    for (const auto& controller : controllers_) {
-        if (controller.wheels_controller_state == WheelsControllerState::Global) {
-            global_controllers_count_++;
         }
     }
 }

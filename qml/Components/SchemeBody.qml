@@ -15,19 +15,6 @@ Rectangle {
     border.width: 1
     color: "#eeeeee"
 
-    function clearSpeedInput() {
-        inputField.text = "";
-        inputField.focus = false;
-    }
-
-    function publishSpeed(text) {
-        if (text !== "") {
-            RobotController.publishGlobalSpeed(parseFloat(text))
-            root.clearSpeedInput()
-
-        }
-    }
-
     Column {
         anchors.centerIn: parent
 
@@ -95,6 +82,18 @@ Rectangle {
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
             }
+        }
+    }
+
+    function clearSpeedInput() {
+        inputField.text = "";
+        inputField.focus = false;
+    }
+
+    function publishSpeed(text) {
+        if (text !== "") {
+            RobotController.publishGlobalSpeed(parseFloat(text))
+            root.clearSpeedInput()
         }
     }
 }

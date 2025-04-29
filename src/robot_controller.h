@@ -92,7 +92,6 @@ private:
 
     int current_pairs_grouping_mode_;   ///< Текущий режим группировки пар
     int current_drive_mode_;            ///< Текущий привод
-    int global_controllers_count_ = 0;  ///< Количество контроллеров в глобальном режиме
 
     struct Joint {
         int name;
