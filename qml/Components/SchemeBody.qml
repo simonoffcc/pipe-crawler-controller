@@ -22,7 +22,7 @@ Rectangle {
         spacing: 10
 
         TextField {
-            id: inputField
+            id: speedInput
 
             width: parent.width
             color: "black"
@@ -31,6 +31,11 @@ Rectangle {
             horizontalAlignment: TextInput.AlignHCenter
             font.pixelSize: 14
             bottomPadding: 5
+
+            ToolTip.text: qsTr("press \"Enter\" to publish")
+            ToolTip.visible: speedInput.text !== "" && speedInput.activeFocus
+            ToolTip.delay: 300
+            ToolTip.timeout: 3000
             
             validator: DoubleValidator {
                 notation: DoubleValidator.StandardNotation
@@ -49,8 +54,8 @@ Rectangle {
                 }
             }
 
-            Keys.onReturnPressed: root.publishSpeed(inputField.text)
-            Keys.onEnterPressed: root.publishSpeed(inputField.text)
+            Keys.onReturnPressed: root.publishSpeed(speedInput.text)
+            Keys.onEnterPressed: root.publishSpeed(speedInput.text)
         }
 
         Button {
@@ -61,7 +66,7 @@ Rectangle {
 
             text: qsTr("Publish")
 
-            onClicked: root.publishSpeed(inputField.text)
+            onClicked: root.publishSpeed(speedInput.text)
 
             background: Rectangle {
                 property color normalColor: "#008080"
@@ -86,8 +91,8 @@ Rectangle {
     }
 
     function clearSpeedInput() {
-        inputField.text = "";
-        inputField.focus = false;
+        speedInput.text = "";
+        speedInput.focus = false;
     }
 
     function publishSpeed(text) {

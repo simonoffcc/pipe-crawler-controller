@@ -72,6 +72,11 @@ Rectangle {
             font.pixelSize: 13
             horizontalAlignment: Text.AlignHCenter
 
+            ToolTip.text: qsTr("press \"Enter\" to publish")
+            ToolTip.visible: speedInput.text !== "" && speedInput.activeFocus
+            ToolTip.delay: 300
+            ToolTip.timeout: 3000
+
             validator: DoubleValidator {
                 notation: DoubleValidator.StandardNotation
             }

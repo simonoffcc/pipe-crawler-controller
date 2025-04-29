@@ -108,7 +108,7 @@ Rectangle {
                 border.width: 1
             }
 
-            ToolTip.visible: hovered
+            ToolTip.visible: lockButton.hovered
             ToolTip.text: root.isLocked ? "Unlock controller states" : "Lock controller states"
 
             onClicked: {

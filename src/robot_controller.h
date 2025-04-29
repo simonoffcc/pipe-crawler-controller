@@ -24,16 +24,12 @@ class RobotController : public QObject
 {
     Q_OBJECT
 
-    // Режим управления, который необходим для отображения в комбо-боксах в GUI
     Q_PROPERTY(int currentDriveMode READ currentDriveMode WRITE setDriveMode NOTIFY driveModeChanged)
 
-    // Режим группировки пар, который необходим для отображения в комбо-боксах в GUI
     Q_PROPERTY(int currentPairsGroupingMode READ currentPairsGroupingMode WRITE setPairsGroupingMode NOTIFY pairsGroupingModeChanged)
 
-    // Массив контроллеров колесных пар для хранения телеметрии шарниров, лучей и усилий
     Q_PROPERTY(QVariantList controllers READ controllers NOTIFY controllersChanged)
 
-    // Property for log messages
     Q_PROPERTY(QStringList logMessages READ logMessages NOTIFY logMessagesChanged)
 
 public:
@@ -87,7 +83,6 @@ private:
     void createROSInterfaces();
     void jointStatesCallback(const sensor_msgs::msg::JointState::SharedPtr msg);
     void updateActiveControllers();
-    void updateGlobalControllersCount();
     void publishSpeed(rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr, std_msgs::msg::Float64MultiArray msg);
 
     int current_pairs_grouping_mode_;   ///< Текущий режим группировки пар
@@ -108,10 +103,11 @@ private:
         Joint ray_joint;
     };
 
-    std::vector<Controller> controllers_;   ///< Массив контроллеров колесных пар
-    double velocity_step = 0.001;           ///< Шаг для сравнения текущей и предыдущей скорости шарниров в радианах
-    double effort_step = 0.1;
-    double ray_position_step = 0.001;       ///< Шаг для сравнения текущей и предыдущей скорости шарниров в метрах
+    std::vector<Controller> controllers_;
+
+    double velocity_step = 0.001;           ///< Шаг обновления скорости шарнира в радианах
+    double effort_step = 0.1;               ///< Шаг обновления усилий шарниров в ньютонах
+    double ray_position_step = 0.001;       ///< Шаг обновления скорости луча в метрах
 
     QStringList log_messages_;
     static const int MAX_LOG_MESSAGES = 100;
