@@ -1,11 +1,12 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
+// import QtQuick.Controls.Basic
 
 Rectangle {
     id: root
 
-    property alias controlsVisible: displayControlsBox.checked
+    property alias controlsVisible: displayControlsCheckBox.checked
 
     color: "lightgray"
     implicitHeight: contentLayout.implicitHeight + contentLayout.spacing + contentLayout.anchors.bottomMargin
@@ -26,17 +27,26 @@ Rectangle {
             text: qsTr("Ray Position Controllers")
         }
 
-        CheckBox {
-            id: displayControlsBox
-            Layout.fillWidth: true
 
-            checked: true
+        CheckBox {
+            id: displayControlsCheckBox
+
             text: qsTr("Display controls components")
+            checked: true
+
+            ToolTip.visible: displayControlsCheckBox.hovered
+            ToolTip.text: displayControlsCheckBox.checked ? qsTr("Hide rays controls") : qsTr("Show rays controls")
+            ToolTip.timeout: 3000
+
+            indicator.implicitWidth: 18
+            indicator.implicitHeight: 18
+
             contentItem: Text {
-                color: "black";
-                text: displayControlsBox.text
+                text: displayControlsCheckBox.text
+                font: displayControlsCheckBox.font
+                color: "black"
                 verticalAlignment: Text.AlignVCenter
-                leftPadding: displayControlsBox.indicator.width + displayControlsBox.spacing
+                leftPadding: displayControlsCheckBox.indicator.width + displayControlsCheckBox.spacing
             }
         }
     }

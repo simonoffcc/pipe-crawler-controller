@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
+// import QtQuick.Controls.Basic
 
 import RobotController
 import pairsGroupingMode
@@ -90,29 +91,31 @@ Rectangle {
             }
         }
 
-        Button {
-            id: lockButton
+        CheckBox {
+            id: lockCheckBox
+
             visible: root.isCustomMode
-            Layout.preferredWidth: 32
-            Layout.preferredHeight: 32
             Layout.alignment: Qt.AlignLeft
+            text: qsTr("Prevent controller states changing")
+            checked: root.isLocked
 
-            icon.source: root.isLocked ? "/icons/lock.png" : "/icons/unlock.png"
-            icon.color: "transparent"
+            ToolTip.visible: lockCheckBox.hovered
+            ToolTip.text: lockCheckBox.checked ? qsTr("Unlock controller states") : qsTr("Lock controller states")
+            ToolTip.timeout: 3000
 
-            background: Rectangle {
-                radius: 5
-                color: lockButton.pressed ? "#cccccc" :
-                       lockButton.hovered ? "#e6e6e6" : "white"
-                border.color: "black"
-                border.width: 1
+            indicator.implicitWidth: 18
+            indicator.implicitHeight: 18
+
+            contentItem: Text {
+                text: lockCheckBox.text
+                font: lockCheckBox.font
+                color: "black"
+                verticalAlignment: Text.AlignVCenter
+                leftPadding: lockCheckBox.indicator.width + lockCheckBox.spacing
             }
 
-            ToolTip.visible: lockButton.hovered
-            ToolTip.text: root.isLocked ? "Unlock controller states" : "Lock controller states"
-
-            onClicked: {
-                root.isLocked = !root.isLocked
+            onCheckedChanged: {
+                root.isLocked = checked
             }
         }
     }

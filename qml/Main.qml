@@ -71,7 +71,7 @@ ApplicationWindow {
                 font.pixelSize: 14
                 font.bold: true
                 color: "black"
-                text: qsTr("Ray Positions Diagram")
+                text: qsTr("Rays Diagram")
             }
 
             RaysDiagram {
