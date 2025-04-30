@@ -37,26 +37,10 @@ Item {
 
         anchors.fill: parent
 
+        // hoverEnabled: true
         cursorShape: (root.isCustomMode && !root.isLocked) ? Qt.PointingHandCursor : Qt.ArrowCursor
 
-        onClicked: {
-            let newState;
-            if (root.state === "global") {
-                newState = "local";
-                RobotController.setWheelsControllerState(root.wheelPairName, WheelsControllerState.Local);
-            }
-            else if (root.state === "local") {
-                newState = "independent";
-                RobotController.setWheelsControllerState(root.wheelPairName, WheelsControllerState.Independent);
-            }
-            else {
-                newState = "global";
-                RobotController.setWheelsControllerState(root.wheelPairName, WheelsControllerState.Global);
-            }
-            outerJoint.clearSpeedInput();
-            innerJoint.clearSpeedInput();
-            root.state = newState;
-        }
+        onClicked: root.changePairState()
     }
 
     Button {
@@ -146,6 +130,25 @@ Item {
             anchors.horizontalCenter = parent.horizontalCenter
             !isFront ? anchors.bottom = connectionLine.top : anchors.top = connectionLine.bottom
         }
+    }
+
+    function changePairState() {
+        let newState;
+        if (root.state === "global") {
+            newState = "local";
+            RobotController.setWheelsControllerState(root.wheelPairName, WheelsControllerState.Local);
+        }
+        else if (root.state === "local") {
+            newState = "independent";
+            RobotController.setWheelsControllerState(root.wheelPairName, WheelsControllerState.Independent);
+        }
+        else {
+            newState = "global";
+            RobotController.setWheelsControllerState(root.wheelPairName, WheelsControllerState.Global);
+        }
+        outerJoint.clearSpeedInput();
+        innerJoint.clearSpeedInput();
+        root.state = newState;
     }
 
     function publishOnSpeedSubmitted(speed, isOuter) {

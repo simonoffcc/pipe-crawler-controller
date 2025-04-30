@@ -82,6 +82,7 @@ Item {
         topPadding: pointer.height / 2
         bottomPadding: pointer.height / 2
         orientation: Qt.Vertical
+        wheelEnabled: true
 
         from: 0
         to: root.maxRayPositionValue

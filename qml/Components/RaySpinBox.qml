@@ -21,10 +21,12 @@ Row {
     SpinBox {
         id: spinBox
 
+        editable: false
+        wheelEnabled: true
+
         from: 0
         to: 220
         stepSize: 1
-        editable: false
 
         leftPadding: down.indicator ? down.indicator.width : 0
         rightPadding: up.indicator ? up.indicator.width : 0
@@ -36,7 +38,7 @@ Row {
         contentItem: Item {
             implicitWidth: input.implicitWidth
             implicitHeight: input.implicitHeight
-
+ 
             TextInput {
                 id: input
                 anchors.fill: parent
