@@ -172,11 +172,9 @@ Item {
         target: RobotController
 
         function onControllersChanged() {
-            let found = false;
             let controllers = RobotController.controllers;
             for (let i = 0; i < controllers.length; i++) {
                 if (controllers[i].name === root.wheelPairName) {
-                    found = true;
                     root.state = ["global", "local", "independent"][controllers[i].state];
                     outerJoint.telemetrySpeedValue = controllers[i].outerJoint.velocity.toFixed(2);
                     innerJoint.telemetrySpeedValue = controllers[i].innerJoint.velocity.toFixed(2);
