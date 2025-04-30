@@ -54,8 +54,7 @@ Rectangle {
                 }
             }
 
-            Keys.onReturnPressed: root.publishSpeed(speedInput.text)
-            Keys.onEnterPressed: root.publishSpeed(speedInput.text)
+            onAccepted: root.publishSpeed(speedInput.text)
         }
 
         Button {
@@ -91,14 +90,14 @@ Rectangle {
     }
 
     function clearSpeedInput() {
-        speedInput.text = "";
-        speedInput.focus = false;
+        speedInput.clear();
     }
 
     function publishSpeed(text) {
         if (text !== "") {
             RobotController.publishGlobalSpeed(parseFloat(text))
             root.clearSpeedInput()
+            speedInput.focus = false
         }
     }
 }

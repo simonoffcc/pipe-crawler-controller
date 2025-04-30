@@ -107,9 +107,7 @@ Rectangle {
                 }
             }
 
-            Keys.onReturnPressed: emitInputText()
-
-            Keys.onEnterPressed: emitInputText()
+            onAccepted: emitInputText()
         }
     }
 
@@ -126,9 +124,8 @@ Rectangle {
         }
     }
 
-
     function clearSpeedInput() {
-        speedInput.text = "";
+        speedInput.clear();
     }
 
     function syncSpeedWithPaired(speed) {
