@@ -1,13 +1,14 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Shapes
+import QtQuick.Controls
 
 Rectangle {
     id: root
 
-    state: "globalConnection"
+    state: "global"
 
-    width: 5
-    height: 50
+    implicitWidth: 5
+    implicitHeight: 50
 
     Canvas {
         id: dashedLine
@@ -18,7 +19,7 @@ Rectangle {
         onPaint: {
             var ctx = getContext("2d");
             ctx.clearRect(0, 0, root.width, root.height);
-            ctx.strokeStyle = "black";
+            ctx.strokeStyle = "#333333";
             ctx.lineWidth = root.width;
             ctx.setLineDash([root.border.width / 2, root.border.width / 2]);
             ctx.beginPath();
@@ -28,29 +29,45 @@ Rectangle {
         }
     }
 
+    // Shape {
+    //     id: dashedLineShape
+    //     anchors.fill: parent
+    //     visible: false
+
+    //     ShapePath {
+    //         fillColor: "transparent"
+    //         strokeColor: "#333333"
+    //         strokeWidth: root.width
+    //         strokeStyle: ShapePath.DashLine
+    //         dashPattern: [ 2, 3 ]
+    //         startX: root.width / 2; startY: 0
+    //         PathLine { x: root.width / 2; y: root.height}
+    //     }
+    // }
+
     MouseArea {
         enabled: false
+        visible: false
 
         anchors.fill: parent
-        propagateComposedEvents: true
 
         onClicked: {
-            if (root.state === "globalConnection") {
-                root.state = "localConnection"
-            } else if (root.state === "localConnection") {
-                root.state = "independentConnection"
+            if (root.state === "global") {
+                root.state = "local"
+            } else if (root.state === "local") {
+                root.state = "independent"
             } else {
-                root.state = "globalConnection"
+                root.state = "global"
             }
         }
     }
 
     states: [
         State {
-            name: "globalConnection"
+            name: "global"
             PropertyChanges {
                 target: root
-                color: "green"
+                color: "#008080"
                 border.color: "transparent"
             }
             PropertyChanges {
@@ -59,10 +76,10 @@ Rectangle {
             }
         },
         State {
-            name: "localConnection"
+            name: "local"
             PropertyChanges {
                 target: root
-                color: "black"
+                color: "#333333"
                 border.color: "transparent"
             }
             PropertyChanges {
@@ -71,7 +88,7 @@ Rectangle {
             }
         },
         State {
-            name: "independentConnection"
+            name: "independent"
             PropertyChanges {
                 target: root
                 color: "transparent"

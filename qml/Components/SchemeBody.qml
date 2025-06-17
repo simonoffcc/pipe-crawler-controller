@@ -1,17 +1,19 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
 import QtQuick.Controls.Basic
+
+import RobotController
 
 Rectangle {
     id: root
 
+    implicitWidth: 130
+    implicitHeight: 130
+
     radius: 15
     border.color: "gray"
     border.width: 1
-    color: "#EEEEEE"
-
-    width: 130
-    height: 130
+    color: "#eeeeee"
 
     Column {
         anchors.centerIn: parent
@@ -20,15 +22,21 @@ Rectangle {
         spacing: 10
 
         TextField {
-            id: inputField
+            id: speedInput
 
             width: parent.width
             color: "black"
-            placeholderText: "target_vel"
+            placeholderText: qsTr("dq: 1.0°/sec")
             placeholderTextColor: "gray"
             horizontalAlignment: TextInput.AlignHCenter
-            font.pixelSize: 16
+            font.pixelSize: 14
             bottomPadding: 5
+
+            ToolTip.text: qsTr("press \"Enter\" to publish")
+            ToolTip.visible: speedInput.text !== "" && speedInput.activeFocus
+            ToolTip.delay: 300
+            ToolTip.timeout: 3000
+            
             validator: DoubleValidator {
                 notation: DoubleValidator.StandardNotation
                 locale: "en"
@@ -45,6 +53,8 @@ Rectangle {
                     right: parent.right
                 }
             }
+
+            onAccepted: root.publishSpeed(speedInput.text)
         }
 
         Button {
@@ -55,10 +65,12 @@ Rectangle {
 
             text: qsTr("Publish")
 
+            onClicked: root.publishSpeed(speedInput.text)
+
             background: Rectangle {
-                property color normalColor: "#4CAF50"
-                property color hoveredColor: "#45A049"
-                property color pressedColor: "#3D8B40"
+                property color normalColor: "#008080"
+                property color hoveredColor: "#00cccc"
+                property color pressedColor: "#1affff"
 
                 radius: 5
                 color: publishButton.pressed ? pressedColor :
@@ -74,6 +86,18 @@ Rectangle {
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
             }
+        }
+    }
+
+    function clearSpeedInput() {
+        speedInput.clear();
+    }
+
+    function publishSpeed(text) {
+        if (text !== "") {
+            RobotController.publishGlobalSpeed(parseFloat(text))
+            root.clearSpeedInput()
+            speedInput.focus = false
         }
     }
 }

@@ -1,11 +1,12 @@
-import QtQuick 2.15
-import QtQuick.Shapes 2.15
+import QtQuick
+import QtQuick.Shapes
 
 Item {
     id: root
 
     property bool isStraightUp: true
     property int linesWidth: 2
+    property alias title: directionHint.hintText
 
     rotation: isStraightUp ? 0 : 180
     width: 250
@@ -19,7 +20,7 @@ Item {
 
             capStyle: ShapePath.FlatCap
             strokeWidth: linesWidth
-            strokeColor: "black"
+            strokeColor: "#a6a6a6"
             fillColor: "transparent"
 
             startX: width / 2 - path.strokeWidth / 2; startY: path.strokeWidth
@@ -30,5 +31,12 @@ Item {
             PathLine { x: width / 2; y: 2 * height / 3 }
             PathLine { x: width / 2; y: height}
         }
+    }
+
+    DirectionHint {
+        id: directionHint
+        x: root.width / 2 - width / 2
+        y: 2 * root.height / 3 - height / 2
+        hintText: qsTr("undefined")
     }
 }
