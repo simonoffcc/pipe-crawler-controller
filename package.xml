@@ -4,7 +4,7 @@
   <name>pipe_crawler_controller</name>
   <version>0.0.1</version>
   <description>TODO: Package description</description>
-  <maintainer email="simonenkoivansimon@gmail.com">simon</maintainer>
+  <maintainer email="i.simonenko@rtc.ru">i.simonenko</maintainer>
   <license>TODO: License declaration</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
