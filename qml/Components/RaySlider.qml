@@ -3,7 +3,7 @@ import QtQuick.Shapes
 import QtQuick.Controls
 import QtQuick.Controls.Basic
 
-import rayName
+import RayName
 
 Item {
     id: root

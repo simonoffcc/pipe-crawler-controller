@@ -4,8 +4,8 @@ import QtQuick.Controls
 import Components
 import Controllers
 
-import wheelsControllerName
-import wheelJointName
+import WheelsControllerName
+import WheelJointName
 
 Item {
     id: root
