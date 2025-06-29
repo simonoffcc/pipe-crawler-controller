@@ -5,11 +5,11 @@ import QtQuick.Controls.Basic
 import Components
 
 import RobotController
-import wheelsControllerName
-import wheelsControllerState
-import wheelJointName
-import driveMode
-import pairsGroupingMode
+import WheelsControllerName
+import WheelsControllerState
+import WheelJointName
+import DriveMode
+import PairsGroupingMode
 
 Item {
     id: root

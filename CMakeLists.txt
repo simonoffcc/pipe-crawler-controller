@@ -12,18 +12,22 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 # Qt6 dependencies
-find_package(Qt6Core REQUIRED)
-find_package(Qt6Gui REQUIRED)
-find_package(Qt6Qml REQUIRED)
-find_package(Qt6Quick REQUIRED)
-find_package(Qt6QuickControls2 REQUIRED)
+find_package(
+  Qt6 REQUIRED
+  COMPONENTS 
+    Core
+    Gui
+    Qml
+    Quick
+    QuickControls2
+)
+qt_standard_project_setup(REQUIRES 6.5)
+
 # ros2 dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
-
-qt_standard_project_setup(REQUIRES 6.5)
 
 # Add QML subdirectory
 add_subdirectory(qml)
@@ -31,24 +35,27 @@ add_subdirectory(qml)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
-include_directories(
-    ${rclcpp_INCLUDE_DIRS}
-    ${std_msgs_INCLUDE_DIRS}
-    ${sensor_msgs_INCLUDE_DIRS}
-    ${Qt6Core_INCLUDE_DIRS}
-    ${Qt6Gui_INCLUDE_DIRS}
-    ${Qt6Qml_INCLUDE_DIRS}
-    ${Qt6Quick_INCLUDE_DIRS}
-    ${Qt6QuickControls2_INCLUDE_DIRS}
+set(PROJECT_HEADERS
+  src/controller/helpers/pairs_grouping_mode.h
+  src/controller/helpers/drive_mode.h
+  src/controller/helpers/ray_name.h
+  src/controller/helpers/wheel_joint_name.h
+  src/controller/helpers/wheels_controller_name.h
+  src/controller/helpers/wheels_controller_state.h
+  src/controller/robot_controller.h
 )
 
-file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp *.h)
-
-# Setting resources file
-# set(RESOURCES qml/resources/resources.qrc)
+set(PROJECT_SOURCES
+  src/controller/robot_controller.cpp
+  src/main.cpp
+)
 
 # Create main executable
-qt_add_executable(${PROJECT_NAME}_node ${SOURCES}) # ${RESOURCES}
+qt_add_executable(
+  ${PROJECT_NAME}_node 
+  ${PROJECT_HEADERS} 
+  ${PROJECT_SOURCES} 
+)
 
 # Link libraries
 target_link_libraries(${PROJECT_NAME}_node

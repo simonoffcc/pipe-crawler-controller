@@ -5,7 +5,7 @@ import QtQuick.Layouts
 import Controllers
 
 import RobotController
-import rayName
+import RayName
 
 Column {
     id: root

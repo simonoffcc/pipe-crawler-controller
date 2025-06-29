@@ -4,7 +4,7 @@ import QtQuick.Shapes
 import Components
 
 import RobotController
-import rayName
+import RayName
 
 Item {
     id: root

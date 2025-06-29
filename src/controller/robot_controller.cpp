@@ -4,12 +4,12 @@ RobotController::RobotController(std::shared_ptr<rclcpp::Node> node, QObject* pa
     : QObject(parent)
     , node_(node)
 {
-    qmlRegisterUncreatableType<PairsGroupingMode>("pairsGroupingMode", 1, 0, "PairsGroupingMode", "Not creatable as it is an enum type.");
-    qmlRegisterUncreatableType<DriveMode>("driveMode", 1, 0, "DriveMode", "Not creatable as it is an enum type.");
-    qmlRegisterUncreatableType<WheelJointName>("wheelJointName", 1, 0, "WheelJointName", "Not creatable as it is an enum type.");
-    qmlRegisterUncreatableType<WheelsControllerName>("wheelsControllerName", 1, 0, "WheelsControllerName", "Not creatable as it is an enum type.");
-    qmlRegisterUncreatableType<WheelsControllerState>("wheelsControllerState", 1, 0, "WheelsControllerState", "Not creatable as it is an enum type.");
-    qmlRegisterUncreatableType<RayName>("rayName", 1, 0, "RayName", "Not creatable as it is an enum type.");
+    qmlRegisterUncreatableType<PairsGroupingMode>("PairsGroupingMode", 1, 0, "PairsGroupingMode", "Not creatable as it is an enum type.");
+    qmlRegisterUncreatableType<DriveMode>("DriveMode", 1, 0, "DriveMode", "Not creatable as it is an enum type.");
+    qmlRegisterUncreatableType<WheelJointName>("WheelJointName", 1, 0, "WheelJointName", "Not creatable as it is an enum type.");
+    qmlRegisterUncreatableType<WheelsControllerName>("WheelsControllerName", 1, 0, "WheelsControllerName", "Not creatable as it is an enum type.");
+    qmlRegisterUncreatableType<WheelsControllerState>("WheelsControllerState", 1, 0, "WheelsControllerState", "Not creatable as it is an enum type.");
+    qmlRegisterUncreatableType<RayName>("RayName", 1, 0, "RayName", "Not creatable as it is an enum type.");
     qmlRegisterSingletonInstance<RobotController>("RobotController", 1, 0, "RobotController", this);
 
     createROSInterfaces();

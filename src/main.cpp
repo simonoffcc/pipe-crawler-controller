@@ -1,7 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
-#include "robot_controller.h"
+#include "controller/robot_controller.h"
 
 class Guard {
     public:

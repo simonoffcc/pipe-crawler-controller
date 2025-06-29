@@ -1,11 +1,10 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-// import QtQuick.Controls.Basic
 
 import RobotController
-import pairsGroupingMode
-import driveMode
+import PairsGroupingMode
+import DriveMode
 
 Rectangle {
     id: root

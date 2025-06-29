@@ -12,12 +12,12 @@
 #include <sensor_msgs/msg/joint_state.hpp>
 #include <std_msgs/msg/float64_multi_array.hpp>
 
-#include "enums/pairs_grouping_mode.h"
-#include "enums/drive_mode.h"
-#include "enums/wheel_joint_name.h"
-#include "enums/wheels_controller_name.h"
-#include "enums/wheels_controller_state.h"
-#include "enums/ray_name.h"
+#include "helpers/pairs_grouping_mode.h"
+#include "helpers/drive_mode.h"
+#include "helpers/wheel_joint_name.h"
+#include "helpers/wheels_controller_name.h"
+#include "helpers/wheels_controller_state.h"
+#include "helpers/ray_name.h"
 
 /// \class Класс для управления скорстями групп колёсных пар робота из QML
 class RobotController : public QObject

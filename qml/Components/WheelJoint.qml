@@ -3,9 +3,9 @@ import QtQuick.Controls
 import QtQuick.Controls.Basic
 
 import RobotController
-import wheelJointName
-import pairsGroupingMode
-import driveMode
+import WheelJointName
+import PairsGroupingMode
+import DriveMode
 
 Rectangle {
     id: root
