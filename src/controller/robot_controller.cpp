@@ -57,7 +57,7 @@ RobotController::RobotController(std::shared_ptr<rclcpp::Node> node, QObject* pa
     setDriveMode(DriveMode::FullDrive);
 }
 
-void RobotController::setDriveMode(int mode)
+void RobotController::setDriveMode(DriveMode::Mode mode)
 {
     if (current_drive_mode_ != mode) {
         current_drive_mode_ = mode;

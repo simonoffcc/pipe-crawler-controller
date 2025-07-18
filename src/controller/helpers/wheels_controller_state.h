@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-class WheelsControllerState {
+class WheelsControllerState : public QObject {
     Q_GADGET
 public:
     enum State {
