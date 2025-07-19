@@ -8,15 +8,20 @@ class RayName : public QObject {
     Q_GADGET
 public:
     enum Name {
+        Unknown = -1,
         FrontLeft = 0,
         FrontUp = 1,
         FrontRight = 2,
         BackLeft = 3,
         BackUp = 4,
-        BackRight = 5,
-        Unknown = -1
+        BackRight = 5
     };
     Q_ENUM(Name)
+
+    static const std::array<Name, 6>& getAllNames() {
+      static const std::array<Name, 6> names = {FrontLeft, FrontUp, FrontRight, BackLeft, BackUp, BackRight};
+      return names;
+    }
 
     static std::string toControllerString(Name name) {
         switch (name) {

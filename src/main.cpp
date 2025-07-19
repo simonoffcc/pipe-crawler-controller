@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
         rclcpp::shutdown();
         QCoreApplication::quit();
     });
-    
+
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreationFailed,
