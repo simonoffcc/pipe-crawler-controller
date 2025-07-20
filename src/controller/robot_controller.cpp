@@ -9,32 +9,32 @@ RobotController::RobotController(std::shared_ptr<rclcpp::Node> node, QObject* pa
                       WheelsControllerState::Global,
                       {WheelJointName::FrontLeftOuter},
                       {WheelJointName::FrontLeftInner},
-                      {RayName::FrontLeft}},
+                      {RayJointName::FrontLeft}},
                      {WheelsControllerName::FrontUp,
                       WheelsControllerState::Global,
                       {WheelJointName::FrontUpOuter},
                       {WheelJointName::FrontUpInner},
-                      {RayName::FrontUp}},
+                      {RayJointName::FrontUp}},
                      {WheelsControllerName::FrontRight,
                       WheelsControllerState::Global,
                       {WheelJointName::FrontRightOuter},
                       {WheelJointName::FrontRightInner},
-                      {RayName::FrontRight}},
+                      {RayJointName::FrontRight}},
                      {WheelsControllerName::BackLeft,
                       WheelsControllerState::Global,
                       {WheelJointName::BackLeftOuter},
                       {WheelJointName::BackLeftInner},
-                      {RayName::BackLeft}},
+                      {RayJointName::BackLeft}},
                      {WheelsControllerName::BackUp,
                       WheelsControllerState::Global,
                       {WheelJointName::BackUpOuter},
                       {WheelJointName::BackUpInner},
-                      {RayName::BackUp}},
+                      {RayJointName::BackUp}},
                      {WheelsControllerName::BackRight,
                       WheelsControllerState::Global,
                       {WheelJointName::BackRightOuter},
                       {WheelJointName::BackRightInner},
-                      {RayName::BackRight}}}}) {
+                      {RayJointName::BackRight}}}}) {
   qmlRegisterUncreatableType<PairsGroupingMode>("PairsGroupingMode", 1, 0, "PairsGroupingMode",
                                                 "Not creatable as it is an enum type.");
   qmlRegisterUncreatableType<DriveMode>("DriveMode", 1, 0, "DriveMode", "Not creatable as it is an enum type.");
@@ -45,7 +45,8 @@ RobotController::RobotController(std::shared_ptr<rclcpp::Node> node, QObject* pa
 
   qmlRegisterUncreatableType<WheelsControllerState>("WheelsControllerState", 1, 0, "WheelsControllerState",
                                                     "Not creatable as it is an enum type.");
-  qmlRegisterUncreatableType<RayName>("RayName", 1, 0, "RayName", "Not creatable as it is an enum type.");
+  qmlRegisterUncreatableType<RayJointName>("RayJointName", 1, 0, "RayJointName",
+                                           "Not creatable as it is an enum type.");
   qmlRegisterSingletonInstance<RobotController>("RobotController", 1, 0, "RobotController", this);
 
   createROSInterfaces();
@@ -165,8 +166,8 @@ void RobotController::createROSInterfaces() {
     pair_velocity_publishers_[controller_enum] = publisher;
   }
 
-  for (auto ray_enum : RayName::getAllNames()) {
-    std::string ray_controller_name = RayName::toControllerString(ray_enum);
+  for (auto ray_enum : RayJointName::getAllNames()) {
+    std::string ray_controller_name = RayJointName::toControllerString(ray_enum);
 
     auto publisher =
         node_->create_publisher<std_msgs::msg::Float64MultiArray>("/" + ray_controller_name + "/commands", 100);
@@ -231,8 +232,8 @@ void RobotController::jointStatesCallback(const sensor_msgs::msg::JointState::Sh
       }
     }
 
-    auto ray_enum = RayName::fromJointString(joint_name);
-    if (ray_enum != RayName::Unknown) {
+    auto ray_enum = RayJointName::fromJointString(joint_name);
+    if (ray_enum != RayJointName::Unknown) {
       for (Controller& controller : controllers_) {
         if (controller.ray_joint.name == ray_enum) {
           if (std::abs(controller.ray_joint.position - position) > ray_position_step) {
@@ -348,7 +349,7 @@ void RobotController::publishIndependentSpeed(double speed, WheelsControllerName
   }
 }
 
-void RobotController::publishRayPosition(double position, RayName::Name ray_name) {
+void RobotController::publishRayPosition(double position, RayJointName::Name ray_name) {
   std_msgs::msg::Float64MultiArray msg;
   msg.data = {position};
 

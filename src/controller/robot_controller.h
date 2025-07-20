@@ -14,7 +14,7 @@
 
 #include "helpers/drive_mode.h"
 #include "helpers/pairs_grouping_mode.h"
-#include "helpers/ray_name.h"
+#include "helpers/ray_joint_name.h"
 #include "helpers/wheel_joint_name.h"
 #include "helpers/wheels_controller_name.h"
 #include "helpers/wheels_controller_state.h"
@@ -62,7 +62,7 @@ class RobotController : public QObject {
   void publishGlobalSpeed(double speed);
   void publishLocalSpeed(double speed, WheelsControllerName::Name controller_name);
   void publishIndependentSpeed(double speed, WheelsControllerName::Name controller_name, bool is_outer_joint);
-  void publishRayPosition(double position, RayName::Name ray_name);
+  void publishRayPosition(double position, RayJointName::Name ray_name);
 
  public slots:
   void setDriveMode(DriveMode::Mode mode);
@@ -76,7 +76,7 @@ class RobotController : public QObject {
  private:
   std::map<WheelsControllerName::Name, rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr>
       pair_velocity_publishers_;
-  std::map<RayName::Name, rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr> ray_position_publishers_;
+  std::map<RayJointName::Name, rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr> ray_position_publishers_;
   rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr joint_state_subscriber_;
 
   void createROSInterfaces();

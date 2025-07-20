@@ -38,7 +38,7 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 set(PROJECT_HEADERS
   src/controller/helpers/pairs_grouping_mode.h
   src/controller/helpers/drive_mode.h
-  src/controller/helpers/ray_name.h
+  src/controller/helpers/ray_joint_name.h
   src/controller/helpers/wheel_joint_name.h
   src/controller/helpers/wheels_controller_name.h
   src/controller/helpers/wheels_controller_state.h

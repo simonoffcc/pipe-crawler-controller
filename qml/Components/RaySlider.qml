@@ -3,12 +3,12 @@ import QtQuick.Shapes
 import QtQuick.Controls
 import QtQuick.Controls.Basic
 
-import RayName
+import RayJointName
 
 Item {
     id: root
 
-    property int rayName: RayName.Unknown
+    property int rayName: RayJointName.Unknown
     property int rayPositionValue: 0
     property int raySpeedValue: 0
     property alias currentSliderValue: raySlider.value

@@ -4,12 +4,12 @@ import QtQuick.Shapes
 import Components
 
 import RobotController
-import RayName
+import RayJointName
 
 Item {
     id: root
 
-    property var rayNames: [RayName.Unknown, RayName.Unknown, RayName.Unknown]
+    property var rayNames: [RayJointName.Unknown, RayJointName.Unknown, RayJointName.Unknown]
     property var rayControlValues: [0, 0, 0]
     property var rayTelemetryPositionValues: [0, 0, 0]
     property var rayTelemetrySpeedValues: [0, 0, 0]

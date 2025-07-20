@@ -2,14 +2,14 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Basic
 
-import RayName
+import RayJointName
 
 Row {
     id: root
 
     spacing: 5
 
-    property int rayName: RayName.Unknown
+    property int rayName: RayJointName.Unknown
     property int backgroundWidth: 100
     property int commonHeight: 25
     property int commonRadidus: 4
