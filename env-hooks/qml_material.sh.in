@@ -1,0 +1,2 @@
+# generated from pipe_crawler_controller/env-hooks/qml_material.sh.in
+ament_prepend_unique_value LD_LIBRARY_PATH "@QML_MATERIAL_LIB_DIR@"

@@ -4,7 +4,7 @@
 #include <QObject>
 
 /// \class Класс группировки колесных пар робота для публикации единой целевой скорости
-class PairsGroupingMode {
+class PairsGroupingMode : public QObject {
     Q_GADGET
 public:
     enum Mode {

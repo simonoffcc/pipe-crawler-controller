@@ -4,10 +4,11 @@
 #include <QObject>
 #include <string>
 
-class WheelJointName {
+class WheelJointName : public QObject {
     Q_GADGET
 public:
     enum Name {
+        Unknown = -1,
         FrontLeftOuter = 0,
         FrontLeftInner = 1,
         FrontUpOuter = 2,
@@ -19,8 +20,7 @@ public:
         BackUpOuter = 8,
         BackUpInner = 9,
         BackRightOuter = 10,
-        BackRightInner = 11,
-        Unknown = 12
+        BackRightInner = 11
     };
     Q_ENUM(Name)
 

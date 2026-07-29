@@ -3,6 +3,10 @@
 
 #include "controller/robot_controller.h"
 
+#ifndef QML_MATERIAL_QML_DIR
+#error "QML_MATERIAL_QML_DIR must be defined by CMake"
+#endif
+
 class Guard {
     public:
         explicit Guard(std::function<void()> fn) : fn_(std::move(fn)) {}
@@ -17,6 +21,9 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
 
+    // Installed QmlMaterial lives outside the colcon prefix; add its QML import path.
+    engine.addImportPath(QStringLiteral(QML_MATERIAL_QML_DIR));
+
     rclcpp::init(argc, argv);
     auto pipe_crawler = std::make_shared<rclcpp::Node>("pipe_crawler_controller");
     RobotController::instance(pipe_crawler);
@@ -27,7 +34,7 @@ int main(int argc, char *argv[])
         rclcpp::shutdown();
         QCoreApplication::quit();
     });
-    
+
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreationFailed,

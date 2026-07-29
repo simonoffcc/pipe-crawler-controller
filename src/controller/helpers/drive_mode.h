@@ -4,7 +4,7 @@
 #include <QObject>
 
 /// \class Класс для простого доступа к режимам привода робота
-class DriveMode {
+class DriveMode : public QObject {
     Q_GADGET
 public:
     enum Mode {
