@@ -6,7 +6,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-SOURCE_DIR="${REPO_ROOT}/thirdparty/qml_material"
+SOURCE_DIR="${REPO_ROOT}/3rdparty/qml_material"
 
 PREFIX="${QML_MATERIAL_PREFIX:-${HOME}/opt/qml_material}"
 BUILD_DIR="${QML_MATERIAL_BUILD_DIR:-${HOME}/.cache/pipe-crawler/qml_material-build}"

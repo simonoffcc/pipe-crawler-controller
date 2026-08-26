@@ -68,4 +68,4 @@ UI will be made by using [hypengw/QmlMaterial](https://github.com/hypengw/QmlMat
 ## License notes
 
 - This package: see `package.xml`
-- QmlMaterial (third-party UI): MIT — see `thirdparty/qml_material/LICENSE`
+- QmlMaterial (third-party UI): MIT — see `3rdparty/qml_material/LICENSE`
