@@ -2,7 +2,9 @@
 
 ROS2 Jazzy + Qt6 QML control panel for a pipe inspection robot (6 wheel pairs, 6 rays).
 
-UI uses [hypengw/QmlMaterial](https://github.com/hypengw/QmlMaterial) (Material Design 3, MIT) via `import Qcm.Material as MD`.
+UI will be made by using [hypengw/QmlMaterial](https://github.com/hypengw/QmlMaterial) (Material Design 3, MIT) via `import Qcm.Material as MD`.
+
+![Application screenshot](./assets/application_screenshot.png)
 
 ## Requirements
 
@@ -66,4 +68,4 @@ UI uses [hypengw/QmlMaterial](https://github.com/hypengw/QmlMaterial) (Material 
 ## License notes
 
 - This package: see `package.xml`
-- QmlMaterial (third-party UI): MIT — see `thirdparty/qml_material/LICENSE`
+- QmlMaterial (third-party UI): MIT — see `3rdparty/qml_material/LICENSE`
