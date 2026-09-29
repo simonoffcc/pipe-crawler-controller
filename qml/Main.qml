@@ -2,31 +2,20 @@ import QtQuick
 import QtQuick.Window
 import QtQuick.Layouts
 import QtQuick.Controls
-import Qcm.Material as MD
 
 import Diagrams
 import Panels
 
-MD.ApplicationWindow {
+ApplicationWindow {
     id: root
     visible: true
     width: 1920
     height: 1080
     visibility: Window.Maximized
     title: qsTr("Pipe Crawler Controller")
-
-    // Material 3 theme shell (seed ≈ teal #008080)
-    MD.MProp.textColor: MD.MProp.color.on_surface
-    MD.MProp.backgroundColor: MD.MProp.color.surface
-    color: MD.MProp.backgroundColor
+    color: "#F5F5F5"
 
     property bool isLandscape: mainLayout.width > mainLayout.height
-
-    Component.onCompleted: {
-        MD.Token.color.useSysAccentColor = false
-        MD.Token.color.useSysColorSM = false
-        MD.Token.color.accentColor = "#008080"
-    }
 
     GridLayout {
         id: mainLayout
@@ -44,16 +33,16 @@ MD.ApplicationWindow {
             Layout.minimumWidth: wheelPairsDiagram.width
             Layout.fillWidth: true
             Layout.fillHeight: true
-            color: MD.Token.color.surface_container
+            color: "#EEEEEE"
 
-            MD.Text {
+            Label {
                 anchors.left: parent.left
                 anchors.top: parent.top
                 anchors.topMargin: 10
                 anchors.leftMargin: 10
                 text: qsTr("Wheel Pairs Diagram")
-                typescale: MD.Token.typescale.title_small
-                color: MD.Token.color.on_surface
+                font.pointSize: 12
+                color: "#212121"
             }
 
             WheelPairsDiagram {
@@ -72,16 +61,16 @@ MD.ApplicationWindow {
             Layout.minimumWidth: raysDiagram.width
             Layout.fillWidth: true
             Layout.fillHeight: true
-            color: MD.Token.color.surface_container
+            color: "#EEEEEE"
 
-            MD.Text {
+            Label {
                 anchors.left: parent.left
                 anchors.top: parent.top
                 anchors.topMargin: 10
                 anchors.leftMargin: 10
                 text: qsTr("Rays Diagram")
-                typescale: MD.Token.typescale.title_small
-                color: MD.Token.color.on_surface
+                font.pointSize: 12
+                color: "#212121"
             }
 
             RaysDiagram {
