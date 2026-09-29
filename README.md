@@ -7,8 +7,7 @@
 ### Requirements
 
 - ROS2 Jazzy
-- Qt 6.8+ (Qt 6.8 / 6.9 / 6.10+; system packages or a Qt install on `CMAKE_PREFIX_PATH`)
-- CMake ≥ 3.20
+- Qt ≥ 6.8
 
 ### Clone
 
